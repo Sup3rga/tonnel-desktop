@@ -1,0 +1,403 @@
+:root{
+  --primaryTheme: #280901;
+  --sideTheme: #{rgba(225,214,203,0.2)};
+  --controlbarHeight: 50px;
+  --search-zone-height: 40px;
+}
+
+
+%ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#root{
+  overflow: hidden;
+  height: 100vh;
+}
+
+body, html{
+  background-color: transparent;
+}
+
+.initializer{
+  position: relative;
+  // border-radius: 1em;
+  .image{
+    height: 100vh;
+    background-color: #333;
+    background-image: url(../../public/splash.jpg);
+    background-size: auto 92%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    // -webkit-app-region: drag;
+    // -webkit-user-select: none;
+    // user-select: none;
+    .app-name{
+      height: 80px;
+      text-align: center;
+      h1{
+        display: inline-block;
+        font-family: Lexend-Bold;
+        color: white;
+        font-size: 2em;
+        text-shadow: 0 0 2px #333;
+      }
+      label{
+        display: inline-block;
+        font-family: Lexend;
+        word-spacing: 3px;
+        letter-spacing: 8px;
+        color: white;
+        font-size: .8em;
+        text-shadow: 0 0 7px #000;
+      }
+    }
+  }
+  .info{  
+    -webkit-app-region: no-drag;
+    padding: .4em;
+    max-height: 24vh;
+    position: absolute;
+    backdrop-filter: blur(10px);
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.1);
+    .message{
+      font-family: Lexend-Medium;
+      padding: .3em .5em;
+      color: #ddd;
+      font-size: 1em;
+    }
+    .item{
+      padding: .1em .4em;
+      font-family: Roboto;
+      font-size: .7em;
+      color: #ccc;
+      label{
+        padding: 0 .5em;
+      }
+      b{
+        letter-spacing: .3em;
+        font-weight: lighter;
+        font-size: .8em;
+      }
+    }
+  }
+}
+
+.app-window{
+  //background-color: red;
+  border-radius: 1em;
+  .app-title-bar{
+    height: 40px;
+    background-color: #ccc;
+  }
+}
+
+.app-main{
+  border-radius: .4em;
+  border: 1px solid rgba(100,100,100,.4);
+  box-shadow:  0 0 5px 2px rgba(0,0,0,1);
+  .app-section-1{
+     height: calc(100% - var(--controlbarHeight));
+  }
+  .app-section-2{
+    height: var(--controlbarHeight);
+    background-color: var(--sideTheme);
+  }
+}
+.app-sidemenu{
+  //background-color: green;
+  .app-drawer{
+    // padding: 0 0.3em 0;
+    color: #777;
+    .header{
+      font-family: Poppins-Bold;
+      padding: 0 .4em 1.2em .4em;
+      color: black;
+      -webkit-app-region: drag;
+      user-select: none;
+      height: var(--search-zone-height);
+      padding-top: .8em;
+      i{
+        font-size: 1.2em;
+      }
+      h1{
+        font-size: 1em;
+        padding: 0 .4em;
+      }
+      .win-buttons{
+        gap: .4em;
+        .win-button{
+          width: 20px;
+          height: 20px;
+          border: 0;
+          font-size: .5em;
+          border-radius: 50%;
+          color: #ccc;
+          background-color: #ccc;
+          -webkit-app-region: no-drag;
+          outline: none;
+          &.min:hover{
+            background-color: rgb(29, 156, 156);
+            color: white;
+          }
+          &.max:hover{
+            background-color: rgb(252, 171, 21);
+            color: white;
+          }
+          &.close{
+            font-size: .7em;
+            &:hover{
+              background-color: rgb(218, 17, 17);
+              color: white;
+            }
+          }
+        }
+      }
+    }
+    .links{
+      padding: .5em .3em .5em 50px;
+      .link-header{
+        padding: .4em 0 1em 0;
+        font-family: Poppins;
+        font-size: .9em;
+        font-weight: normal;
+        color: #999;
+      }
+      .link{
+        padding: .5em;
+        font-family: Lexend;
+        --square: 30px;
+        i{
+          font-size: 1.2em;
+          width: var(--square);
+          height: var(--square);
+          line-height: calc(var(--square) - 1px);
+          text-align: center;
+          position: relative;
+          //top: -.2em;
+          border-radius: 50%;
+        }
+        label{
+          padding: .3em .5em;
+          position: relative;
+          font-size: .9em;
+          //top: -.2em;
+        }
+        &.active{
+          i{
+            background-color: var(--primaryTheme);
+            color: white;
+            //font-size: 1.2em;
+          }
+          label{
+            font-family: Lexend-Bold;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
+
+.view-search{
+  position: relative;
+  .search-zone{
+    height: var(--search-zone-height);
+    -webkit-app-region: drag;
+    // -webkit-user-select: none;
+    // user-select: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    background-color: rgba(250,250,250,0.95);
+    backdrop-filter: blur(10px);
+    padding: .4em 0;
+    gap: 1em;
+    .nav-box{
+      padding: 0 .4em;
+      gap: .1em;
+      i{
+        font-size: 1.6em;
+        color: #999;
+      }
+    }
+    label{
+      font-family: Poppins-Bold;
+    }
+    .field{
+      padding: .2em .5em;
+      background-color: rgba(227, 217, 217, 0.5);
+      border-radius: .6em;
+      -webkit-app-region: no-drag;
+      i{
+        color: #888;
+        font-size: 1.3em;
+        padding: 0 .5em;
+      }
+      input{
+        font-family: Lexend;
+        border: 0;
+        background-color: unset;
+        outline: none;
+        font-size: 1em;
+      }
+    }
+  }
+  .scroll-view{
+    height: calc(100%);
+    padding-top: var(--search-zone-height);
+    div[role="grid"]{
+      overflow-x: hidden !important;
+    }
+  }
+}
+
+.music-item{
+  padding: .3em;
+  height: 210px;
+  border-radius: .4em;
+  &:hover{
+    background-color: rgba(240,240,240,0.5);
+  }
+  .album-art{
+    height: 130px;
+    background-color: #eee;
+    border-radius: .4em;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    i{
+      color: #ccc;
+      font-size: 3em;
+    }
+  }
+  .info{
+    padding: .2em;
+    .title{
+        font-family: Lexend-Medium;
+        font-size: .8em;
+        padding: .3em 0;
+        @extend %ellipsis;
+    }
+    .artist{
+        font-family: Roboto;
+        font-size: .7em;
+        color: #555;
+        @extend %ellipsis;
+    }
+  }
+}
+
+.control-bar{
+  padding: .1em .2em .4em .4em;
+  .album-art{
+    width: calc(var(--controlbarHeight) - 10px);
+    height: calc(var(--controlbarHeight) - 10px);
+    background-color: grey;
+    border-radius: .3em;
+    font-size: 1.2em;
+    color: #ccc;
+  }
+  .music-info{
+    padding: 0 .3em;
+    label{
+      // padding: .2em 0;
+      font-size: .8em;
+      &.title{
+        font-family: Lexend-Medium;
+      }
+      &.artist{
+        font-family: Lexend;
+        color: #444;
+      }
+    }
+  }
+  .controls{
+    gap: .5em;
+    button{
+      --size: 34px;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      border: 0;
+      background-color: rgb(250,250,250);
+      &:hover{
+        background-color: rgb(240,240,240);
+      }
+    }
+  }
+  .time-control{
+    .time{
+      font-family: Roboto;
+      font-size: .8em;
+      letter-spacing: .2em;
+    }
+  }
+  .queue-control{
+    gap: .8em;
+    button{
+      padding: .5em;
+      border: 0;
+      background-color: rgba(240,240,240,.4);
+      i{
+        font-size: 1.1em;
+      }
+    }
+    .volume{
+      margin-left: .3em;
+    }
+  }
+}
+
+
+.line-container{
+  height: 20px;
+  position: relative;
+  .line{
+    height: 4px;
+    background-color: rgba(200,200,200,0.6);
+    border-radius: .3em;
+    .indicator{
+      height: inherit;
+      background-color: black;
+      width: 20%;
+      border-radius: inherit;
+    }
+  }
+  .marker{
+    --size: 10px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: black;
+  }
+}

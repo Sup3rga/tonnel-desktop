@@ -1,0 +1,41 @@
+{
+  "name": "myapp-react",
+  "version": "0.1.0",
+  "private": true,
+  "main": "public/main.js",
+  "dependencies": {
+    "@iconscout/unicons": "^4.0.8",
+    "electron": "^27.0.2",
+    "localforage": "^1.10.0",
+    "node-id3": "^0.2.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "starts": "concurrently -k -n \"React,Electron\" -p \"[{name}]\" \"BROWSER=none react-scripts start\" \"electron .\"",
+    "start": "BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "show": "electron ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
