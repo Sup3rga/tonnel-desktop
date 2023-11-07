@@ -1,4 +1,3 @@
-import Window from "./layout/window";
 import Sidemenu from "./components/sidemenu";
 import State from "./lib/stater";
 import {useState} from "react";
@@ -15,6 +14,7 @@ function App() {
       width: 250,
       libraryReady: false,
       initialize: true,
+      parallax : "",
       feed: {
         music: 0,
         album: 0,
@@ -91,10 +91,11 @@ function App() {
   }
 
   return (
-      <div className="ui-container ui-vfluid app-main ui-no-scroll">
+      <div className="ui-container ui-vfluid app-main ui-no-scroll" style={{backgroundImage: `url(${state.parallax})`}}>
           <div className="ui-container ui-size-fluid app-section-1">
               <Sidemenu
                   width={state.width}
+                  copyColor={state.parallax}
               />
               <div className="ui-container ui-fluid-height" style={{width: `calc(100% - ${state.width}px)`}}>
                   <Explore width={totalWidth - state.width}/>

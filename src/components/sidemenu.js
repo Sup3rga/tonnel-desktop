@@ -3,6 +3,7 @@ import Icon from "./icon";
 import State from "../lib/stater";
 import responsive from "../lib/responsive";
 import Painter, {PaintControl, PaintDrawer} from "./Painter";
+import ImageTheme from "../lib/imagetheme";
 
 const {bridge : {exchange} } = window;
 
@@ -53,7 +54,10 @@ function MenuItem({
         </div>
     )
 }
-export default function Sidemenu({width = 300}){
+export default function Sidemenu({
+    width = 300,
+    copyColor=null
+}){
     const menuRef = useRef();
     const [state, setState] = State.init("menu", useState({
         current: "/explore",
@@ -64,6 +68,12 @@ export default function Sidemenu({width = 300}){
         refs : [],
         paintCtl : new PaintControl()
     })).get("menu");
+    let theme = null;
+    if(copyColor){
+        const reach = new ImageTheme();
+        theme = reach.setImageDataUrl(copyColor).get();
+        console.log('[Copy]',theme)
+    }
 
     const redraw = (ref, animate = false)=>{
         const design = new PaintDrawer();
@@ -94,7 +104,7 @@ export default function Sidemenu({width = 300}){
         .lineTo(width, height)
         .lineTo(0, height)
         .moveTo(0,0)
-        .setFillStyle('rgba(225,214,203,0.2)')
+        .setFillStyle(theme ? 'rgba('+theme.join(',')+', .5)' : 'rgba(225,214,203,0.5)')
         .setType('fill');
 
         // if(animate){
@@ -115,6 +125,7 @@ export default function Sidemenu({width = 300}){
         responsive(menuRef.current, ()=>{
             redraw(state.refs[state.index]);
         })
+        console.log('[Repaint]');
     }, [state.index, state.refs, menuRef]);
 
     return (

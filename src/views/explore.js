@@ -5,6 +5,7 @@ import Player from "../ext/player";
 import MusicItem from "../components/musicitem";
 import { storage } from "../ext/bridge";
 import { useCallback } from "react";
+import { Library } from "../ext/library";
 
 const {bridge : {fetchLibrary, exchange} } = window;
 
@@ -24,9 +25,9 @@ export default function Explore(){
                     console.log('Item visible...');
                     state.page += limit;
                     retrieve(state.page).then(list => {
-                        console.log('[List]', list.length);
+                        // console.log('[List]', list.length);
                         State.set("exp", {page : state.page, list});
-                        console.log('[List]',list);
+                        // console.log('[List]',list);
                     }).catch(err=>{
                         console.log('[Err]',err);
                     })
@@ -37,11 +38,10 @@ export default function Explore(){
 
     const retrieve = useCallback(async (page)=>{
         try{
-            const data = await storage.getItem("library");
+            const data = await Library.all();
             const list = [];
-            const keys = Object.keys(data);
             for(let i = 0, j = page; i < j; i++){
-                list.push(data[keys[i]])
+                list.push(data[i]);
             }
             // console.log('[List]',list);
             // State.set("exp", {list});
@@ -55,26 +55,43 @@ export default function Explore(){
     useEffect(()=>{
         console.log('[Fetch...]');
         retrieve(state.page).then((list)=>{
-            console.log('[List]',list);
+            // console.log('[List]',list);
             State.set("exp", {list});
         }).catch((err)=>{
             console.log('[Err]',err);
         })
     }, []);
+
+    const group = {
+        current : "",
+        old : ""
+    };
+
     return (
         <WithinSearch>
             {
                 
                 state.list.map((song, key)=>{
-                    // console.log('[Song]',key, state.list.length);
-                    if(key == state.list.length - 1){
-                        return (
-                            <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" forwardRef={lastItem} {...song}/>
-                        )
-                    }
-                    return (
-                        <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...song}/>
-                    )
+                    song.title = song.title.trim();
+                    group.current = song.title.replace(/^([^a-z]*?)?([a-z].+?)$/i, '$2')[0];
+                    group.current = /[a-z]/i.test(group.current) ? group.current.toUpperCase() : "#";
+                    
+                    const result = (
+                        <>
+                            {group.current === group.old ? null : 
+                                <h1 className="ui-container ui-size-fluid group-tag">{group.current}</h1>
+                            }
+                            {
+                                key == state.list.length - 1 ?
+                                <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" forwardRef={lastItem} {...song}/>
+                                :
+                                <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...song}/>
+                                
+                            }
+                        </>
+                    );
+                    group.old = group.current;
+                    return result;
                 })
             }
         </WithinSearch>

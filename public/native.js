@@ -45,6 +45,11 @@ function getImageDataUrl(e){
     return typeof btoa == 'undefined' ? Buffer.from(string, 'binary').toString('base64') : btoa(string);
 }
 
+async function  getMusic(path){
+    const file = fs.readFile(path);
+    return file;
+}
+
 async function initialize(iteration = ()=>{}){
     const list = {}, albums = {}, artists = {};
     let count = {
@@ -141,5 +146,6 @@ const exchange = {
 }
 
 contextBridge.exposeInMainWorld('bridge', {
-    fetchLibrary, resize, isReady, exchange, initialize
+    fetchLibrary, resize, isReady, exchange, initialize,
+    getMusic
 })

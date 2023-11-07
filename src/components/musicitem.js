@@ -1,4 +1,6 @@
 import {memo} from "react";
+import Player, { defaultPlayer } from "../ext/player";
+import State from "../lib/stater";
 import Icon from "./icon";
 
 const MusicItem = memo(function({
@@ -6,11 +8,18 @@ const MusicItem = memo(function({
     className = "",
     title = "",
     artist = "",
-    album = "",
-    albumart = ""
+    albumart = "",
+    path = ""
 }){
     return (
-        <div className={"music-item ui-column "+className} ref={forwardRef}>
+        <div className={"music-item ui-column "+className} ref={forwardRef}
+            onClick={async ()=>{
+                // console.log('[song]', path)
+                await defaultPlayer.setPath(path);
+                defaultPlayer.play();
+                // console.log('Player', State.get("app")[0].player)
+            }}
+        >
             <div className="ui-container ui-size-fluid album-art ui-all-center" style={{backgroundImage: `url(${albumart})`}}>
                 {albumart ? null :
                     <Icon icon="music-note"/>

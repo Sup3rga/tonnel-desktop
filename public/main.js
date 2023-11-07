@@ -40,7 +40,7 @@ function createWindow () {
   win.loadURL('http://localhost:3000');
   ipcMain.on("resize", (src, {width = 800, height = 500, resizable = false})=>{
      win.setResizable(resizable);
-     win.setBounds({width, height}, true);
+     win.setBounds({width, height}, false);
      win.center();
   })
   ipcMain.on("win-action", (src, action)=>{

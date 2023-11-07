@@ -3,8 +3,22 @@
   --sideTheme: #{rgba(225,214,203,0.2)};
   --controlbarHeight: 50px;
   --search-zone-height: 40px;
+  --text-color-0: black;
+  --section-1-background: rgba(255,255,255,0.7);
+  --section-2-background: rgba(250,250,250,0.7);
 }
 
+.app-main.dark-theme{
+  --sideTheme: #{rgba(110, 98, 86, 0.2)};
+  --text-color-0 : white;
+  --primaryTheme: rgb(230, 218, 218);
+  --section-1-background: rgba(0, 0, 0, 0.918);
+  --section-2-background: rgba(46, 45, 45, 0.7);
+}
+
+@function variant($light, $dark){
+  @return var(--dark-theme, $dark) var(--light-theme, $light);
+}
 
 %ellipsis{
   white-space: nowrap;
@@ -120,12 +134,20 @@ body, html{
   border-radius: .4em;
   border: 1px solid rgba(100,100,100,.4);
   box-shadow:  0 0 5px 2px rgba(0,0,0,1);
+  background-image: url(../../public/splash.jpg);
+  background-size: 98%;
+  background-repeat: no-repeat;
+  background-position: center;
   .app-section-1{
      height: calc(100% - var(--controlbarHeight));
+     backdrop-filter: blur(30px);
+     background-color: var(--section-1-background)
   }
   .app-section-2{
     height: var(--controlbarHeight);
     background-color: var(--sideTheme);
+    backdrop-filter: blur(30px);
+    background-color: var(--section-2-background);
   }
 }
 .app-sidemenu{
@@ -234,8 +256,7 @@ body, html{
     left: 0;
     top: 0;
     z-index: 3;
-    background-color: rgba(250,250,250,0.95);
-    backdrop-filter: blur(10px);
+    // backdrop-filter: blur(10px);
     padding: .4em 0;
     gap: 1em;
     .nav-box{
@@ -269,20 +290,29 @@ body, html{
     }
   }
   .scroll-view{
-    height: calc(100%);
-    padding-top: var(--search-zone-height);
+    height: calc(100% - var(--search-zone-height));
+    position: relative;
+    top: var(--search-zone-height);
     div[role="grid"]{
       overflow-x: hidden !important;
+    }
+    .group-tag{
+      padding: .4em;
+      color: #777;
+      &:hover{
+        text-decoration: underline;
+      }
     }
   }
 }
 
 .music-item{
-  padding: .3em;
+  padding: .3em .5em;
   height: 210px;
-  border-radius: .4em;
+  border-radius: .5em;
   &:hover{
     background-color: rgba(240,240,240,0.5);
+    cursor: pointer;
   }
   .album-art{
     height: 130px;
@@ -319,6 +349,9 @@ body, html{
     width: calc(var(--controlbarHeight) - 10px);
     height: calc(var(--controlbarHeight) - 10px);
     background-color: grey;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: .3em;
     font-size: 1.2em;
     color: #ccc;
@@ -330,6 +363,7 @@ body, html{
       font-size: .8em;
       &.title{
         font-family: Lexend-Medium;
+        @extend %ellipsis;
       }
       &.artist{
         font-family: Lexend;
@@ -345,25 +379,26 @@ body, html{
       height: var(--size);
       border-radius: 50%;
       border: 0;
-      background-color: rgb(250,250,250);
+      background-color: rgba(250,250,250,.5);
       &:hover{
-        background-color: rgb(240,240,240);
+        background-color: rgba(240,240,240,.5);
       }
     }
   }
   .time-control{
     .time{
-      font-family: Roboto;
+      font-family: Poppins;
       font-size: .8em;
-      letter-spacing: .2em;
+      letter-spacing: .1em;
     }
   }
   .queue-control{
     gap: .8em;
     button{
       padding: .5em;
+      border-radius: .5em;
       border: 0;
-      background-color: rgba(240,240,240,.4);
+      background-color: rgba(240,240,240,.3);
       i{
         font-size: 1.1em;
       }
@@ -385,7 +420,6 @@ body, html{
     .indicator{
       height: inherit;
       background-color: black;
-      width: 20%;
       border-radius: inherit;
     }
   }
