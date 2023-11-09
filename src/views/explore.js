@@ -9,7 +9,9 @@ import { Library } from "../ext/library";
 
 const {bridge : {fetchLibrary, exchange} } = window;
 
-export default function Explore(){
+export default function Explore({
+    style = {}
+}){
     const [state] = State.init("exp", useState({
         list: [],
         page : 100
@@ -68,7 +70,7 @@ export default function Explore(){
     };
 
     return (
-        <WithinSearch>
+        <WithinSearch title="Explore" style={style}>
             {
                 
                 state.list.map((song, key)=>{

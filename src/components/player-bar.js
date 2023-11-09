@@ -5,7 +5,9 @@ import State from "../lib/stater";
 import { useState, useEffect } from "react";
 import { toTimeString } from "../ext/bridge";
 
-export default function PlayerBar(){
+export default function PlayerBar({
+    floating = false
+}){
     const [state] = State.init("playerbar", useState({
         title: "",
         artist: "",
@@ -13,7 +15,9 @@ export default function PlayerBar(){
         play: false,
         progression : 0,
         elapsed: "00 : 00",
-        duration: "00 : 00"
+        duration: 0,
+        volume : 1,
+        bound: "00 : 00"
     })).get("playerbar");
 
     useEffect(()=>{
@@ -25,13 +29,15 @@ export default function PlayerBar(){
                 albumart: music.albumart,
                 progression: 0,
                 elapsed: "00 : 00",
-                duration: "00 : 00"
+                bound: "00 : 00",
+                duration: 0,
             });
         })
         .on("progress", (data)=>{
             State.set("playerbar", {
                 elapsed: toTimeString(data.currentTime),
-                duration: toTimeString(data.duration),
+                duration: data.duration,
+                bound: toTimeString(data.duration),
                 progression: data.progression
             });
         })
@@ -40,7 +46,7 @@ export default function PlayerBar(){
     }, []);
 
     return (
-        <div className="ui-container ui-size-fluid ui-fluid-height control-bar">
+        <div className={`ui-container control-bar ${floating ? 'floating-bar' : 'ui-size-fluid'}`}>
             <div className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2 ui-unwrap">
                 <div className="ui-container album-art ui-all-center ui-all-center" style={{backgroundImage: `url(${state.albumart})`}}>
                     {state.albumart ? null : <Icon icon="music-note"/>}
@@ -61,7 +67,9 @@ export default function PlayerBar(){
                 }}>
                     <Icon icon={`${state.play ? 'pause' : 'play'}`}/>
                 </button>
-                <button>
+                <button onClick={()=>{
+                    defaultPlayer.next();
+                }}>
                     <Icon icon="skip-forward"/>
                 </button>
             </div>
@@ -70,10 +78,20 @@ export default function PlayerBar(){
                     {state.elapsed}
                 </label>
                 <div className="ui-container ui-all-center ui-size-6">
-                    <LineTimer progression={state.progression}/>
+                    <LineTimer 
+                        progression={state.progression}
+                        onChange = {(progression)=>{
+                            console.log('[Progression]',progression, state.duration);
+                            defaultPlayer.seek(state.duration * progression);
+                            State.set("playerbar", {
+                                progression : state.duration ? progression * 100 : 0,
+                                elapsed: toTimeString(state.duration * progression),
+                            });
+                        }}
+                    />
                 </div>
                 <label className="ui-container ui-all-center ui-size-3 time ui-horizontal-left">
-                    {state.duration}
+                    {state.bound}
                 </label>
             </div>
             <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-3 ui-vertical-center queue-control ui-unwrap">
@@ -88,7 +106,10 @@ export default function PlayerBar(){
                         <Icon icon="volume"/>
                     </button>
                     <div className="ui-container ui-size-7 volume">
-                        <LineTimer/>
+                        <LineTimer progression={state.volume * 100} onChange={(volume)=>{
+                            defaultPlayer.setVolume(volume);
+                            State.set("playerbar", {volume});
+                        }}/>
                     </div>
                 </div>
             </div>

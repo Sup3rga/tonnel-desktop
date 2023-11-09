@@ -23,11 +23,14 @@ menu.append(new MenuItem({
 Menu.setApplicationMenu(menu);
 
 function createWindow () {
-  // Create the browser window.
+  const {screen} = require('electron');
+  const dimension = screen.getPrimaryDisplay().workAreaSize;
+  const minWidth = Math.floor(dimension.width * 0.7),
+        minHeight = Math.floor(dimension.height * 0.7);
+   // Create the browser window.
   const win = new BrowserWindow({
     width: 300,
     height: 400,
-    minWidth: 400,
     frame: false,
     hasShadow: true,
     // resizable: false,
@@ -38,9 +41,15 @@ function createWindow () {
   })
   
   win.loadURL('http://localhost:3000');
-  ipcMain.on("resize", (src, {width = 800, height = 500, resizable = false})=>{
+  win.setBackgroundColor('rgba(0,0,0,0.5)');
+  win.setOpacity(0);  
+  ipcMain.on("resize", (src, {width = 800, height = 600, resizable = false})=>{
      win.setResizable(resizable);
-     win.setBounds({width, height}, false);
+     win.setMinimumSize(minWidth, minHeight);
+     win.setBounds({
+       width: minWidth, 
+       height: minHeight
+    }, false);
      win.center();
   })
   ipcMain.on("win-action", (src, action)=>{

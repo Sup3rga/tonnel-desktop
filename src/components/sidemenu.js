@@ -4,6 +4,7 @@ import State from "../lib/stater";
 import responsive from "../lib/responsive";
 import Painter, {PaintControl, PaintDrawer} from "./Painter";
 import ImageTheme from "../lib/imagetheme";
+import Router from "./router";
 
 const {bridge : {exchange} } = window;
 
@@ -20,7 +21,7 @@ const links = [
     {
         icon: "compact-disc",
         label: "Albums",
-        ref: "/album"
+        ref: "/albums"
     },
     {
         icon: 'microphone',
@@ -186,6 +187,7 @@ export default function Sidemenu({
                                         state.index = key;
                                         State.set("menu", {...state});
                                         redraw(state.refs[key], true);
+                                        Router.push(data.ref);
                                     }}
                                     _ref={(ref)=>{
                                         // console.log('[item]',ref);

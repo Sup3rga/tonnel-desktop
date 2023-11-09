@@ -22,9 +22,13 @@ export function toArrayBuffer(buffer){
 }
 
 export function toTimeString(timefloat){
-    const hour = Math.floor(timefloat / 3600),
+    let hour = Math.floor(timefloat / 3600),
           minute = Math.floor(timefloat % 3600 / 60),
           second = Math.floor(timefloat % 60);
+    hour = isNaN(hour) ? 0 : hour;
+    minute = isNaN(minute) ? 0 : minute;
+    second = isNaN(second) ? 0 : second;
+
     let result = [];
     if(hour > 0){
         result.push(hour >= 10 ? hour : "0"+hour);

@@ -5,6 +5,8 @@ import Explore from "./views/explore";
 import { useEffect } from "react";
 import { useViewportSize } from "./ext/hooks";
 import PlayerBar from "./components/player-bar";
+import Router from "./components/router";
+import Albums from "./views/albums";
 
 const {bridge : {initialize, isReady, exchange} } = window;
 
@@ -19,7 +21,8 @@ function App() {
         music: 0,
         album: 0,
         artist: 0
-      }
+      },
+      floatingBar: false
   })).get("app");
 
   useEffect(()=>{
@@ -31,8 +34,6 @@ function App() {
                 libraryReady: true
             });
             exchange.emit("resize", {
-                width: 800, 
-                height: 500, 
                 resizable: true
             });    
             return;
@@ -92,18 +93,26 @@ function App() {
 
   return (
       <div className="ui-container ui-vfluid app-main ui-no-scroll" style={{backgroundImage: `url(${state.parallax})`}}>
-          <div className="ui-container ui-size-fluid app-section-1">
+          <div className={`ui-container ui-size-fluid app-section-1 ${state.floatingBar ? 'immersive' : ''}`}>
               <Sidemenu
                   width={state.width}
                   copyColor={state.parallax}
               />
-              <div className="ui-container ui-fluid-height" style={{width: `calc(100% - ${state.width}px)`}}>
-                  <Explore width={totalWidth - state.width}/>
+              <div className="ui-container ui-relative ui-fluid-height" style={{width: `calc(100% - ${state.width}px)`}}>
+                  <Router defaultRoute="/explore">
+                      <Explore route="/explore" width={totalWidth - state.width} persistent/>
+                      <Albums route="/albums"/>
+                  </Router>
+                  {!state.floatingBar ? null :
+                    <PlayerBar floating={true}/>
+                  }
               </div>
           </div>
-          <div className="ui-container ui-size-fluid app-section-2 control-bar">
-              <PlayerBar/>
-          </div>
+          {state.floatingBar ? null :
+            <div className="ui-container ui-size-fluid app-section-2 control-bar">
+                <PlayerBar/>
+            </div>
+          }
       </div>
   );
 }

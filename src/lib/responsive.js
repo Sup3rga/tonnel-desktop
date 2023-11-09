@@ -4,7 +4,7 @@ export default function responsive(dom, control = null){
         return;
     }
     window.addEventListener('resize', ()=>{
-        // console.log('[Resize]',dom);
+        // console.log('[Resize]');
         if(control){
             return control();
         }

@@ -42,6 +42,14 @@ export const Library = {
         return list;
     },
 
+    async allPath(){
+        const list = [];
+        for(let music of this.__library){
+            list.push(music.path);
+        }
+        return list;
+    },
+
     async getByPath(path){
         for(let music of this.__library){
             if(music.path === path){
