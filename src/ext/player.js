@@ -29,7 +29,9 @@ export default class Player{
     _looping = PlayerLoop.ALL;
     _queuing = PlayerQueuing.ALONG;
     _fadeoutTiming = 2000;
-    _fadeoutMode = FadeoutMode.HIGH_IN;
+    _preloadTime = 5000;
+    _transitionning = false;
+    _fadeoutMode = FadeoutMode.SAME_LEVEL;
     _playing = false;
     _currentPath = null;
     _timer = [null,null];
@@ -88,14 +90,22 @@ export default class Player{
         const count = this._fadeoutTiming / 30;
         let extreme = Math.floor(count);
 
-        const oldAudio = this._audio;
+        let oldAudio = this._audio;
         this._audio = audio;
         const oldSource = this._source;
+
+        if(this._transitionning && oldSource){
+            oldSource.disconnect();
+            oldAudio = null;
+            this._transitionning = false;
+        }
+
         for(let i in this._timer){
             clearInterval(this._timer[i]);
         }
 
         this._audio.volume = this._volume * (1 - diff[1]);
+        this._audio.play();
         
         const amount = {
             up : (this._volume - this._audio.volume) / count,
@@ -105,9 +115,10 @@ export default class Player{
         this._source = this._ctx.createMediaElementSource(this._audio);
         this._source.connect(this._ctx.destination);
 
+        this._transitionning = true;
         this._timer[0] = setInterval(()=>{
             if(!extreme){
-                clearInterval(this._timer);
+                clearInterval(this._timer[0]);
                 return;
             }
             if(oldAudio){
@@ -120,6 +131,8 @@ export default class Player{
             if(oldSource){
                 oldSource.disconnect();
             }
+            clearInterval(this._timer[1]);
+            this._transitionning = false;
         }, this._fadeoutTiming);
     }
 
@@ -137,7 +150,7 @@ export default class Player{
         // console.log('[Audio]',this._audio);
         this._audio.addEventListener('timeupdate', ()=>{
             this.__dispatch('progress');
-            if(this._audio.currentTime >= this._audio.duration - this._fadeoutTiming / 1000){
+            if(this._audio.currentTime >= this._audio.duration - this._preloadTime / 1000){
                 this.__dispatch("end");
                 this.next();
             }
@@ -148,7 +161,6 @@ export default class Player{
         await this.__createQueue();
         if(this._queue.length > 1){
             await this.setPath(this._queue[1]);
-            this.play();
         }
     }
 

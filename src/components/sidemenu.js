@@ -6,7 +6,7 @@ import Painter, {PaintControl, PaintDrawer} from "./Painter";
 import ImageTheme from "../lib/imagetheme";
 import Router from "./router";
 
-const {bridge : {exchange} } = window;
+const {exchange}  = window.bridge;
 
 const links = [
     {
@@ -14,7 +14,7 @@ const links = [
         label: "Your library",
     },
     {
-        icon: "books",
+        icon: "compass",
         label: "Explore",
         ref: "/explore"
     },
@@ -24,9 +24,14 @@ const links = [
         ref: "/albums"
     },
     {
-        icon: 'microphone',
+        icon: 'microphone-alt',
         label: "Artists",
         ref: "/artist"
+    },
+    {
+        icon: 'list-alt',
+        label: "Playlists",
+        ref: "/list"
     },
 ];
 
@@ -37,6 +42,7 @@ function MenuItem({
     label = "",
     onClick= ()=>{},
     path = "",
+    iconOnly =false,
     _ref = ()=>{}
 }){
     const ref = useRef();
@@ -50,31 +56,28 @@ function MenuItem({
             className={`ui-container ui-size-fluid link ui-vertical-center ${active ? 'active' : ''}`}
             onClick={onClick}
         >
-            <Icon icon={icon}/>
-            <label>{label}</label>
+            <Icon mode="line" icon={icon}/>
+            {iconOnly ? null : <label>{label}</label>}
         </div>
     )
 }
+
 export default function Sidemenu({
     width = 300,
-    copyColor=null
+    copyColor=null,
+    minimal=false
 }){
     const menuRef = useRef();
     const [state, setState] = State.init("menu", useState({
         current: "/explore",
-        width: 300,
+        width: 200,
         height: '100%',
         restore: false,
         index: 1,
         refs : [],
+        darkText: true,
         paintCtl : new PaintControl()
     })).get("menu");
-    let theme = null;
-    if(copyColor){
-        const reach = new ImageTheme();
-        theme = reach.setImageDataUrl(copyColor).get();
-        console.log('[Copy]',theme)
-    }
 
     const redraw = (ref, animate = false)=>{
         const design = new PaintDrawer();
@@ -84,28 +87,44 @@ export default function Sidemenu({
         let _state = {
             width: menuRef.current.offsetWidth,
             height: menuRef.current.parentElement.offsetHeight,
+            darkText: true
         };
+
+        const imageTheme = new ImageTheme();
+        let theme = !copyColor ? null : imageTheme.setImageDataUrl(copyColor).get();
+        if(theme){
+            exchange.emit("background-change", `rgb(${theme.join(',')})`);
+            let sum = 0;
+            for(let i in theme){
+                sum += theme[i];
+            }
+            if(sum < 382.5){
+                _state.darkText = false;
+            }
+            console.log('[Sum of theme]', sum, copyColor == null, theme);
+        }
         // console.log('[MenuRef..]', menuRef, ref);
         const width = _state.width,
               height = _state.height,
               top = ref.offsetTop,
               left = ref.offsetLeft,
               h = ref.offsetHeight,
-              radius = 50,
-              padding = 10;
+              radius = minimal ? 25 : 50,
+              padding = minimal ? -5 : 10,
+              ratio = minimal ? 16 : 0;
 
         design.moveTo(0,0)
         .lineTo(width, 0)
         .lineTo(width, top - radius)
         .quadraticCurveTo(width, top, width - radius, top)
         .lineTo(left + radius - padding, top)
-        .bezierCurveTo(radius - padding, top - 6, radius - padding, top + h + 6, left + radius - padding, top + h)
+        .bezierCurveTo(radius - padding - ratio, top - 6 , radius - padding - ratio, top + h + 6, left + radius - padding, top + h)
         .lineTo(width - radius, top + h)
         .quadraticCurveTo(width, top + h, width, top + h + radius)
         .lineTo(width, height)
         .lineTo(0, height)
         .moveTo(0,0)
-        .setFillStyle(theme ? 'rgba('+theme.join(',')+', .5)' : 'rgba(225,214,203,0.5)')
+        .setFillStyle(theme ? 'rgba('+theme.join(',')+', .5)' : 'rgba(235,224,213,0.6)')
         .setType('fill');
 
         // if(animate){
@@ -122,12 +141,12 @@ export default function Sidemenu({
 
     useEffect(()=>{
         // console.log('[LinkRef]', state.refs.length, state.refs);
+        // console.log('[redrawing]');
         redraw(state.refs[state.index]);
         responsive(menuRef.current, ()=>{
             redraw(state.refs[state.index]);
         })
-        console.log('[Repaint]');
-    }, [state.index, state.refs, menuRef]);
+    }, [state.index, state.refs, menuRef, copyColor,minimal]);
 
     return (
         <div className="ui-container app-sidemenu ui-relative" ref={menuRef} style={{width: width+'px', height: state.height+'px'}}>
@@ -137,9 +156,9 @@ export default function Sidemenu({
                 className="ui-container ui-fluid"
                 paintControl={state.paintCtl}
             />
-            <div className="ui-element ui-all-close ui-absolute app-drawer">
+            <div className={`ui-element ui-all-close ui-absolute app-drawer ${state.darkText ? 'dark-text' : ''}`}>
                 <div className="ui-container header ui-size-fluid ui-unwrap ui-vertical-center">
-                    <div className="ui-container ui-size-5 win-buttons ui-vertical-center">
+                    <div className={`ui-container ${minimal ? 'ui-size-fluid' : 'ui-size-5'} win-buttons ui-vertical-center`}>
                         <button className="ui-element win-button min"
                             onClick={()=>{
                                 exchange.emit("win-action", 1)
@@ -164,13 +183,22 @@ export default function Sidemenu({
                             <Icon icon="times"/>
                         </button>
                     </div>
-                    <Icon icon="fire"/>
-                    <h1 className="ui-container ui-horizontal-center">TonneL</h1>
+                    {minimal ? null : 
+                        <>
+                            <Icon icon="fire"/>
+                            <h1 className="ui-container ui-horizontal-center">TonneL</h1>
+                        </>
+                    }
                 </div>
-                <div className="ui-container ui-size-fluid links">
+                {!minimal ? null :
+                    <div className="ui-container ui-size-fluid ui-all-center minimal-icon-zone">
+                        <Icon icon="fire"/>
+                    </div>
+                }
+                <div className={`ui-container ui-size-fluid links ${minimal ? 'minimal' : ''}`}>
                     {
                         links.map((data, key)=>{
-                            if(data.header){
+                            if(data.header && !minimal){
                                 return (
                                     <h2 className="ui-container ui-size-fluid link-header">{data.label}</h2>
                                 )
@@ -182,6 +210,7 @@ export default function Sidemenu({
                                     active={data.ref === state.current}
                                     path={state.current}
                                     icon={data.icon}
+                                    iconOnly={minimal}
                                     onClick={()=>{
                                         state.current = data.ref;
                                         state.index = key;

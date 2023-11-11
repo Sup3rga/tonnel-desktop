@@ -4,16 +4,37 @@
   --controlbarHeight: 50px;
   --search-zone-height: 40px;
   --text-color-0: black;
+  --text-color-0-reverse: white;
+  --text-color-1 : #999;
+  --text-color-2 : #777;
+  --albumart-bg: #eee;
+  --control-button-bg: rgba(240,240,240,.3);
+  --control-button-bg-reverse: rgba(240,240,240,.5);
   --section-1-background: rgba(255,255,255,0.7);
   --section-2-background: rgba(250,250,250,0.7);
+  --line-bg: rgba(200,200,200,0.6);
+  --scrollbar-track-bg: #f1f1f1;
+  --item-hover-bg: rgba(240,240,240,0.5);
 }
 
 .app-main.dark-theme{
   --sideTheme: #{rgba(110, 98, 86, 0.2)};
   --text-color-0 : white;
+  --text-color-0-reverse: black;
+  --text-color-1 : #777;
+  --text-color-2 : #aaa;
+  --albumart-bg: #333;
   --primaryTheme: rgb(230, 218, 218);
-  --section-1-background: rgba(0, 0, 0, 0.918);
+  --section-1-background: rgba(0, 0, 0, 0.85);
   --section-2-background: rgba(46, 45, 45, 0.7);
+  --control-button-bg: rgba(50,50,50,.3);
+  --control-button-bg-reverse: rgba(100,100,100,.5);
+  --line-bg: rgba(20,20,20,0.6);
+  --scrollbar-track-bg: #333;
+  --item-hover-bg: rgba(50,50,50,0.5);
+}
+.no-drag-zone{
+  -webkit-app-region: no-drag;
 }
 
 @function variant($light, $dark){
@@ -32,18 +53,18 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--scrollbar-track-bg);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--text-color-2);
   border-radius: 4px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--text-color-1);
 }
 
 #root{
@@ -74,7 +95,7 @@ body, html{
       h1{
         display: inline-block;
         font-family: Lexend-Bold;
-        color: white;
+        color: var(--text-color-0-reverse);
         font-size: 2em;
         text-shadow: 0 0 2px #333;
       }
@@ -83,7 +104,7 @@ body, html{
         font-family: Lexend;
         word-spacing: 3px;
         letter-spacing: 8px;
-        color: white;
+        color: var(--text-color-0-reverse);
         font-size: .8em;
         text-shadow: 0 0 7px #000;
       }
@@ -132,12 +153,20 @@ body, html{
 
 .app-main{
   border-radius: .4em;
-  border: 1px solid rgba(100,100,100,.4);
+  // border: 1px solid rgba(100,100,100,.4);
   box-shadow:  0 0 5px 2px rgba(0,0,0,1);
-  background-image: url(../../public/splash.jpg);
-  background-size: 98%;
-  background-repeat: no-repeat;
-  background-position: center;
+  &.splash{
+    background-image: url(../../public/splash.jpg);
+    background-size: 98%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .app-background{
+    filter: blur(40px);
+    background-size: 98%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
   .app-section-1{
      height: calc(100% - var(--controlbarHeight));
      &.immersive{
@@ -146,13 +175,13 @@ body, html{
          padding-bottom: calc(var(--controlbarHeight) + 10px);
        }
      }
-     backdrop-filter: blur(30px);
+     //backdrop-filter: blur(30px); @exp
      background-color: var(--section-1-background)
   }
   .app-section-2{
     height: var(--controlbarHeight);
     background-color: var(--sideTheme);
-    backdrop-filter: blur(30px);
+    // backdrop-filter: blur(30px); @exp
     background-color: var(--section-2-background);
   }
 }
@@ -160,11 +189,11 @@ body, html{
   //background-color: green;
   .app-drawer{
     // padding: 0 0.3em 0;
-    color: #777;
+    color: var(--text-color-0);
     .header{
       font-family: Poppins-Bold;
       padding: 0 .4em 1.2em .4em;
-      color: black;
+      color: var(--text-color-0);
       -webkit-app-region: drag;
       user-select: none;
       height: var(--search-zone-height);
@@ -184,8 +213,8 @@ body, html{
           border: 0;
           font-size: .5em;
           border-radius: 50%;
-          color: #ccc;
-          background-color: #ccc;
+          color: #bbb;
+          background-color: #aaa;
           -webkit-app-region: no-drag;
           outline: none;
           &.min:hover{
@@ -206,22 +235,28 @@ body, html{
         }
       }
     }
+    .minimal-icon-zone{
+      font-size: 2em;
+      padding-top: .3em;
+    }
     .links{
       padding: .5em .3em .5em 50px;
+      &.minimal{
+        padding-left: 25px;
+        padding-top: 0;
+      }
       .link-header{
         padding: .4em 0 1em 0;
         font-family: Poppins;
         font-size: .9em;
         font-weight: normal;
-        color: black;
-        text-shadow: 0 0 2px white;
+        color: var(--text-color-0);
       }
       .link{
         padding: .5em;
         font-family: Lexend;
         --square: 30px;
-        text-shadow: 0 0 1px white;
-        color: black;
+        color: var(--text-color-0);
         i{
           font-size: 1.2em;
           width: var(--square);
@@ -242,12 +277,12 @@ body, html{
           text-shadow: unset;
           i{
             background-color: var(--primaryTheme);
-            color: white;
-            //font-size: 1.2em;
+            color: var(--text-color-0-reverse);
+            font-size: 1.6em;
           }
           label{
             font-family: Lexend-Bold;
-            color: black;
+            color: var(--text-color-0);
           }
         }
       }
@@ -260,6 +295,7 @@ body, html{
   .search-zone{
     height: var(--search-zone-height);
     -webkit-app-region: drag;
+    // background-color: grey;
     // -webkit-user-select: none;
     // user-select: none;
     position: absolute;
@@ -274,28 +310,66 @@ body, html{
       gap: .1em;
       i{
         font-size: 1.6em;
-        color: #999;
+        color: var(--text-color-1);
       }
+    }
+    .collapsable-btn{
+      border: 0;
+      background-color: rgba(250,250,250,0.1);
+      padding: .2em .3em;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-radius: .8em;
+      color: var(--text-color-0);
     }
     label{
       font-family: Poppins-Bold;
+      color: var(--text-color-0);
     }
     .field{
       padding: .2em .5em;
       background-color: rgba(227, 217, 217, 0.5);
-      border-radius: .6em;
+      border-radius: .4em;
       -webkit-app-region: no-drag;
       i{
         color: #888;
-        font-size: 1.3em;
+        font-size: 1.1em;
         padding: 0 .5em;
       }
       input{
-        font-family: Lexend;
+        font-family: Poppins;
         border: 0;
         background-color: unset;
         outline: none;
-        font-size: 1em;
+        font-size: .85em;
+      }
+    }
+    .misc{
+      padding: 0 .2em;
+      justify-content: space-evenly;
+      // gap: 1em;  
+      button{
+        -webkit-app-region: no-drag;
+        border: 0;
+        width: 27px;
+        height: 27px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: rgba(200,200,200,0.6);
+        color: var(--text-color-0);
+        // padding: .2em;
+        font-size: 1.2em;
+        &.to-dark{
+          background-color: rgba(50,50,80,0.8);
+          color: #fff;
+          box-shadow: 0 1px 2px 0 #333;
+        }
+        &.to-light{
+          background-color: rgba(250,250,200,0.9);
+          color: #555;
+          box-shadow: 0 1px 2px 0 #ccc;
+        }
       }
     }
   }
@@ -308,7 +382,7 @@ body, html{
     }
     .group-tag{
       padding: .4em;
-      color: #777;
+      color: var(--text-color-1);
       &:hover{
         text-decoration: underline;
       }
@@ -321,18 +395,18 @@ body, html{
   height: 210px;
   border-radius: .5em;
   &:hover{
-    background-color: rgba(240,240,240,0.5);
+    background-color: var(--item-hover-bg);
     cursor: pointer;
   }
   .album-art{
     height: 130px;
-    background-color: #eee;
+    background-color: var(--albumart-bg);
     border-radius: .4em;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     i{
-      color: #ccc;
+      color: var(--text-color-1);
       font-size: 3em;
     }
   }
@@ -343,12 +417,13 @@ body, html{
         font-size: .8em;
         padding: .3em 0;
         @extend %ellipsis;
+        color: var(--text-color-0);
     }
     .artist{
         font-family: Roboto;
         font-size: .7em;
-        color: #555;
         @extend %ellipsis;
+        color: var(--text-color-1);
     }
   }
 }
@@ -362,19 +437,19 @@ body, html{
     bottom: 5px;
     box-shadow: 0 0 2px 0 #777;
     border-radius: .4em;
-    backdrop-filter: blur(15px);
+    // backdrop-filter: blur(15px); @exp
     background-color: rgba(250,250,250,0.9);
   }
   .album-art{
     width: calc(var(--controlbarHeight) - 10px);
     height: calc(var(--controlbarHeight) - 10px);
-    background-color: grey;
+    background-color: var(--albumart-bg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: .3em;
     font-size: 1.2em;
-    color: #ccc;
+    color: var(--text-color-1);
   }
   .music-info{
     padding: 0 .3em;
@@ -384,11 +459,13 @@ body, html{
       &.title{
         font-family: Lexend-Medium;
         @extend %ellipsis;
+        color: var(--text-color-0);
       }
       &.artist{
         font-family: Lexend;
         color: #444;
         @extend %ellipsis;
+        color: var(--text-color-2);
       }
     }
   }
@@ -400,9 +477,10 @@ body, html{
       height: var(--size);
       border-radius: 50%;
       border: 0;
-      background-color: rgba(250,250,250,.5);
+      background-color: var(--control-button-bg);
+      color: var(--text-color-2);
       &:hover{
-        background-color: rgba(240,240,240,.5);
+        background-color: var(--control-button-bg-reverse);
       }
     }
   }
@@ -411,6 +489,7 @@ body, html{
       font-family: Poppins;
       font-size: .8em;
       letter-spacing: .1em;
+      color: var(--text-color-0);
     }
   }
   .queue-control{
@@ -419,7 +498,8 @@ body, html{
       padding: .5em;
       border-radius: .5em;
       border: 0;
-      background-color: rgba(240,240,240,.3);
+      background-color: var(--control-button-bg);
+      color: var(--text-color-0);
       i{
         font-size: 1.1em;
       }
@@ -436,11 +516,11 @@ body, html{
   position: relative;
   .line{
     height: 4px;
-    background-color: rgba(200,200,200,0.6);
+    background-color: var(--line-bg);
     border-radius: .3em;
     .indicator{
       height: inherit;
-      background-color: black;
+      background-color: var(--text-color-0);
       border-radius: inherit;
     }
   }
@@ -453,6 +533,6 @@ body, html{
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background-color: black;
+    background-color: var(--text-color-0);
   }
 }

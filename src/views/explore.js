@@ -6,6 +6,7 @@ import MusicItem from "../components/musicitem";
 import { storage } from "../ext/bridge";
 import { useCallback } from "react";
 import { Library } from "../ext/library";
+import InfiniteScrolView from "../components/infinitescrollview";
 
 const {bridge : {fetchLibrary, exchange} } = window;
 
@@ -13,50 +14,12 @@ export default function Explore({
     style = {}
 }){
     const [state] = State.init("exp", useState({
-        list: [],
-        page : 100
+        list: []
     })).get("exp");
-    const limit = 100;
-
-    const observer = useRef(),
-          lastItem = useCallback(node => {
-              console.log('[Node]',node);
-              if(observer.current) observer.current.disconnect();
-              observer.current = new IntersectionObserver(entries => {
-                if(entries[0].isIntersecting){
-                    console.log('Item visible...');
-                    state.page += limit;
-                    retrieve(state.page).then(list => {
-                        // console.log('[List]', list.length);
-                        State.set("exp", {page : state.page, list});
-                        // console.log('[List]',list);
-                    }).catch(err=>{
-                        console.log('[Err]',err);
-                    })
-                }
-              });
-              if(node) observer.current.observe(node);
-          }, [state.page]);
-
-    const retrieve = useCallback(async (page)=>{
-        try{
-            const data = await Library.all();
-            const list = [];
-            for(let i = 0, j = page; i < j; i++){
-                list.push(data[i]);
-            }
-            // console.log('[List]',list);
-            // State.set("exp", {list});
-            return list;
-        }catch(err){
-            console.log('[Err]',err);
-        } 
-        return [];
-    }, []);
-
+    
     useEffect(()=>{
         console.log('[Fetch...]');
-        retrieve(state.page).then((list)=>{
+        Library.all().then((list)=>{
             // console.log('[List]',list);
             State.set("exp", {list});
         }).catch((err)=>{
@@ -64,38 +27,19 @@ export default function Explore({
         })
     }, []);
 
-    const group = {
-        current : "",
-        old : ""
-    };
-
     return (
         <WithinSearch title="Explore" style={style}>
-            {
-                
-                state.list.map((song, key)=>{
-                    song.title = song.title.trim();
-                    group.current = song.title.replace(/^([^a-z]*?)?([a-z].+?)$/i, '$2')[0];
-                    group.current = /[a-z]/i.test(group.current) ? group.current.toUpperCase() : "#";
-                    
-                    const result = (
-                        <>
-                            {group.current === group.old ? null : 
-                                <h1 className="ui-container ui-size-fluid group-tag">{group.current}</h1>
-                            }
-                            {
-                                key == state.list.length - 1 ?
-                                <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" forwardRef={lastItem} {...song}/>
-                                :
-                                <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...song}/>
-                                
-                            }
-                        </>
-                    );
-                    group.old = group.current;
-                    return result;
-                })
-            }
+            <InfiniteScrolView
+                data={state.list}
+                limit={50}
+                sortFactor="title"
+                grouped={true}
+                render={(song, key)=>{
+                    return (
+                        <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...song}/>
+                    )
+                }}
+            />
         </WithinSearch>
     )
 }

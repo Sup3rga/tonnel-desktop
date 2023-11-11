@@ -51,7 +51,10 @@ function createWindow () {
        height: minHeight
     }, false);
      win.center();
-  })
+  });
+  ipcMain.on('background-change', (src, background)=>{
+    win.setBackgroundColor(background);
+  });
   ipcMain.on("win-action", (src, action)=>{
       console.log('[acting]', action);
       if(action == 0){
@@ -83,5 +86,3 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-// ipcMain.on("library", fetchLibrary);

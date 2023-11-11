@@ -9,14 +9,19 @@ import Router from "./components/router";
 import Albums from "./views/albums";
 
 const {bridge : {initialize, isReady, exchange} } = window;
+const sizes = {
+    minimal : 90,
+    maximal: 210
+};
 
 function App() {
   const [totalWidth] = useViewportSize();
   const [state] = State.init("app", useState({
-      width: 250,
       libraryReady: false,
       initialize: true,
       parallax : "",
+      darkMode: false,
+      minimal: false,
       feed: {
         music: 0,
         album: 0,
@@ -60,7 +65,7 @@ function App() {
 
   if(!state.libraryReady){
     return (
-        <div className="ui-container ui-vfluid app-main ui-no-scroll initializer">
+        <div className="ui-container ui-vfluid app-main splash ui-no-scroll initializer">
             <div className="ui-container ui-size-fluid image ui-all-center">
                 <div className="ui-element app-name ui-column">
                     <h1>TonneL</h1>
@@ -92,27 +97,31 @@ function App() {
   }
 
   return (
-      <div className="ui-container ui-vfluid app-main ui-no-scroll" style={{backgroundImage: `url(${state.parallax})`}}>
-          <div className={`ui-container ui-size-fluid app-section-1 ${state.floatingBar ? 'immersive' : ''}`}>
-              <Sidemenu
-                  width={state.width}
-                  copyColor={state.parallax}
-              />
-              <div className="ui-container ui-relative ui-fluid-height" style={{width: `calc(100% - ${state.width}px)`}}>
-                  <Router defaultRoute="/explore">
-                      <Explore route="/explore" width={totalWidth - state.width} persistent/>
-                      <Albums route="/albums"/>
-                  </Router>
-                  {!state.floatingBar ? null :
-                    <PlayerBar floating={true}/>
-                  }
-              </div>
-          </div>
-          {state.floatingBar ? null :
-            <div className="ui-container ui-size-fluid app-section-2 control-bar">
-                <PlayerBar/>
+      <div className={`ui-container ui-vfluid app-main ${state.darkMode ? 'dark-theme' : ''} ui-no-scroll`}>
+          <div className="ui-container ui-vfluid ui-absolute ui-all-close app-background" style={{backgroundImage: `url(${state.parallax})`}}/>
+          <div className="ui-container ui-vfluid ui-absolute ui-all-close app-content">
+            <div className={`ui-container ui-size-fluid app-section-1 ${state.floatingBar ? 'immersive' : ''}`}>
+                <Sidemenu
+                    width={state.minimal ? sizes.minimal : sizes.maximal}
+                    copyColor={state.parallax}
+                    minimal={state.minimal}
+                />
+                <div className="ui-container ui-relative ui-fluid-height" style={{width: `calc(100% - ${state.minimal ? sizes.minimal : sizes.maximal}px)`}}>
+                    <Router defaultRoute="/explore">
+                        <Explore route="/explore" width={totalWidth - (state.minimal ? sizes.minimal : sizes.maximal)} persistent/>
+                        <Albums route="/albums"/>
+                    </Router>
+                    {!state.floatingBar ? null :
+                        <PlayerBar floating={true}/>
+                    }
+                </div>
             </div>
-          }
+            {state.floatingBar ? null :
+                <div className="ui-container ui-size-fluid app-section-2 control-bar">
+                    <PlayerBar/>
+                </div>
+            }
+          </div>
       </div>
   );
 }
