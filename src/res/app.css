@@ -348,7 +348,11 @@ body, html {
   font-size: 1.6em;
   color: var(--text-color-1);
 }
-/* line 316, ../../sass/app.scss */
+/* line 314, ../../sass/app.scss */
+.view-search .search-zone .nav-box i.active {
+  color: var(--text-color-0);
+}
+/* line 319, ../../sass/app.scss */
 .view-search .search-zone .collapsable-btn {
   border: 0;
   background-color: rgba(250, 250, 250, 0.1);
@@ -358,25 +362,25 @@ body, html {
   border-radius: .8em;
   color: var(--text-color-0);
 }
-/* line 325, ../../sass/app.scss */
+/* line 328, ../../sass/app.scss */
 .view-search .search-zone label {
   font-family: Poppins-Bold;
   color: var(--text-color-0);
 }
-/* line 329, ../../sass/app.scss */
+/* line 332, ../../sass/app.scss */
 .view-search .search-zone .field {
   padding: .2em .5em;
   background-color: rgba(227, 217, 217, 0.5);
   border-radius: .4em;
   -webkit-app-region: no-drag;
 }
-/* line 334, ../../sass/app.scss */
+/* line 337, ../../sass/app.scss */
 .view-search .search-zone .field i {
   color: #888;
   font-size: 1.1em;
   padding: 0 .5em;
 }
-/* line 339, ../../sass/app.scss */
+/* line 342, ../../sass/app.scss */
 .view-search .search-zone .field input {
   font-family: Poppins;
   border: 0;
@@ -384,12 +388,12 @@ body, html {
   outline: none;
   font-size: .85em;
 }
-/* line 347, ../../sass/app.scss */
+/* line 350, ../../sass/app.scss */
 .view-search .search-zone .misc {
   padding: 0 .2em;
   justify-content: space-evenly;
 }
-/* line 351, ../../sass/app.scss */
+/* line 354, ../../sass/app.scss */
 .view-search .search-zone .misc button {
   -webkit-app-region: no-drag;
   border: 0;
@@ -402,50 +406,50 @@ body, html {
   color: var(--text-color-0);
   font-size: 1.2em;
 }
-/* line 363, ../../sass/app.scss */
+/* line 366, ../../sass/app.scss */
 .view-search .search-zone .misc button.to-dark {
   background-color: rgba(50, 50, 80, 0.8);
   color: #fff;
   box-shadow: 0 1px 2px 0 #333;
 }
-/* line 368, ../../sass/app.scss */
+/* line 371, ../../sass/app.scss */
 .view-search .search-zone .misc button.to-light {
   background-color: rgba(250, 250, 200, 0.9);
   color: #555;
   box-shadow: 0 1px 2px 0 #ccc;
 }
-/* line 376, ../../sass/app.scss */
+/* line 379, ../../sass/app.scss */
 .view-search .scroll-view {
   height: calc(100% - var(--search-zone-height));
   position: relative;
   top: var(--search-zone-height);
 }
-/* line 380, ../../sass/app.scss */
+/* line 383, ../../sass/app.scss */
 .view-search .scroll-view div[role="grid"] {
   overflow-x: hidden !important;
 }
-/* line 383, ../../sass/app.scss */
+/* line 386, ../../sass/app.scss */
 .view-search .scroll-view .group-tag {
   padding: .4em;
   color: var(--text-color-1);
 }
-/* line 386, ../../sass/app.scss */
+/* line 389, ../../sass/app.scss */
 .view-search .scroll-view .group-tag:hover {
   text-decoration: underline;
 }
 
-/* line 393, ../../sass/app.scss */
+/* line 396, ../../sass/app.scss */
 .music-item {
   padding: .3em .5em;
   height: 210px;
   border-radius: .5em;
 }
-/* line 397, ../../sass/app.scss */
+/* line 400, ../../sass/app.scss */
 .music-item:hover {
   background-color: var(--item-hover-bg);
   cursor: pointer;
 }
-/* line 401, ../../sass/app.scss */
+/* line 404, ../../sass/app.scss */
 .music-item .album-art {
   height: 130px;
   background-color: var(--albumart-bg);
@@ -454,34 +458,34 @@ body, html {
   background-size: cover;
   background-position: center;
 }
-/* line 408, ../../sass/app.scss */
+/* line 411, ../../sass/app.scss */
 .music-item .album-art i {
   color: var(--text-color-1);
   font-size: 3em;
 }
-/* line 413, ../../sass/app.scss */
+/* line 416, ../../sass/app.scss */
 .music-item .info {
   padding: .2em;
 }
-/* line 415, ../../sass/app.scss */
+/* line 418, ../../sass/app.scss */
 .music-item .info .title {
   font-family: Lexend-Medium;
   font-size: .8em;
   padding: .3em 0;
   color: var(--text-color-0);
 }
-/* line 422, ../../sass/app.scss */
+/* line 425, ../../sass/app.scss */
 .music-item .info .artist {
   font-family: Roboto;
   font-size: .7em;
   color: var(--text-color-1);
 }
 
-/* line 431, ../../sass/app.scss */
+/* line 434, ../../sass/app.scss */
 .control-bar {
   padding: .1em .2em .4em .4em;
 }
-/* line 433, ../../sass/app.scss */
+/* line 436, ../../sass/app.scss */
 .control-bar.floating-bar {
   position: absolute;
   left: 10px;
@@ -491,7 +495,7 @@ body, html {
   border-radius: .4em;
   background-color: rgba(250, 250, 250, 0.9);
 }
-/* line 443, ../../sass/app.scss */
+/* line 446, ../../sass/app.scss */
 .control-bar .album-art {
   width: calc(var(--controlbarHeight) - 10px);
   height: calc(var(--controlbarHeight) - 10px);
@@ -503,30 +507,30 @@ body, html {
   font-size: 1.2em;
   color: var(--text-color-1);
 }
-/* line 454, ../../sass/app.scss */
+/* line 457, ../../sass/app.scss */
 .control-bar .music-info {
   padding: 0 .3em;
 }
-/* line 456, ../../sass/app.scss */
+/* line 459, ../../sass/app.scss */
 .control-bar .music-info label {
   font-size: .8em;
 }
-/* line 459, ../../sass/app.scss */
+/* line 462, ../../sass/app.scss */
 .control-bar .music-info label.title {
   font-family: Lexend-Medium;
   color: var(--text-color-0);
 }
-/* line 464, ../../sass/app.scss */
+/* line 467, ../../sass/app.scss */
 .control-bar .music-info label.artist {
   font-family: Lexend;
   color: #444;
   color: var(--text-color-2);
 }
-/* line 472, ../../sass/app.scss */
+/* line 475, ../../sass/app.scss */
 .control-bar .controls {
   gap: .5em;
 }
-/* line 474, ../../sass/app.scss */
+/* line 477, ../../sass/app.scss */
 .control-bar .controls button {
   --size: 34px;
   width: var(--size);
@@ -536,22 +540,22 @@ body, html {
   background-color: var(--control-button-bg);
   color: var(--text-color-2);
 }
-/* line 482, ../../sass/app.scss */
+/* line 485, ../../sass/app.scss */
 .control-bar .controls button:hover {
   background-color: var(--control-button-bg-reverse);
 }
-/* line 488, ../../sass/app.scss */
+/* line 491, ../../sass/app.scss */
 .control-bar .time-control .time {
   font-family: Poppins;
   font-size: .8em;
   letter-spacing: .1em;
   color: var(--text-color-0);
 }
-/* line 495, ../../sass/app.scss */
+/* line 498, ../../sass/app.scss */
 .control-bar .queue-control {
   gap: .8em;
 }
-/* line 497, ../../sass/app.scss */
+/* line 500, ../../sass/app.scss */
 .control-bar .queue-control button {
   padding: .5em;
   border-radius: .5em;
@@ -559,33 +563,33 @@ body, html {
   background-color: var(--control-button-bg);
   color: var(--text-color-0);
 }
-/* line 503, ../../sass/app.scss */
+/* line 506, ../../sass/app.scss */
 .control-bar .queue-control button i {
   font-size: 1.1em;
 }
-/* line 507, ../../sass/app.scss */
+/* line 510, ../../sass/app.scss */
 .control-bar .queue-control .volume {
   margin-left: .3em;
 }
 
-/* line 514, ../../sass/app.scss */
+/* line 517, ../../sass/app.scss */
 .line-container {
   height: 20px;
   position: relative;
 }
-/* line 517, ../../sass/app.scss */
+/* line 520, ../../sass/app.scss */
 .line-container .line {
   height: 4px;
   background-color: var(--line-bg);
   border-radius: .3em;
 }
-/* line 521, ../../sass/app.scss */
+/* line 524, ../../sass/app.scss */
 .line-container .line .indicator {
   height: inherit;
   background-color: var(--text-color-0);
   border-radius: inherit;
 }
-/* line 527, ../../sass/app.scss */
+/* line 530, ../../sass/app.scss */
 .line-container .marker {
   --size: 10px;
   width: var(--size);

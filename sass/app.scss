@@ -311,6 +311,9 @@ body, html{
       i{
         font-size: 1.6em;
         color: var(--text-color-1);
+        &.active{
+          color: var(--text-color-0);
+        }
       }
     }
     .collapsable-btn{

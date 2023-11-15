@@ -11,7 +11,7 @@ import Albums from "./views/albums";
 const {bridge : {initialize, isReady, exchange} } = window;
 const sizes = {
     minimal : 90,
-    maximal: 210
+    maximal: 200
 };
 
 function App() {

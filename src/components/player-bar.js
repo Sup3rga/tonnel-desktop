@@ -58,7 +58,7 @@ export default function PlayerBar({
             </div>
             <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-1 ui-unwrap ui-vertical-center controls">
                 <button>
-                    <Icon icon="step-backward"/>
+                    <Icon mode="line" icon="step-backward"/>
                 </button>
                 <button onClick={()=>{
                     if(state.play)
@@ -70,7 +70,7 @@ export default function PlayerBar({
                 <button onClick={()=>{
                     defaultPlayer.next();
                 }}>
-                    <Icon icon="skip-forward"/>
+                    <Icon mode="line" icon="step-forward"/>
                 </button>
             </div>
             <div className="ui-container ui-size-4 ui-md-size-5 ui-lg-size-6 ui-unwrap time-control ui-vertical-center">

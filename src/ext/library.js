@@ -6,6 +6,7 @@ const {getMusic} = window.bridge;
 export const Library = {
 
     __library : [],
+    __albums : [],
 
     async all(){
         if(this.__library.length !== 0){
@@ -40,6 +41,21 @@ export const Library = {
         refs = null;
         this.__library = list;
         return list;
+    },
+
+    async albumlist(){
+
+    },
+
+    async defaultAlbumAlbumArt(album){
+        
+    },
+
+    async albums(){
+        if(this.__albums.length !== 0){
+            return this.__albums;
+        }
+        const data = await storage.getItem("albums");
     },
 
     async allPath(){

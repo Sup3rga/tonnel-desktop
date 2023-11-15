@@ -79,6 +79,8 @@ export default function Sidemenu({
         paintCtl : new PaintControl()
     })).get("menu");
 
+    console.log('[Current]', state.current);
+
     const redraw = (ref, animate = false)=>{
         const design = new PaintDrawer();
         if(!menuRef.current){
@@ -146,7 +148,19 @@ export default function Sidemenu({
         responsive(menuRef.current, ()=>{
             redraw(state.refs[state.index]);
         })
-    }, [state.index, state.refs, menuRef, copyColor,minimal]);
+    }, [state.index, state.refs, menuRef, copyColor, minimal]);
+
+    useEffect(()=>{
+        let index = 0;
+        for(let i in links){
+            if(links[i].ref == state.current){
+                index = i * 1;
+            }
+        }
+        if(!state.refs[index]) return;
+        state.index = index;
+        redraw(state.refs[state.index]);
+    }, [state.current]);
 
     return (
         <div className="ui-container app-sidemenu ui-relative" ref={menuRef} style={{width: width+'px', height: state.height+'px'}}>
@@ -184,10 +198,10 @@ export default function Sidemenu({
                         </button>
                     </div>
                     {minimal ? null : 
-                        <>
+                        <div className="ui-container ui-all-center">
                             <Icon icon="fire"/>
                             <h1 className="ui-container ui-horizontal-center">TonneL</h1>
-                        </>
+                        </div>
                     }
                 </div>
                 {!minimal ? null :
@@ -212,10 +226,9 @@ export default function Sidemenu({
                                     icon={data.icon}
                                     iconOnly={minimal}
                                     onClick={()=>{
-                                        state.current = data.ref;
                                         state.index = key;
-                                        State.set("menu", {...state});
                                         redraw(state.refs[key], true);
+                                        State.set("menu", {current: data.ref});
                                         Router.push(data.ref);
                                     }}
                                     _ref={(ref)=>{

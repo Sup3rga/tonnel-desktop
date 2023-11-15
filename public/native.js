@@ -91,16 +91,28 @@ async function initialize(iteration = ()=>{}){
                     count.music++;
 
                     if(!(tags.album in albums)){
-                        albums[tags.album] = [];
+                        albums[tags.album] = {
+                            albumart: null,
+                            list: []
+                        };
                         count.album++;
                     }
-                    albums[tags.album].push(item);
+                    if(!albums[tags.album].albumart && tags.albumart){
+                        albums[tags.album].albumart = tags.albumart;
+                    }
+                    albums[tags.album].list.push(filepath);
 
                     if(!(tags.artist in artists)){
-                        artists[tags.artist] = [];
+                        artists[tags.artist] = {
+                            albumart: null,
+                            list: []
+                        };
                         count.artist++;
                     }
-                    artists[tags.artist].push(item);
+                    if(!artists[tags.artist].albumart && tags.albumart){
+                        artists[tags.artist].albumart = tags.albumart;
+                    }
+                    artists[tags.artist].list.push(filepath);
                     iteration(count);
                 }
             }
@@ -111,7 +123,7 @@ async function initialize(iteration = ()=>{}){
     await run(musicPath);
     await lf.setItem("library", list);
     await lf.setItem("albums", albums);
-    await lf.setItem("artist", artists);
+    await lf.setItem("artists", artists);
     
     return list;
 }
