@@ -57,7 +57,9 @@ export default function PlayerBar({
                 </div>
             </div>
             <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-1 ui-unwrap ui-vertical-center controls">
-                <button>
+                <button onClick={()=>{
+                    defaultPlayer.back();
+                }}>
                     <Icon mode="line" icon="step-backward"/>
                 </button>
                 <button onClick={()=>{
@@ -73,7 +75,7 @@ export default function PlayerBar({
                     <Icon mode="line" icon="step-forward"/>
                 </button>
             </div>
-            <div className="ui-container ui-size-4 ui-md-size-5 ui-lg-size-6 ui-unwrap time-control ui-vertical-center">
+            <div className="ui-container ui-size-4 ui-md-size-5 ui-lg-size-8 ui-unwrap time-control ui-vertical-center">
                 <label className="ui-container ui-all-center ui-size-3 time ui-unwrap ui-horizontal-right">
                     {state.elapsed}
                 </label>
@@ -94,24 +96,16 @@ export default function PlayerBar({
                     {state.bound}
                 </label>
             </div>
-            <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-3 ui-vertical-center queue-control ui-unwrap">
+            <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-1 ui-vertical-center ui-horizontal-right queue-control ui-unwrap">
                 <button>
                     <Icon icon="sync"/>
                 </button>
                 <button>
                     <Icon icon="shuffle"/>
                 </button>
-                <div className="ui-container ui-size-5 ui-all-center ui-unwrap">
-                    <button>
-                        <Icon icon="volume"/>
-                    </button>
-                    <div className="ui-container ui-size-7 volume">
-                        <LineTimer progression={state.volume * 100} onChange={(volume)=>{
-                            defaultPlayer.setVolume(volume);
-                            State.set("playerbar", {volume});
-                        }}/>
-                    </div>
-                </div>
+                <button className="ui-container" style={{rotate: '90deg'}}>
+                    <Icon mode="ion" icon="ios-settings-strong"/>
+                </button>
             </div>
         </div>
     )

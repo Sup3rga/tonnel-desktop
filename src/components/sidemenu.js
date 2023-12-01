@@ -26,7 +26,7 @@ const links = [
     {
         icon: 'microphone-alt',
         label: "Artists",
-        ref: "/artist"
+        ref: "/artists"
     },
     {
         icon: 'list-alt',
@@ -68,7 +68,8 @@ export default function Sidemenu({
     minimal=false
 }){
     const menuRef = useRef();
-    const [state, setState] = State.init("menu", useState({
+
+    const [state] = State.init("menu", useState({
         current: "/explore",
         width: 200,
         height: '100%',
@@ -79,7 +80,7 @@ export default function Sidemenu({
         paintCtl : new PaintControl()
     })).get("menu");
 
-    console.log('[Current]', state.current);
+    // console.log('[Current]', state.current);
 
     const redraw = (ref, animate = false)=>{
         const design = new PaintDrawer();
@@ -162,6 +163,17 @@ export default function Sidemenu({
         redraw(state.refs[state.index]);
     }, [state.current]);
 
+    useEffect(()=>{
+        setTimeout(()=>{
+            redraw(state.refs[state.index]);
+        },100);
+        State.watch("reference", (current)=>{
+            State.set("menu", {current});
+            // console.error('[path]', path);
+        })
+        // console.log('[static Refs]', state.refs);
+    }, []);
+
     return (
         <div className="ui-container app-sidemenu ui-relative" ref={menuRef} style={{width: width+'px', height: state.height+'px'}}>
             <Painter
@@ -212,7 +224,8 @@ export default function Sidemenu({
                 <div className={`ui-container ui-size-fluid links ${minimal ? 'minimal' : ''}`}>
                     {
                         links.map((data, key)=>{
-                            if(data.header && !minimal){
+                            if(data.header){
+                                if(minimal) return <h2 className="ui-container ui-size link-header">&nbsp;</h2>;
                                 return (
                                     <h2 className="ui-container ui-size-fluid link-header">{data.label}</h2>
                                 )

@@ -31,12 +31,13 @@ export default function Explore({
         <WithinSearch title="Explore" style={style}>
             <InfiniteScrolView
                 data={state.list}
-                limit={50}
+                limit={20}
                 sortFactor="title"
+                name="library-explorer"
                 grouped={true}
                 render={(song, key)=>{
                     return (
-                        <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...song}/>
+                        <MusicItem className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" key={key} {...song}/>
                     )
                 }}
             />

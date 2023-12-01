@@ -57,6 +57,7 @@ export default function InfiniteScrolView({
                 if(entries[0].isIntersecting){
                     // console.log('Item visible...');
                     state.page += limit;
+                    if(state.page >= data.length) return;
                     retrieve(state.page).then(list => {
                         // console.log('[uc][List]', list);
                         State.set(name, {page : state.page, list});
@@ -106,7 +107,7 @@ export default function InfiniteScrolView({
             }
             if(sortFactor){
                 group.factor = data[sortFactor].trim();
-                group.current = data[sortFactor].replace(/^([^a-z]*?)?([a-z].+?)$/i, '$2')[0];
+                group.current = data[sortFactor].replace(/^([^a-z]*?)?([a-z].+?)$/i, '$2').toUpperCase()[0];
                 group.current = /[a-z]/i.test(group.current) ? group.current.toUpperCase() : "#";
             }
 

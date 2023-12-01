@@ -7,55 +7,110 @@ export const Library = {
 
     __library : [],
     __albums : [],
+    __artists : [],
 
-    async all(){
-        if(this.__library.length !== 0){
-            return this.__library;
-        }
-        const data = await storage.getItem("library");
+    __sort(data,primaryIndex, provider, debug = false){
         const list = [];
-        let titles = [];
+        let sortables = [];
         let refs = [];
-        let title;
+        let index;
+        let sortable;
         for(let i in data){
-            if(data[i].title){
-                title = data[i].title.replace(/^([^a-z]*?)?([a-z].+?)$/i, '$2');
+            index = primaryIndex ? data[i][primaryIndex] : i;
+            if(index){
+                sortable = index.replace(/^([^a-z]*?)?([a-z].+?)$/i, '$2');
             }
-            titles.push(title);
+            sortables.push(sortable);
             refs.push({
-                path : i,
-                title: title
+                index : i,
+                sortable
             });
         }
-        titles.sort();
-        for(let title of titles){
+        sortables.sort();
+        for(let sortable of sortables){
             for(let i in refs){
-                if(title === refs[i].title){
-                    list.push(data[refs[i].path]);
+                if(sortable === refs[i].sortable){
+                    list.push(provider(data[refs[i].index], refs[i]));
                     delete refs[i];
                     break;
                 }
             }
         }
-        titles = null;
+        sortables = null;
         refs = null;
-        this.__library = list;
         return list;
     },
 
-    async albumlist(){
-
-    },
-
-    async defaultAlbumAlbumArt(album){
-        
-    },
-
-    async albums(){
-        if(this.__albums.length !== 0){
-            return this.__albums;
+    async all(){
+        if(this.__library.length === 0){
+            this.__library = this.__sort(await storage.getItem("library"), "title", data => data);
         }
-        const data = await storage.getItem("albums");
+        return this.__library;
+    },
+
+    async albumlist(){
+        if(this.__albums.length === 0){
+            this.__albums = this.__sort(
+                await storage.getItem("albums"), 
+                null, 
+                (data,refs) => ({
+                    albumart: data.albumart,
+                    title: refs.index,
+                    list: data.list
+                })
+            );
+        }
+
+        return this.__albums;
+    },
+
+    getAlbum(title){
+        for(let album of this.__albums){
+            if(album.title == title){
+                return album;
+            }
+        }
+        return null;
+    },
+
+    async artistList(){
+        if(this.__artists.length === 0){
+            this.__artists = this.__sort(
+                await storage.getItem("artists"), 
+                null, 
+                (data,refs) => ({
+                    avatar: data.albumart,
+                    name: refs.index,
+                    list: data.list,
+                    soungsCount: data.list.length,
+                    albums: null
+                })
+            );
+        }
+
+        return this.__artists;
+    },
+
+    async __extractArtistAlbums(songs){
+        const rawAlbums = await storage.getItem("albums");
+        const rawLibrary = await storage.getItem("library");
+        const data = {};
+        for(let song of songs){
+            song = rawLibrary[song];
+            if(!(song.album in data)){
+                for(let title in rawAlbums){
+                    if(song.album === title){
+                        data[song.album] = rawAlbums[title];
+                        break;
+                    }
+                }
+            }
+        }
+        return this.__sort(data, null, (data,refs) => ({
+            albumart: data.albumart,
+            title: refs.index,
+            list: data.list
+        }))
     },
 
     async allPath(){
@@ -66,12 +121,23 @@ export const Library = {
         return list;
     },
 
-    async getByPath(path){
+    getByPath(path){
         for(let music of this.__library){
             if(music.path === path){
                 return music;
             }
         }
+    },
+
+    getByPaths(paths){
+        const list = [];
+        // console.log('[Musics]',this.__library);
+        let song;
+        for(let path of paths){
+            song = Library.getByPath(path);
+            if(song) list.push(song);
+        }
+        return list;
     },
 
     async getSong(path){

@@ -5,6 +5,7 @@ import "./res/ui.css";
 import "./res/app.css";
 import "@iconscout/unicons/css/line.css";
 import "./res/line-awesome-1.3.0/css/line-awesome.css";
+import "./res/ionicons/css/ionicons.min.css";
 import App from './App';
 
 ReactDOM.render(

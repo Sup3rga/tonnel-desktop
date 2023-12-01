@@ -61,7 +61,7 @@ async function initialize(iteration = ()=>{}){
     const run = async (path)=>{
         try{
             let files = await fs.readdir(path),
-                stat, tags, filepath;
+                stat, tags, idtag, filepath;
             for(let item of files){
                 stat = await fs.stat(path+'/'+item);
                 if(stat.isDirectory()){
@@ -69,23 +69,29 @@ async function initialize(iteration = ()=>{}){
                 }
                 else if(/\.(mp3|ogg|aac|wav)/.test(item)){
                     // library.push(e);
-                    tags = id3.read(path + "/" + item,{
+                    idtag = id3.read(path + "/" + item,{
                         noRaw: true
                     });
                     filepath = path + "/" + item;
                     // console.log('[Item]', item);
                     // iteration(tags);
                     tags = {
-                        album: tags.album ? tags.album : "unknown",
-                        title: tags.title ? tags.title : item,
-                        artist: tags.artist ? tags.artist : "unknown",
-                        gender: tags.genre,
-                        year: tags.year,
+                        album: idtag.album ? idtag.album : "unknown",
+                        title: idtag.title ? idtag.title : item,
+                        artist: idtag.artist ? idtag.artist : "unknown",
+                        gender: idtag.genre,
+                        year: idtag.year,
                         path: filepath,
                         filename: item,
-                        no: tags.trackNumber,
-                        albumart: !('image' in tags) || tags.image.mime == null ? '' : ("data:"+tags.image.mime+";base64," + getImageDataUrl(tags.image.imageBuffer))
+                        no: idtag.trackNumber,
+                        albumart: !('image' in idtag) || idtag.image.mime == null ? '' : ("data:"+idtag.image.mime+";base64," + getImageDataUrl(idtag.image.imageBuffer))
                     };
+                    
+                    for(let id in idtag){
+                        if(['album','title', 'artist', 'trackNumber', 'image'].indexOf(id) < 0 && idtag[id]){
+                            tags[id] = idtag[id];
+                        }
+                    }
 
                     list[item] = tags;
                     count.music++;

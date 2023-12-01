@@ -5,8 +5,10 @@ import Explore from "./views/explore";
 import { useEffect } from "react";
 import { useViewportSize } from "./ext/hooks";
 import PlayerBar from "./components/player-bar";
-import Router from "./components/router";
+import Router, { Route } from "./components/router";
 import Albums from "./views/albums";
+import AlbumInfo from "./views/albuminfo";
+import Artists from "./views/artists";
 
 const {bridge : {initialize, isReady, exchange} } = window;
 const sizes = {
@@ -107,9 +109,34 @@ function App() {
                     minimal={state.minimal}
                 />
                 <div className="ui-container ui-relative ui-fluid-height" style={{width: `calc(100% - ${state.minimal ? sizes.minimal : sizes.maximal}px)`}}>
-                    <Router defaultRoute="/explore">
-                        <Explore route="/explore" width={totalWidth - (state.minimal ? sizes.minimal : sizes.maximal)} persistent/>
-                        <Albums route="/albums"/>
+                    <Router defaultRoute="/explore" stack>
+                        {/* <Explore route="/explore" width={totalWidth - (state.minimal ? sizes.minimal : sizes.maximal)} persistent/> */}
+                        <Route
+                            component={Explore}
+                            route="/explore"
+                            props
+                            lazy
+                            persistent
+                        />
+                        <Route
+                            component={Albums}
+                            route="/albums"
+                            lazy
+                            persistent
+                        />
+                        <Route
+                            component={AlbumInfo}
+                            route="/album/[\w]+"
+                            reference="/albums"
+                            lazy
+                            generic
+                        />
+                        <Route
+                            component={Artists}
+                            route="/artists"
+                            lazy
+                            persistent
+                        />
                     </Router>
                     {!state.floatingBar ? null :
                         <PlayerBar floating={true}/>
