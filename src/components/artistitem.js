@@ -1,4 +1,6 @@
+import { Library } from "../ext/library"
 import Icon from "./icon"
+import Router from "./router"
 
 
 export default function ArtistItem({
@@ -11,7 +13,9 @@ export default function ArtistItem({
 }){
 
     return (
-        <div className={["ui-container person-item", className].join(" ")} ref={forwardRef}>
+        <div className={["ui-container person-item", className].join(" ")} ref={forwardRef} onClick={()=>{
+            Router.push("/artist/"+name, Library.getArtist(name));
+        }}>
             <div className="ui-container avatar ui-all-center" style={{backgroundImage: `url(${avatar})`}}>
                 {avatar ? null :
                     <Icon icon="user"/>

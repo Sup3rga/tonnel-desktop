@@ -174,14 +174,14 @@ Router.current = (id = "router")=>{
 Router.back = (id = "router") =>{
     if(!Router.backwardable(id)) return;
     index[id]--;
-    console.log('[Back to]', id, queue[id][index[id]]);
+    // console.log('[Back to]', id, queue[id][index[id]]);
     State.set(id, queue[id][index[id]]);
 }
 
 Router.forward = (id = "router") =>{
     if(!Router.forwardable(id)) return;
     index[id]++;
-    console.log('[Go to]', id, queue[id][index[id]]);
+    // console.log('[Go to]', id, queue[id][index[id]]);
     State.set(id, queue[id][index[id]]);
 }
 
@@ -209,7 +209,7 @@ Router.push = (path, hydration=null, id = "router")=>{
         hydration
     });
     index[id] = queue[id].length - 1;
-    console.log('[...Index...]',queue);
+    // console.log('[...Index...]',queue);
     State.set(id, {path, hydration});
 }
 

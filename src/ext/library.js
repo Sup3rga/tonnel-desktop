@@ -64,6 +64,33 @@ export const Library = {
         return this.__albums;
     },
 
+    searchAlbumsByKey(key, anyBound = false){
+        const list = [];
+        for(let album of this.__albums){
+            if(
+                (!anyBound && album.title.toLowerCase().indexOf(key.toLowerCase()) == 0) ||
+                (anyBound && album.title.toLowerCase().indexOf(key.toLowerCase()) >= 0)
+            ){
+                list.push(album);
+            }
+        }
+        return list;
+    },
+
+
+    searchSongByKey(key, anyBound = false){
+        const list = [];
+        for(let song of this.__library){
+            if(
+                (!anyBound && song.title.toLowerCase().indexOf(key.toLowerCase()) == 0) ||
+                (anyBound && song.title.toLowerCase().indexOf(key.toLowerCase()) >= 0)
+            ){
+                list.push(song);
+            }
+        }
+        return list;
+    },
+
     getAlbum(title){
         for(let album of this.__albums){
             if(album.title == title){
@@ -82,7 +109,6 @@ export const Library = {
                     avatar: data.albumart,
                     name: refs.index,
                     list: data.list,
-                    soungsCount: data.list.length,
                     albums: null
                 })
             );
@@ -91,7 +117,16 @@ export const Library = {
         return this.__artists;
     },
 
-    async __extractArtistAlbums(songs){
+    getArtist(name){
+        for(let artist of this.__artists){
+            if(artist.name == name){
+                return artist;
+            }
+        }
+        return null;
+    },
+
+    async extractArtistAlbums(songs){
         const rawAlbums = await storage.getItem("albums");
         const rawLibrary = await storage.getItem("library");
         const data = {};

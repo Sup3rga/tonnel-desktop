@@ -1,4 +1,5 @@
-import Appbar from "./appbar";
+import Appbar from "../components/appbar";
+import ScrollWrapper from "../components/scrollwrapper";
 
 
 export default function ExposedView({
@@ -19,11 +20,9 @@ export default function ExposedView({
                     <label className="ui-container title ui-size-fluid ui-text-ellipsis">{title}</label>
                 </div>
             </div>
-            <div className="ui-container ui-size-fluid body ui-no-scroll">
-                <div className="ui-container ui-fluid-height ui-size-fluid content ui-scroll-y">
-                    {children}
-                </div>
-            </div>
+            <ScrollWrapper className="body">
+                {children}
+            </ScrollWrapper>
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import Icon from "./icon";
 import State from "../lib/stater";
 import Router from "./router";
+import { useState } from "react";
 
 export function AppbarNavButton({
     backward = false
@@ -24,10 +25,13 @@ export function AppbarNavButton({
 export default function Appbar({
     title = "",
     withSearch = true,
-    style={}
+    style={},
+    onSearching = ()=>{}
 }){
     const {darkMode} = State.get("app")[0];
     const {minimal} = State.get("app")[0];
+    const [keyword, setKeyword] = useState("");
+    const [anyBound, setAnyBound] = useState(false);
     // console.log('[Style]',style, darkMode);
     return (
         <div className="ui-container ui-size-fluid search-zone appbar ui-unwrap ui-vertical-center" style={style}>
@@ -43,7 +47,27 @@ export default function Appbar({
                 !withSearch ? <div className="ui-container ui-size-5"/> :
                 <div className="ui-container ui-size-5 ui-unwrap field">
                     <Icon icon="search"/>
-                    <input type="text" placeholder="search something" className="ui-container ui-size-fluid"/>
+                    <input 
+                        type="search" 
+                        placeholder="search something" 
+                        className="ui-container ui-size-fluid"
+                        value={keyword}
+                        onChange={(ev)=>{
+                            setKeyword(ev.target.value);
+                            onSearching(ev.target.value, anyBound);
+                        }}
+                    />
+                    {!keyword.length ? null :
+                        <label 
+                            className={`ui-container ui-vertical-center ui-unwrap ${!anyBound ? 'activated' : ''}`}
+                            onClick={()=>{
+                                setAnyBound(!anyBound);
+                                onSearching(keyword, !anyBound);
+                            }}
+                        >
+                            A<Icon icon="asterisk"/>
+                        </label>
+                    }
                 </div>
             }
             <div className="ui-container ui-size-3 ui-lg-size-4 misc ui-horizontal-right">

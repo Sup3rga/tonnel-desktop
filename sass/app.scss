@@ -18,7 +18,7 @@
   --item-active-bg: #{rgba(240,240,240,0.6)};
   --exposition-height: 163px;
   --exposition-default-background: rgb(201, 201, 201);
-  --exposition-body-background: rgba(200,200,200,0.2);
+  --exposition-body-background: rgba(200,200,200,0.3);
   --exposition-body-shadow: rgba(200,200,200,1);
   --exposition-mask : rgba(180,180,180,0.9);
   --blur : 60px;
@@ -57,6 +57,32 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+%primary-info{
+  font-family: Lexend-Medium;
+  font-size: .9em;
+  padding: .4em 0;
+  @extend %ellipsis;
+  color: var(--text-color-0);
+}
+%secondary-info{
+  font-family: Roboto;
+  font-size: .7em;
+  @extend %ellipsis;
+  color: var(--text-color-1);
+}
+
+%overable{
+  cursor: pointer;
+  &:hover{
+    background-color: var(--item-hover-bg);
+  }
+}
+
+%cover-image{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 ::-webkit-scrollbar {
@@ -366,8 +392,49 @@ body, html{
   }
 }
 
+
+.search-item{
+  padding: .4em;
+  margin: -.5em 0;
+  border-radius: .4em;
+  @extend %overable;
+  .albumart{
+    --size: 35px;
+    height: var(--size);
+    width: var(--size);
+    border-radius: .3em;
+    @extend %cover-image;
+  }
+  .info{
+    padding: 0 .4em;
+    &.albumartless{
+      padding-left: 1em;
+    }
+  }
+  .main{
+    @extend %primary-info;
+    padding-top: 0;
+    font-size: .8em;
+  }
+  .second{
+    @extend %secondary-info;
+    font-size: .7em;
+  }
+}
+
 .view-search{
   position: relative;
+  --search-height: 0px;
+  --scroll-opacity: 1;
+  --scroll-blur: 0;
+  --search-padding: 0;
+  padding: .4em;
+  &.searching{
+    --search-height: 40vh;
+    --scroll-opacity: 0.1;
+    --scroll-blur: 5px;
+    --search-padding: var(--search-zone-height) .4em .4em .4em;
+  }
   .search-zone{
     .field{
       padding: .2em .5em;
@@ -378,6 +445,21 @@ body, html{
         color: var(--text-color-2);
         font-size: 1.1em;
         padding: 0 .5em;
+      }
+      label{
+        font-size: .7em;
+        font-family: Roboto;
+        position: relative;
+        right: -1em;
+        color: var(--text-color-1);
+        &.activated{
+          color: var(--text-color-0);
+        }
+        i{
+          position: relative;
+          color: inherit;
+          left: -.5em;
+        }
       }
       input{
         font-family: Poppins;
@@ -392,8 +474,52 @@ body, html{
       }
     }
   }
+  .search-view{
+    --action-height: 40px;
+    height: var(--search-height);
+    transition-duration: .2s;
+    padding: var(--search-padding);
+    border-radius: 1em;
+    transition-property: height;
+    background-color: var(--exposition-body-background);
+    .search-content{
+      height: calc(100% - var(--action-height));
+      padding: .4em 5em .4em .5em;
+      .empty{
+        justify-content: center;
+        align-items: center;
+        i{
+          // height: 30px;
+          font-size: 3em;
+          color: var(--text-color-1);
+        }
+        label{
+          font-family: Roboto;
+          color: var(--text-color-1);
+          padding: .5em .4em;
+        }
+      }
+    }
+    .action{
+      padding: .4em 0;
+      height: var(--action-height);
+      button{
+        padding: 0 .5em;
+        border: 0;
+        font-size: 1.6em;
+        background-color: var(--control-button-bg);
+        border-radius: 1em;
+        cursor: pointer;
+        color: var(--text-color-0);
+      }
+    }
+  }
   .scroll-view{
-    height: calc(100% - var(--search-zone-height));
+    height: calc(100% - var(--search-zone-height) - var(--search-height));
+    transition-duration: .2s;
+    transition-property: height, opacity;
+    opacity: var(--scroll-opacity);
+    // filter: blur(var(--scroll-blur));
     position: relative;
     top: var(--search-zone-height);
     padding: .4em;
@@ -482,6 +608,64 @@ body, html{
   }
 }
 
+.discography{
+  padding: .4em;
+  .presentation{
+    --avatar-size: 130px;
+    height: var(--exposition-height);
+    // background-color: grey;
+    padding: var(--search-zone-height) .4em .4em .4em;
+    .avatar{
+      width: var(--avatar-size);
+      height: var(--avatar-size);
+      border-radius: 50%;
+      background-color: black;
+      @extend %cover-image;
+    }
+    .info{
+      width: calc(100% - var(--avatar-size));
+      padding: .3em .5em;
+      .name{
+        @extend %primary-info;
+        padding: .3em 0;
+        font-size: 1.5em;
+      }
+      .meta{
+        .dot{
+          width: 3px;
+          height: 3px;
+          background-color: var(--text-color-1);
+          border-radius: 50%;
+          margin: 0 .8em;
+        }
+        label{
+          @extend %secondary-info;
+          font-size: .9em;
+        }
+      }
+    }
+  }
+  .disco-content{
+    height: calc(100% - var(--exposition-height));
+    padding: .4em;
+  }
+  .heading{
+    font-family: Poppins-Medium;
+    padding: .5em 0;
+    color: var(--text-color-0);
+    font-size: 1em;
+  }
+  .disco{
+    padding: .5em .4em;
+  }
+  .selection-music{
+    padding: .3em .4em;
+    .search-item{
+      margin: 0;
+    }
+  }
+}
+
 .person-item{
   padding: .4em;
   border-radius: .8em;
@@ -493,11 +677,9 @@ body, html{
   .avatar{
     width: var(--avatar-size);
     height: var(--avatar-size);
-    background-color: var(--albumart-bg);
     border-radius: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-color: var(--albumart-bg);
+    @extend %cover-image;
     i{
       color: var(--text-color-1);
       font-size: 3em;
@@ -507,17 +689,10 @@ body, html{
     width: calc(100% - var(--avatar-size));
     padding: .3em .4em;
     .title{
-        font-family: Lexend-Medium;
-        font-size: .9em;
-        padding: .4em 0;
-        @extend %ellipsis;
-        color: var(--text-color-0);
+        @extend %primary-info;
     }
     .alt{
-        font-family: Roboto;
-        font-size: .7em;
-        @extend %ellipsis;
-        color: var(--text-color-1);
+        @extend %secondary-info;
     }
   }
 }
@@ -576,17 +751,12 @@ body, html{
   .info{
     padding: .2em;
     .title{
-        font-family: Lexend-Medium;
+        @extend %primary-info;
         font-size: .8em;
-        padding: .3em 0;
-        @extend %ellipsis;
-        color: var(--text-color-0);
     }
     .artist{
-        font-family: Roboto;
+        @extend %secondary-info;
         font-size: .7em;
-        @extend %ellipsis;
-        color: var(--text-color-1);
     }
   }
 }
@@ -618,17 +788,13 @@ body, html{
     padding: 0 .3em;
     label{
       // padding: .2em 0;
-      font-size: .8em;
       &.title{
-        font-family: Lexend-Medium;
-        @extend %ellipsis;
-        color: var(--text-color-0);
+        @extend %primary-info;
+        font-size: .8em;
       }
       &.artist{
-        font-family: Lexend;
-        color: #444;
-        @extend %ellipsis;
-        color: var(--text-color-2);
+        @extend %secondary-info;
+        font-size: .7em;
       }
     }
   }

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Library } from "../ext/library";
 import State from "../lib/stater";
-import ExposedView from "../components/exposedview";
-import InfiniteScrolView from "../components/infinitescrollview";
+import ExposedView from "../layout/exposedview";
+import InfiniteScrolView from "../layout/infinitescrollview";
 import MusicItem from "../components/musicitem";
 
 

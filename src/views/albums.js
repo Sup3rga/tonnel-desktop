@@ -1,8 +1,9 @@
 import {useState, useEffect} from "react";
 import State from "../lib/stater";
-import WithinSearch from "../components/withinsearch";
+import WithinSearch from "../layout/withinsearch";
 import AlbumItem from "../components/albumitem";
-import InfiniteScrolView from "../components/infinitescrollview";
+import { AlbumItemList } from "../components/itemlist";
+import InfiniteScrolView from "../layout/infinitescrollview";
 import { Library } from "../ext/library";
 
 export default function Albums({style}){
@@ -21,7 +22,20 @@ export default function Albums({style}){
     }, []);
 
     return (
-        <WithinSearch style={style} title="Albums">
+        <WithinSearch style={style} title="Albums" searchContentProvider={async (value,anyBound)=>{
+            return (
+                <InfiniteScrolView
+                    data={Library.searchAlbumsByKey(value,anyBound)}
+                    limit={10}
+                    name="album-search"
+                    render={(album, key)=>{
+                        return (
+                            <AlbumItemList key={key} {...album}/>
+                        )
+                    }}
+                />
+            );
+        }}>
             <InfiniteScrolView
                 data={state.list}
                 limit={20}

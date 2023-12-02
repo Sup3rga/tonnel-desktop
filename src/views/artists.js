@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import InfiniteScrolView from "../components/infinitescrollview";
-import WithinSearch from "../components/withinsearch";
+import InfiniteScrolView from "../layout/infinitescrollview";
+import WithinSearch from "../layout/withinsearch";
 import State from "../lib/stater";
 import { Library } from "../ext/library";
 import ArtistItem from "../components/artistitem";

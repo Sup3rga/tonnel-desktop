@@ -40,7 +40,7 @@ export default function InfiniteScrolView({
     data = [],
     render = ()=>{},
     name = "infinite",
-    grouped = true,
+    grouped = false,
     sortFactor = "",
     limit = 20
 }){
@@ -113,7 +113,7 @@ export default function InfiniteScrolView({
 
             const result = (
                 <>
-                    {grouped && group.current === group.old ? null : 
+                    {!grouped || group.current === group.old ? null : 
                         <h1 className="ui-container ui-size-fluid group-tag">{group.current}</h1>
                     }
                     {

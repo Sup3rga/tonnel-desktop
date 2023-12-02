@@ -1,12 +1,10 @@
-import WithinSearch from "../components/withinsearch";
-import {useEffect, useState, useRef} from "react";
+import WithinSearch from "../layout/withinsearch";
+import {useEffect, useState} from "react";
 import State from "../lib/stater";
-import Player from "../ext/player";
 import MusicItem from "../components/musicitem";
-import { storage } from "../ext/bridge";
-import { useCallback } from "react";
 import { Library } from "../ext/library";
-import InfiniteScrolView from "../components/infinitescrollview";
+import InfiniteScrolView from "../layout/infinitescrollview";
+import { MusicItemList } from "../components/itemlist";
 
 const {bridge : {fetchLibrary, exchange} } = window;
 
@@ -28,7 +26,20 @@ export default function Explore({
     }, []);
 
     return (
-        <WithinSearch title="Explore" style={style}>
+        <WithinSearch title="Explore" style={style} searchContentProvider={(val,anyBound)=>{
+            return (
+                <InfiniteScrolView
+                    data={Library.searchSongByKey(val,anyBound)}
+                    limit={10}
+                    name="song-search"
+                    render={(album, key)=>{
+                        return (
+                            <MusicItemList key={key} {...album}/>
+                        )
+                    }}
+                />
+            );
+        }}>
             <InfiniteScrolView
                 data={state.list}
                 limit={20}

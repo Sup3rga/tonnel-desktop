@@ -9,6 +9,7 @@ import Router, { Route } from "./components/router";
 import Albums from "./views/albums";
 import AlbumInfo from "./views/albuminfo";
 import Artists from "./views/artists";
+import ArtistInfo from "./views/artistinfo";
 
 const {bridge : {initialize, isReady, exchange} } = window;
 const sizes = {
@@ -136,6 +137,13 @@ function App() {
                             route="/artists"
                             lazy
                             persistent
+                        />
+                        <Route
+                            component={ArtistInfo}
+                            route="/artist/[\S\s]+"
+                            reference="/artists"
+                            lazy
+                            generic
                         />
                     </Router>
                     {!state.floatingBar ? null :

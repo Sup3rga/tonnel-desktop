@@ -93,7 +93,7 @@ async function initialize(iteration = ()=>{}){
                         }
                     }
 
-                    list[item] = tags;
+                    list[filepath] = tags;
                     count.music++;
 
                     if(!(tags.album in albums)){
