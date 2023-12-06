@@ -13,37 +13,56 @@
   --section-1-background: #{rgba(255,255,255,0.7)};
   --section-2-background: #{rgba(250,250,250,0.7)};
   --line-bg: #{rgba(200,200,200,0.6)};
-  --scrollbar-track-bg: rgba(250,250,250,0.2);
+  --scrollbar-track-bg: #{rgba(250,250,250,0.2)};
   --item-hover-bg: #{rgba(240,240,240,0.5)};
   --item-active-bg: #{rgba(240,240,240,0.6)};
   --exposition-height: 163px;
-  --exposition-default-background: rgb(201, 201, 201);
-  --exposition-body-background: rgba(200,200,200,0.3);
-  --exposition-body-shadow: rgba(200,200,200,1);
-  --exposition-mask : rgba(180,180,180,0.9);
+  --exposition-default-background: #{rgb(201, 201, 201)};
+  --exposition-body-background: #{rgba(200,200,200,0.3)};
+  --exposition-body-shadow: #{rgba(200,200,200,1)};
+  --exposition-mask : #{rgba(180,180,180,0.9)};
   --blur : 60px;
+  --popup-background: #{rgba(250,250,250,0.9)};
+  --popup-mask: #{rgba(200,200,200,0.2)};
+  --popup-backdrop: #{blur(6px)};
+  --popup-shadow-color: #444;
+  --light-button-bg: #{rgba(200,200,200,0.1)};
+}
+
+
+#root{
+  overflow: hidden;
+  height: 100vh;
+  &.dark-mode{
+    --sideTheme: #{rgba(110, 98, 86, 0.2)};
+    --text-color-0 : white;
+    --text-color-0-reverse: black;
+    --text-color-1 : #777;
+    --text-color-2 : #aaa;
+    --albumart-bg: #333;
+    --primaryTheme: #{rgb(230, 218, 218)};
+    --section-1-background: #{rgba(0, 0, 0, 0.85)};
+    --section-2-background: #{rgba(46, 45, 45, 0.7)};
+    --control-button-bg: #{rgba(50,50,50,.3)};
+    --control-button-bg-reverse: #{rgba(100,100,100,.5)};
+    --line-bg: #{rgba(20,20,20,0.6)};
+    --scrollbar-track-bg: #{rgba(50,50,50,0.2)};
+    --item-hover-bg: #{rgba(50,50,50,0.5)};
+    --item-active-bg: #{rgba(50,50,50,0.6)};
+    --exposition-default-background: #{rgb(101, 101, 101)};
+    --exposition-body-background: #{rgba(80,80,80,0.1)};
+    --exposition-body-shadow: #{rgba(10,10,10,1)};
+    --exposition-mask : #{rgba(50,50,50,0.9)};
+    --popup-background: #{rgba(50,50,50,0.9)};
+    --popup-mask: #{rgba(0,0,0,0.2)};
+    --popup-backdrop: #{blur(10px)};
+    --popup-shadow-color: #444;
+    --light-button-bg: #{rgba(20,20,20,0.1)};
+  }
 }
 
 .app-main.dark-theme{
-  --sideTheme: #{rgba(110, 98, 86, 0.2)};
-  --text-color-0 : white;
-  --text-color-0-reverse: black;
-  --text-color-1 : #777;
-  --text-color-2 : #aaa;
-  --albumart-bg: #333;
-  --primaryTheme: #{rgb(230, 218, 218)};
-  --section-1-background: #{rgba(0, 0, 0, 0.85)};
-  --section-2-background: #{rgba(46, 45, 45, 0.7)};
-  --control-button-bg: #{rgba(50,50,50,.3)};
-  --control-button-bg-reverse: #{rgba(100,100,100,.5)};
-  --line-bg: #{rgba(20,20,20,0.6)};
-  --scrollbar-track-bg: rgba(50,50,50,0.2);
-  --item-hover-bg: #{rgba(50,50,50,0.5)};
-  --item-active-bg: #{rgba(50,50,50,0.6)};
-  --exposition-default-background: rgb(101, 101, 101);
-  --exposition-body-background: rgba(80,80,80,0.1);
-  --exposition-body-shadow: rgba(10,10,10,1);
-  --exposition-mask : rgba(50,50,50,0.9);
+
 }
 .no-drag-zone{
   -webkit-app-region: no-drag;
@@ -103,11 +122,6 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-color-1);
-}
-
-#root{
-  overflow: hidden;
-  height: 100vh;
 }
 
 body, html{
@@ -229,6 +243,7 @@ body, html{
   .app-drawer{
     // padding: 0 0.3em 0;
     color: var(--text-color-0);
+    user-select: none;
     .header{
       font-family: Poppins-Bold;
       padding: 0 .4em 1.2em .4em;
@@ -536,6 +551,39 @@ body, html{
   }
 }
 
+
+.header-actions{
+  position: absolute;
+  right: 1em;
+  bottom: 0%;
+  z-index: 4;
+  transform: translateY(45%);
+  // background-color: red;
+  padding: .5em;
+  gap: .5em;
+  button{
+    --size: 45px;
+    width: var(--size);
+    height: var(--size);
+    cursor: pointer;
+    font-size: 1.3em;
+    text-align: center;
+    justify-content: center;
+    border: 0;//1px solid var(--text-color-0);
+    background-color: var(--text-color-0);
+    color: var(--text-color-0-reverse);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px 1px var(--text-color-1);
+    &.min{
+      --size: 34px;
+      font-size: 1em;
+      background-color: var(--text-color-0-reverse);
+      color: var(--text-color-0);
+      box-shadow: 0 1px 3px 0 var(--text-color-0-reverse);
+    }
+  }
+}
+
 .exposition{
   padding: 0 .2em;
   .wall{
@@ -573,9 +621,10 @@ body, html{
     //   content: "";
     //   width: 100%;
     //   height: 0px;
-    //   box-shadow: 0 0 15px 15px var(--exposition-body-shadow);
+    //   box-shadow: 0 0 40px 25px var(--exposition-body-shadow);
     //   background-color: var(--exposition-body-background);
     //   position: absolute;
+    //   z-index: 2;
     //   left: 0;
     // }
     // &::before{
@@ -589,7 +638,10 @@ body, html{
 
 .albuminfo{
   .wall{
-    height: calc(var(--exposition-height) - 60px); 
+    height: calc(var(--exposition-height) - 60px);
+    // .header-actions{
+    //   transform: translateY(45%);
+    // } 
   }
   &.minimal{
     .wall{
@@ -611,7 +663,8 @@ body, html{
 .discography{
   padding: .4em;
   .presentation{
-    --avatar-size: 130px;
+    --avatar-size: 120px;
+    position: relative;
     height: var(--exposition-height);
     // background-color: grey;
     padding: var(--search-zone-height) .4em .4em .4em;
@@ -624,7 +677,7 @@ body, html{
     }
     .info{
       width: calc(100% - var(--avatar-size));
-      padding: .3em .5em;
+      padding: .3em .5em .3em 1.8em;
       .name{
         @extend %primary-info;
         padding: .3em 0;
@@ -640,14 +693,14 @@ body, html{
         }
         label{
           @extend %secondary-info;
-          font-size: .9em;
+          font-size: .8em;
         }
       }
     }
   }
   .disco-content{
     height: calc(100% - var(--exposition-height));
-    padding: .4em;
+    padding: 2em .4em .4em .4em;
   }
   .heading{
     font-family: Poppins-Medium;
@@ -839,29 +892,118 @@ body, html{
   }
 }
 
-
 .line-container{
-  height: 20px;
-  position: relative;
-  .line{
-    height: 4px;
-    background-color: var(--line-bg);
-    border-radius: .3em;
-    .indicator{
-      height: inherit;
-      background-color: var(--text-color-0);
-      border-radius: inherit;
-    }
-  }
   .marker{
     --size: 10px;
     width: var(--size);
     height: var(--size);
     border-radius: 50%;
     position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: var(--text-color-0);
+  }
+  .line{
+    background-color: var(--line-bg);
+    border-radius: .3em;
+    .indicator{
+      background-color: var(--text-color-0);
+      border-radius: inherit;
+    }
+  }
+  &.vertical{
+    height: 100%;
+    width: 20px;
+    position: relative;
+    .line{
+      width: 4px;
+      .indicator{
+        width: inherit;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+    .marker{
+      left: 50%;
+      top: 100%;
+      // transform: translate(100%, -100%);
+      background-color: var(--text-color-0);
+    }
+  }
+  &.horizontal{
+    height: 20px;
+    position: relative;
+    .line{
+      height: 4px;
+      .indicator{
+        height: inherit;
+      }
+    }
+    .marker{
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: var(--text-color-0);
+    }
+  }
+}
+
+.popup-mask{
+  background-color: var(--popup-mask);
+  z-index: 99;
+  .popup-box{
+    padding: .4em;
+    background-color: var(--popup-background);
+    backdrop-filter: var(--popup-backdrop);
+    box-shadow: 0 1px 4px 0 var(--popup-shadow-color);
+    border-radius: .4em;
+    &.centered{
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+    }
+  }
+}
+
+.equalizer-box{
+  padding: .4em;
+  h1{
+    font-family: Poppins-Bold;
+    padding: .4em;
+  }
+  .inputs-wrapper{
+    height: 30vh;
+    .wrapper{
+      // background-color: red;
+      .marker{
+        width: 12px;
+        height: 30px;
+        border-radius: .3em;
+        box-shadow: 0 0 2px 0 var(--text-color-0-reverse);
+        &::after{
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          background-color: var(--text-color-1);
+          width: 3px;
+          height: 10px;
+          border-radius: .4em;
+        }
+      }
+    }
+  }
+  .actions{
+    padding: .3em;
+    button{
+      background-color: unset;
+      font-family: Poppins-Medium;
+      padding: .6em;
+      border: 0;
+      border-radius: .4em;
+      cursor: pointer;
+      color: var(--text-color-0);
+      &:hover{
+        background-color: var(--light-button-bg);
+      }
+    }
   }
 }

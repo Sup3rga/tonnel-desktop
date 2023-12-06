@@ -35,8 +35,6 @@ function App() {
 
   useEffect(()=>{
       isReady().then((ready)=>{
-        console.log('[ready]', ready);
-
         if(ready){
             State.set("app", {
                 libraryReady: true
@@ -53,7 +51,6 @@ function App() {
         initialize((feed)=>{
            State.set("app", {feed});
         }).then((list)=>{
-           console.log('[List]',list);
            State.set("app", {
                libraryReady: true
            });
@@ -68,7 +65,7 @@ function App() {
 
   if(!state.libraryReady){
     return (
-        <div className="ui-container ui-vfluid app-main splash ui-no-scroll initializer">
+        <div id="app-main" className="ui-container ui-vfluid app-main splash ui-no-scroll initializer">
             <div className="ui-container ui-size-fluid image ui-all-center">
                 <div className="ui-element app-name ui-column">
                     <h1>TonneL</h1>
@@ -98,6 +95,8 @@ function App() {
         </div>
     );
   }
+
+  document.querySelector('#root').classList[state.darkMode ? 'add' : 'remove']('dark-mode');
 
   return (
       <div className={`ui-container ui-vfluid app-main ${state.darkMode ? 'dark-theme' : ''} ui-no-scroll`}>

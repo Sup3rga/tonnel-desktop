@@ -8,6 +8,9 @@ export const Library = {
     __library : [],
     __albums : [],
     __artists : [],
+    __rawAlbums: null,
+    __rawLibrary: null,
+    __rawArtists: null,
 
     __sort(data,primaryIndex, provider, debug = false){
         const list = [];
@@ -43,15 +46,17 @@ export const Library = {
 
     async all(){
         if(this.__library.length === 0){
-            this.__library = this.__sort(await storage.getItem("library"), "title", data => data);
+            this.__rawLibrary = await storage.getItem("library");
+            this.__library = this.__sort(this.__rawLibrary, "title", data => data);
         }
         return this.__library;
     },
 
     async albumlist(){
         if(this.__albums.length === 0){
+            this.__rawAlbums = await storage.getItem("albums");
             this.__albums = this.__sort(
-                await storage.getItem("albums"), 
+                this.__rawAlbums, 
                 null, 
                 (data,refs) => ({
                     albumart: data.albumart,
@@ -102,8 +107,9 @@ export const Library = {
 
     async artistList(){
         if(this.__artists.length === 0){
+            this.__rawArtists = await storage.getItem("artists");
             this.__artists = this.__sort(
-                await storage.getItem("artists"), 
+                this.__rawArtists, 
                 null, 
                 (data,refs) => ({
                     avatar: data.albumart,
@@ -126,16 +132,16 @@ export const Library = {
         return null;
     },
 
-    async extractArtistAlbums(songs){
-        const rawAlbums = await storage.getItem("albums");
-        const rawLibrary = await storage.getItem("library");
+    extractArtistAlbums(songs){
+        // const rawAlbums = await storage.getItem("albums");
+        // const rawLibrary = await storage.getItem("library");
         const data = {};
         for(let song of songs){
-            song = rawLibrary[song];
+            song = this.__rawLibrary[song];
             if(!(song.album in data)){
-                for(let title in rawAlbums){
+                for(let title in this.__rawAlbums){
                     if(song.album === title){
-                        data[song.album] = rawAlbums[title];
+                        data[song.album] = this.__rawAlbums[title];
                         break;
                     }
                 }

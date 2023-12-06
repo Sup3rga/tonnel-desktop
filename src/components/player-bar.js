@@ -4,6 +4,7 @@ import { defaultPlayer } from "../ext/player";
 import State from "../lib/stater";
 import { useState, useEffect } from "react";
 import { toTimeString } from "../ext/bridge";
+import EqualizerBox from "./equalizer-box";
 
 export default function PlayerBar({
     floating = false
@@ -17,7 +18,8 @@ export default function PlayerBar({
         elapsed: "00 : 00",
         duration: 0,
         volume : 1,
-        bound: "00 : 00"
+        bound: "00 : 00",
+        equalizerVisible: false,
     })).get("playerbar");
 
     useEffect(()=>{
@@ -103,10 +105,15 @@ export default function PlayerBar({
                 <button>
                     <Icon icon="shuffle"/>
                 </button>
-                <button className="ui-container" style={{rotate: '90deg'}}>
+                <button className="ui-container" style={{rotate: '90deg'}} onClick={()=>{
+                    State.set("playerbar", {equalizerVisible: !state.equalizerVisible})
+                }}>
                     <Icon mode="ion" icon="ios-settings-strong"/>
                 </button>
             </div>
+            <EqualizerBox open={state.equalizerVisible} onClose={()=>{
+                 State.set("playerbar", {equalizerVisible: !state.equalizerVisible})
+            }}/>
         </div>
     )
 }

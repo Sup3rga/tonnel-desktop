@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react";
 import AlbumItem from "../components/albumitem";
 import Appbar from "../components/appbar";
+import Icon from "../components/icon";
 import { MusicItemList } from "../components/itemlist";
 import ScrollWrapper from "../components/scrollwrapper";
 import { Library } from "../ext/library";
@@ -12,7 +13,9 @@ export default function ArtistInfo({
     style={},
     avatar = null,
     name= "",
-    list= []
+    list= [],
+    albums = [],
+    suggestions = []
 }){
     const [state] = State.init("artist-info", useState({
         loaded : false,
@@ -20,10 +23,13 @@ export default function ArtistInfo({
         suggestions: []
     })).get("artist-info");
     useEffect(()=>{
-        Library.extractArtistAlbums(list).then(albums => {
+        Library.albumlist();
+        // console.log('[Albums..]',albums, suggestions);
+        const albums = Library.extractArtistAlbums(list)
+        //.then(albums => {
             const suggestions = Library.getByPaths(list.slice(0, 5));
             State.set("artist-info", {suggestions,albums, loaded: true});
-        }).catch(err => console.log('[error]',err));
+        //}).catch(err => console.log('[error]',err));
     },[]);
     return (
         <div className="ui-container ui-fluid discography" style={style}>
@@ -42,6 +48,14 @@ export default function ArtistInfo({
                         <label className="ui-container">{`${list.length} song${list.length > 1 ? 's': ''}`}</label>
                     </div>
                 </div>
+                <div className="ui-container header-actions ui-vertical-center">
+                    <button>
+                        <Icon icon="play"/>
+                    </button>
+                    <button className="min">
+                        <Icon icon="shuffle"/>
+                    </button>
+                </div>
             </div>
             <ScrollWrapper className="disco-content">
                 <div className="ui-element ui-size-fluid selection-music">
@@ -52,21 +66,24 @@ export default function ArtistInfo({
                         ))
                     }
                 </div>
-                <div className="ui-container ui-size-fluid disco">
-                    <div className="ui-container ui-size-fluid heading">Discography</div>
-                    <div className="ui-container ui-size-fluid">
-                        <InfiniteScrolView
-                            data={state.albums}
-                            limit={20}
-                            name="artist-album-list"
-                            render={(album, key)=>{
-                                return (
-                                    <AlbumItem key={key} className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...album}/>
-                                )
-                            }}
-                        />
+                {
+                    !state.albums.length ? null :
+                    <div className="ui-container ui-size-fluid disco">
+                        <div className="ui-container ui-size-fluid heading">Discography</div>
+                        <div className="ui-container ui-size-fluid">
+                            <InfiniteScrolView
+                                data={state.albums}
+                                limit={20}
+                                name="artist-album-list"
+                                render={(album, key)=>{
+                                    return (
+                                        <AlbumItem key={key} className="ui-container ui-size-4 ui-md-size-3 ui-lg-size-2" {...album}/>
+                                    )
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
+                }
             </ScrollWrapper>
         </div>
     )

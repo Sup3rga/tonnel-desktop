@@ -4,6 +4,7 @@ import State from "../lib/stater";
 import ExposedView from "../layout/exposedview";
 import InfiniteScrolView from "../layout/infinitescrollview";
 import MusicItem from "../components/musicitem";
+import Icon from "../components/icon";
 
 
 export default function AlbumInfo({
@@ -29,7 +30,22 @@ export default function AlbumInfo({
         })
     }, []);
     return (
-        <ExposedView title={title} wall={albumart} className={["albuminfo", minimal ? "minimal" : ""].join(" ")} style={style}>
+        <ExposedView 
+            title={title} 
+            wall={albumart} 
+            className={["albuminfo", minimal ? "minimal" : ""].join(" ")} 
+            style={style}
+            wallActions={(
+                <div className="ui-container header-actions ui-vertical-center">
+                    <button>
+                        <Icon icon="play"/>
+                    </button>
+                    <button className="min">
+                        <Icon icon="shuffle"/>
+                    </button>
+                </div>
+            )}
+        >
             <div className="ui-element ui-size-8">
                 <InfiniteScrolView
                     name="album-content"
