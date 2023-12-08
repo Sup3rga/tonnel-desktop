@@ -58,7 +58,7 @@ export default function ArtistInfo({
                 </div>
             </div>
             <ScrollWrapper className="disco-content">
-                <div className="ui-element ui-size-fluid selection-music">
+                <div className="ui-element ui-size-fluid ui-md-size-7 ui-lg-size-6 selection-music">
                     <div className="ui-container ui-size-fluid heading">We suggest you those...</div>
                     {
                         state.suggestions.map((songs,key)=>(

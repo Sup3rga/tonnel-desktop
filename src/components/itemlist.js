@@ -11,7 +11,7 @@ const ItemList = function({
     onClick
 }){
     return (
-        <div className="ui-container ui-size-fluid search-item ui-vertical-top" ref={forwardRef} onClick={onClick}>
+        <div className="ui-container ui-size-fluid search-item ui-unwrap ui-vertical-top" ref={forwardRef} onClick={onClick}>
             {albumart ? <div className="ui-container albumart" style={{backgroundImage: `url(${albumart})`}}/> : null}
             <div className={`ui-container info ${albumart ? '' : 'albumartless'}`}>
                 <label className="ui-container ui-size-fluid main">{title}</label>

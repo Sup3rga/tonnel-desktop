@@ -1,4 +1,5 @@
 import State from "../lib/stater";
+import Equalizer from "./equalizer";
 import { Library } from "./library";
 
 export const PlayerLoop = {
@@ -38,7 +39,8 @@ export default class Player{
     _currentPath = null;
     _timer = [null,null];
     _volume = 1;
-    _allowedEvents = ['play', 'pause', 'end', 'progress', "meta-loaded"]
+    _allowedEvents = ['play', 'pause', 'end', 'progress', "meta-loaded"];
+    _equalizer = null;
 
     constructor() {
         this.ready = false;
@@ -132,7 +134,7 @@ export default class Player{
             this._source[this._activeSource].disconnect();
         }
         this._source[this._activeSource] = this._ctx.createMediaElementSource(this._audio);
-        this._source[this._activeSource].connect(this._ctx.destination);
+        this.__applyEffect(this._source[this._activeSource])
         // this._source[this._activeSource] = this._ctx.createMediaElementSource(this._audio);
 
         this._transitionning = true;
@@ -170,6 +172,17 @@ export default class Player{
         //     clearInterval(this._timer[1]);
         //     this._transitionning = false;
         }, this._fadeoutTiming);
+    }
+
+    __applyEffect(source){
+        if(!this._equalizer) return source.connect(this._ctx.destination);
+        this._equalizer.input = source;
+        this._equalizer.start();
+    }
+
+    setEqualizer(equalizer){
+        this._equalizer = equalizer;
+        this._equalizer.init(this._ctx);
     }
 
     async setPath(path){
@@ -254,6 +267,10 @@ export default class Player{
         return this;
     }
 
+    getVolume(){
+        return this._volume;
+    }
+
     on(event, callback){
         if(typeof callback !== 'function'){
             throw new Error("argument 2 is expected to be a function");
@@ -283,3 +300,5 @@ export default class Player{
 }
 
 export const defaultPlayer = new Player();
+export const defaultEqualizer = new Equalizer();
+defaultPlayer.setEqualizer(defaultEqualizer);

@@ -38,3 +38,14 @@ export function toTimeString(timefloat){
 
     return result.join(" : ");
 }
+
+export function round(number, precision = 1){
+    return Math.round(number * Math.pow(10, precision)) / Math.pow(10, precision);
+}
+
+export function alphaNumber(number){
+    if(number < 1000) return number;
+    if(number < 1000000) return round(number / 1000, 2) + "K";
+    if(number < 1000000000) return round(number / 1000000, 2) + "M";
+    return round(number / 1000000000, 2) + "G";
+}

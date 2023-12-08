@@ -5,11 +5,12 @@
   "main": "public/main.js",
   "dependencies": {
     "@iconscout/unicons": "^4.0.8",
-    "electron": "^27.0.2",
+    "electron": "^28.0.0",
     "localforage": "^1.10.0",
     "node-id3": "^0.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hammerjs": "^1.0.1",
     "react-scripts": "5.0.1"
   },
   "scripts": {
