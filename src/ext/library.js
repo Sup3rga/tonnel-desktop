@@ -1,5 +1,6 @@
 
 import { storage } from "../ext/bridge";
+import Presets from "./presets";
 
 const {getMusic} = window.bridge;
 
@@ -97,6 +98,7 @@ export const Library = {
     },
 
     getAlbum(title){
+        this.albumlist();
         for(let album of this.__albums){
             if(album.title == title){
                 return album;
@@ -124,6 +126,7 @@ export const Library = {
     },
 
     getArtist(name){
+        this.artistList();
         for(let artist of this.__artists){
             if(artist.name == name){
                 return artist;
@@ -183,5 +186,17 @@ export const Library = {
 
     async getSong(path){
         return await getMusic(path);
+    },
+
+    getCurrentPreset(){
+        return "flat";
+    },
+
+    getPresetValue(name){
+        return Presets[name];
+    },
+
+    getAllPresets(){
+        return Presets;
     }
 }

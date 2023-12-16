@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer, BrowserWindow } = require('electron');
+const { contextBridge, ipcRenderer, BrowserWindow, ipcMain } = require('electron');
 const fs = require("fs/promises");
 const id3 = require("node-id3");
 let lf = require('localforage');
@@ -153,9 +153,13 @@ async function fetchLibrary(){
 
 const exchange = {
     // From render to main.
-    emit: (channel, args) => {
-        console.log('[Cool]...');
-        ipcRenderer.send(channel, args);
+    emit: async (channel, args) => {
+        return new Promise((res)=>{
+            ipcRenderer.send(channel, args);
+            ipcRenderer.on(channel, (emitter, ...args)=>{
+                res(...args)
+            })
+        })
     },
     // From main to render.
     on: (channel, listener) => {

@@ -39,7 +39,7 @@ export default function Appbar({
                 <AppbarNavButton backward/>
                 <AppbarNavButton/>
             </div>
-            <button className="ui-container collapsable-btn no-drag-zone" onClick={()=> State.set("app", {minimal : !minimal})}>
+            <button className="ui-container collapsable-btn no-drag-zone" onClick={()=> State.set("ui", {minimal : !minimal})}>
                 <Icon icon="bars"/>
             </button>
             <label className="ui-container ui-size-2">{title}</label>
@@ -71,7 +71,7 @@ export default function Appbar({
                 </div>
             }
             <div className="ui-container ui-size-3 ui-lg-size-4 misc ui-horizontal-right">
-                <button className={`ui-container ${darkMode ? 'to-light' : 'to-dark'}`} onClick={()=> State.set("app", {darkMode : !darkMode})}>
+                <button className={`ui-container ${darkMode ? 'to-light' : 'to-dark'}`} onClick={()=> State.set("ui", {darkMode : !darkMode})}>
                     <Icon icon={!darkMode ? "moon" : "sun"}/>
                 </button>
                 <button className="ui-container">

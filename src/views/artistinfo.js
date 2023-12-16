@@ -23,19 +23,20 @@ export default function ArtistInfo({
         suggestions: []
     })).get("artist-info");
     useEffect(()=>{
-        Library.albumlist();
-        // console.log('[Albums..]',albums, suggestions);
-        const albums = Library.extractArtistAlbums(list)
-        //.then(albums => {
+        Library.albumlist().then(()=>{
+            const albums = Library.extractArtistAlbums(list);
             const suggestions = Library.getByPaths(list.slice(0, 5));
             State.set("artist-info", {suggestions,albums, loaded: true});
-        //}).catch(err => console.log('[error]',err));
+        }).catch((err)=> console.log('[Err]',err));
     },[]);
     return (
         <div className="ui-container ui-fluid discography" style={style}>
             <Appbar title="" withSearch={false}/>
             <div className="ui-container ui-size-fluid presentation ui-vertical-center">
-                <div className="ui-container avatar" style={{backgroundImage: `url(${avatar})`}}/>
+                {
+                    !avatar ? null :
+                    <div className="ui-container avatar" style={{backgroundImage: `url(${avatar})`}}/>
+                }
                 <div className="ui-container info">
                     <label className="ui-container ui-size-fluid name">{name}</label>
                     <div className="ui-container ui-size-fluid meta ui-vertical-center">

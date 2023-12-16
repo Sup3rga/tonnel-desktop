@@ -23,20 +23,27 @@
   --exposition-body-shadow: #c8c8c8;
   --exposition-mask: rgba(180, 180, 180, 0.9);
   --blur: 60px;
-  --popup-background: rgba(250, 250, 250, 0.9);
-  --popup-mask: rgba(200, 200, 200, 0.2);
-  --popup-backdrop: blur(6px);
+  --popup-background: #fafafa;
+  --popup-mask: rgba(200, 200, 200, 0.1);
+  --popup-backdrop: blur(0px);
   --popup-shadow-color: #444;
   --light-button-bg: rgba(200, 200, 200, 0.1);
+  --win-btn-bg: #aaa;
+  --win-btn-color: #bbb;
+  --menu-item-wrapper-bg: rgba(200, 200, 200, 0.1);
+  --menu-item-hover-bg: rgba(200, 200, 200, 0.5);
+  --menu-item-color: black;
+  --menu-title-color: black;
 }
 
-/* line 33, ../../sass/app.scss */
+/* line 38, ../../sass/app.scss */
 #root {
   overflow: hidden;
   height: 100vh;
+  width: 100vw;
   position: relative;
 }
-/* line 37, ../../sass/app.scss */
+/* line 43, ../../sass/app.scss */
 #root.dark-mode {
   --sideTheme: rgba(110, 98, 86, 0.2);
   --text-color-0: white;
@@ -57,95 +64,131 @@
   --exposition-body-background: rgba(80, 80, 80, 0.1);
   --exposition-body-shadow: #0a0a0a;
   --exposition-mask: rgba(50, 50, 50, 0.9);
-  --popup-background: rgba(50, 50, 50, 0.9);
+  --popup-background: #323232;
   --popup-mask: rgba(0, 0, 0, 0.2);
-  --popup-backdrop: blur(10px);
+  --popup-backdrop: blur(0px);
   --popup-shadow-color: #444;
   --light-button-bg: rgba(20, 20, 20, 0.1);
+  --win-btn-bg: #e9e8e8;
+  --win-btn-color: #e2e2e2;
+  --menu-item-wrapper-bg: rgba(20, 20, 20, 0.1);
+  --menu-item-hover-bg: rgba(20, 20, 20, 0.5);
+  --menu-item-color: white;
+  --menu-title-color: white;
 }
 
-/* line 65, ../../sass/app.scss */
+/* line 77, ../../sass/app.scss */
 .app-main {
   position: inherit;
 }
 
-/* line 68, ../../sass/app.scss */
+/* line 81, ../../sass/app.scss */
+#app {
+  min-width: 800px;
+  min-height: 500px;
+  overflow: hidden;
+}
+/* line 85, ../../sass/app.scss */
+#app .app-content {
+  min-height: inherit;
+  min-width: inherit;
+}
+
+/* line 91, ../../sass/app.scss */
 .no-drag-zone {
   -webkit-app-region: no-drag;
 }
 
-/* line 76, ../../sass/app.scss */
-.search-item .main, .discography .presentation .info .name, .person-item .data .title, .music-item .info .title, .control-bar .music-info label.title, .equalizer-box .inputs-wrapper .wrapper .info label.primary, .search-item .second, .discography .presentation .info .meta label, .person-item .data .alt, .music-item .info .artist, .control-bar .music-info label.artist, .equalizer-box .inputs-wrapper .wrapper .info label.secondary {
+/* line 95, ../../sass/app.scss */
+.drag-zone {
+  -webkit-app-region: drag;
+}
+
+/* line 103, ../../sass/app.scss */
+.search-item .main, .discography .presentation .info .name, .person-item .data .title, .music-item .info .title, .control-bar .music-info label.title, .equalizer-box .presets label, .equalizer-box .inputs-wrapper .wrapper .info label.primary, .search-item .second, .discography .presentation .info .meta label, .person-item .data .alt, .music-item .info .artist, .control-bar .music-info label.artist, .equalizer-box .inputs-wrapper .wrapper .info label.secondary, .player-ui .main-info .music-metadata .artist, .player-ui .main-info .music-metadata .title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* line 81, ../../sass/app.scss */
-.search-item .main, .discography .presentation .info .name, .person-item .data .title, .music-item .info .title, .control-bar .music-info label.title, .equalizer-box .inputs-wrapper .wrapper .info label.primary {
+/* line 108, ../../sass/app.scss */
+.search-item .main, .discography .presentation .info .name, .person-item .data .title, .music-item .info .title, .control-bar .music-info label.title, .equalizer-box .presets label, .equalizer-box .inputs-wrapper .wrapper .info label.primary {
   font-family: Lexend-Medium;
   font-size: .9em;
   padding: .4em 0;
   color: var(--text-color-0);
 }
 
-/* line 88, ../../sass/app.scss */
-.search-item .second, .discography .presentation .info .meta label, .person-item .data .alt, .music-item .info .artist, .control-bar .music-info label.artist, .equalizer-box .inputs-wrapper .wrapper .info label.secondary {
+/* line 115, ../../sass/app.scss */
+.search-item .second, .discography .presentation .info .meta label, .person-item .data .alt, .music-item .info .artist, .control-bar .music-info label.artist, .equalizer-box .inputs-wrapper .wrapper .info label.secondary, .player-ui .main-info .music-metadata .artist {
   font-family: Roboto;
   font-size: .7em;
   color: var(--text-color-1);
 }
 
-/* line 95, ../../sass/app.scss */
+/* line 122, ../../sass/app.scss */
 .search-item {
   cursor: pointer;
 }
-/* line 97, ../../sass/app.scss */
+/* line 124, ../../sass/app.scss */
 .search-item:hover {
   background-color: var(--item-hover-bg);
 }
 
-/* line 102, ../../sass/app.scss */
-.search-item .albumart, .discography .presentation .avatar, .person-item .avatar {
+/* line 129, ../../sass/app.scss */
+.search-item .albumart, .discography .presentation .avatar, .person-item .avatar, .player-ui .main-info .albumart {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-/* line 108, ../../sass/app.scss */
+/* line 135, ../../sass/app.scss */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 /* Track */
-/* line 113, ../../sass/app.scss */
+/* line 140, ../../sass/app.scss */
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-track-bg);
 }
 
 /* Handle */
-/* line 118, ../../sass/app.scss */
+/* line 145, ../../sass/app.scss */
 ::-webkit-scrollbar-thumb {
   background: var(--text-color-2);
   border-radius: 4px;
 }
 
 /* Handle on hover */
-/* line 124, ../../sass/app.scss */
+/* line 151, ../../sass/app.scss */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-color-1);
 }
 
-/* line 128, ../../sass/app.scss */
+/* line 155, ../../sass/app.scss */
 body, html {
   background-color: transparent;
 }
 
-/* line 132, ../../sass/app.scss */
+/* line 159, ../../sass/app.scss */
+.loop-single {
+  position: relative;
+}
+/* line 161, ../../sass/app.scss */
+.loop-single label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: .4em !important;
+}
+
+/* line 170, ../../sass/app.scss */
 .initializer {
   position: relative;
 }
-/* line 135, ../../sass/app.scss */
+/* line 173, ../../sass/app.scss */
 .initializer .image {
   height: 100vh;
   background-color: #333;
@@ -154,12 +197,12 @@ body, html {
   background-repeat: no-repeat;
   background-position: top center;
 }
-/* line 145, ../../sass/app.scss */
+/* line 183, ../../sass/app.scss */
 .initializer .image .app-name {
   height: 80px;
   text-align: center;
 }
-/* line 148, ../../sass/app.scss */
+/* line 186, ../../sass/app.scss */
 .initializer .image .app-name h1 {
   display: inline-block;
   font-family: Lexend-Bold;
@@ -167,7 +210,7 @@ body, html {
   font-size: 2em;
   text-shadow: 0 0 2px #333;
 }
-/* line 155, ../../sass/app.scss */
+/* line 193, ../../sass/app.scss */
 .initializer .image .app-name label {
   display: inline-block;
   font-family: Lexend;
@@ -177,7 +220,7 @@ body, html {
   font-size: .8em;
   text-shadow: 0 0 7px #000;
 }
-/* line 166, ../../sass/app.scss */
+/* line 204, ../../sass/app.scss */
 .initializer .info {
   -webkit-app-region: no-drag;
   padding: .4em;
@@ -188,74 +231,75 @@ body, html {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.1);
 }
-/* line 175, ../../sass/app.scss */
+/* line 213, ../../sass/app.scss */
 .initializer .info .message {
   font-family: Poppins-Medium;
   padding: .3em .5em;
   color: #ddd;
   font-size: 1em;
 }
-/* line 181, ../../sass/app.scss */
+/* line 219, ../../sass/app.scss */
 .initializer .info .item {
   padding: .1em .4em;
   font-family: Roboto;
   font-size: .7em;
   color: #ccc;
 }
-/* line 186, ../../sass/app.scss */
+/* line 224, ../../sass/app.scss */
 .initializer .info .item label {
   padding: 0 .5em;
 }
-/* line 189, ../../sass/app.scss */
+/* line 227, ../../sass/app.scss */
 .initializer .info .item b {
   letter-spacing: .3em;
   font-weight: lighter;
   font-size: .8em;
 }
 
-/* line 198, ../../sass/app.scss */
+/* line 236, ../../sass/app.scss */
 .app-window {
   border-radius: 1em;
 }
-/* line 201, ../../sass/app.scss */
+/* line 239, ../../sass/app.scss */
 .app-window .app-title-bar {
   height: 40px;
   background-color: #ccc;
 }
 
-/* line 207, ../../sass/app.scss */
+/* line 245, ../../sass/app.scss */
 .app-main {
   border-radius: .4em;
   box-shadow: 0 0 5px 2px black;
 }
-/* line 211, ../../sass/app.scss */
+/* line 249, ../../sass/app.scss */
 .app-main.splash {
   background-image: url(../../public/splash.jpg);
   background-size: 98%;
   background-repeat: no-repeat;
   background-position: center;
 }
-/* line 217, ../../sass/app.scss */
+/* line 255, ../../sass/app.scss */
 .app-main .app-background {
   background-size: 98%;
   background-repeat: no-repeat;
   background-position: center;
 }
-/* line 223, ../../sass/app.scss */
+/* line 261, ../../sass/app.scss */
 .app-main .app-section-1 {
   height: calc(100% - var(--controlbarHeight));
   backdrop-filter: blur(var(--blur));
+  user-select: none;
   background-color: var(--section-1-background);
 }
-/* line 225, ../../sass/app.scss */
+/* line 263, ../../sass/app.scss */
 .app-main .app-section-1.immersive {
   height: 100%;
 }
-/* line 227, ../../sass/app.scss */
+/* line 265, ../../sass/app.scss */
 .app-main .app-section-1.immersive .scroll-view {
   padding-bottom: calc(var(--controlbarHeight) + 10px);
 }
-/* line 234, ../../sass/app.scss */
+/* line 273, ../../sass/app.scss */
 .app-main .app-section-2 {
   height: var(--controlbarHeight);
   background-color: var(--sideTheme);
@@ -263,12 +307,12 @@ body, html {
   background-color: var(--section-2-background);
 }
 
-/* line 244, ../../sass/app.scss */
+/* line 283, ../../sass/app.scss */
 .app-sidemenu .app-drawer {
   color: var(--text-color-0);
   user-select: none;
 }
-/* line 248, ../../sass/app.scss */
+/* line 287, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header {
   font-family: Poppins-Bold;
   padding: 0 .4em 1.2em .4em;
@@ -278,65 +322,67 @@ body, html {
   height: var(--search-zone-height);
   padding-top: .8em;
 }
-/* line 256, ../../sass/app.scss */
+/* line 295, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header i {
   font-size: 1.2em;
 }
-/* line 259, ../../sass/app.scss */
+/* line 298, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header h1 {
   font-size: 1em;
   padding: 0 .4em;
 }
-/* line 263, ../../sass/app.scss */
+/* line 302, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header .win-buttons {
   gap: .4em;
+  position: relative;
+  z-index: 100;
 }
-/* line 265, ../../sass/app.scss */
+/* line 306, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header .win-buttons .win-button {
   width: 20px;
   height: 20px;
   border: 0;
   font-size: .5em;
   border-radius: 50%;
-  color: #bbb;
-  background-color: #aaa;
+  color: var(--win-btn-color);
+  background-color: var(--win-btn-bg);
   -webkit-app-region: no-drag;
   outline: none;
 }
-/* line 275, ../../sass/app.scss */
+/* line 316, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header .win-buttons .win-button.min:hover {
   background-color: #1d9c9c;
   color: white;
 }
-/* line 279, ../../sass/app.scss */
+/* line 320, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header .win-buttons .win-button.max:hover {
   background-color: #fcab15;
   color: white;
 }
-/* line 283, ../../sass/app.scss */
+/* line 324, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header .win-buttons .win-button.close {
   font-size: .7em;
 }
-/* line 285, ../../sass/app.scss */
+/* line 326, ../../sass/app.scss */
 .app-sidemenu .app-drawer .header .win-buttons .win-button.close:hover {
   background-color: #da1111;
   color: white;
 }
-/* line 293, ../../sass/app.scss */
+/* line 334, ../../sass/app.scss */
 .app-sidemenu .app-drawer .minimal-icon-zone {
   font-size: 2em;
   padding-top: .3em;
 }
-/* line 297, ../../sass/app.scss */
+/* line 338, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links {
   padding: .5em .3em .5em 50px;
 }
-/* line 299, ../../sass/app.scss */
+/* line 340, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links.minimal {
   padding-left: 25px;
   padding-top: 0;
 }
-/* line 303, ../../sass/app.scss */
+/* line 344, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link-header {
   padding: .4em 0 1em 0;
   font-family: Poppins;
@@ -344,14 +390,14 @@ body, html {
   font-weight: normal;
   color: var(--text-color-0);
 }
-/* line 310, ../../sass/app.scss */
+/* line 351, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link {
   padding: .5em;
   font-family: Lexend;
   --square: 30px;
   color: var(--text-color-0);
 }
-/* line 315, ../../sass/app.scss */
+/* line 356, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link i {
   font-size: 1.2em;
   width: var(--square);
@@ -361,29 +407,29 @@ body, html {
   position: relative;
   border-radius: 50%;
 }
-/* line 325, ../../sass/app.scss */
+/* line 366, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link label {
   padding: .3em .5em;
   position: relative;
   font-size: .9em;
 }
-/* line 331, ../../sass/app.scss */
+/* line 372, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link.active {
   text-shadow: unset;
 }
-/* line 333, ../../sass/app.scss */
+/* line 374, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link.active i {
   background-color: var(--primaryTheme);
   color: var(--text-color-0-reverse);
   font-size: 1.6em;
 }
-/* line 338, ../../sass/app.scss */
+/* line 379, ../../sass/app.scss */
 .app-sidemenu .app-drawer .links .link.active label {
   font-family: Lexend-Bold;
   color: var(--text-color-0);
 }
 
-/* line 348, ../../sass/app.scss */
+/* line 389, ../../sass/app.scss */
 .appbar {
   height: var(--search-zone-height);
   -webkit-app-region: drag;
@@ -394,21 +440,21 @@ body, html {
   padding: .4em 0;
   gap: 1em;
 }
-/* line 357, ../../sass/app.scss */
+/* line 398, ../../sass/app.scss */
 .appbar .nav-box {
   padding: 0 .4em;
   gap: .1em;
 }
-/* line 360, ../../sass/app.scss */
+/* line 401, ../../sass/app.scss */
 .appbar .nav-box i {
   font-size: 1.6em;
   color: var(--text-color-1);
 }
-/* line 363, ../../sass/app.scss */
+/* line 404, ../../sass/app.scss */
 .appbar .nav-box i.active {
   color: var(--text-color-0);
 }
-/* line 368, ../../sass/app.scss */
+/* line 409, ../../sass/app.scss */
 .appbar .collapsable-btn {
   border: 0;
   background-color: rgba(250, 250, 250, 0.1);
@@ -418,17 +464,17 @@ body, html {
   border-radius: .8em;
   color: var(--text-color-0);
 }
-/* line 377, ../../sass/app.scss */
+/* line 418, ../../sass/app.scss */
 .appbar label {
   font-family: Poppins-Bold;
   color: var(--text-color-0);
 }
-/* line 381, ../../sass/app.scss */
+/* line 422, ../../sass/app.scss */
 .appbar .misc {
   padding: 0 1em;
   gap: 1em;
 }
-/* line 385, ../../sass/app.scss */
+/* line 426, ../../sass/app.scss */
 .appbar .misc button {
   -webkit-app-region: no-drag;
   border: 0;
@@ -441,51 +487,50 @@ body, html {
   color: var(--text-color-0);
   font-size: 1.2em;
 }
-/* line 397, ../../sass/app.scss */
+/* line 438, ../../sass/app.scss */
 .appbar .misc button.to-dark {
   background-color: rgba(50, 50, 80, 0.8);
   color: #fff;
   box-shadow: 0 1px 2px 0 #333;
 }
-/* line 402, ../../sass/app.scss */
+/* line 443, ../../sass/app.scss */
 .appbar .misc button.to-light {
   background-color: rgba(250, 250, 200, 0.9);
   color: #555;
   box-shadow: 0 1px 2px 0 #ccc;
 }
 
-/* line 412, ../../sass/app.scss */
+/* line 453, ../../sass/app.scss */
 .search-item {
   padding: .4em;
-  margin: -.5em 0;
   border-radius: .4em;
 }
-/* line 417, ../../sass/app.scss */
+/* line 458, ../../sass/app.scss */
 .search-item .albumart {
   --size: 35px;
   height: var(--size);
   width: var(--size);
   border-radius: .3em;
 }
-/* line 424, ../../sass/app.scss */
+/* line 465, ../../sass/app.scss */
 .search-item .info {
   padding: 0 .4em;
 }
-/* line 426, ../../sass/app.scss */
+/* line 467, ../../sass/app.scss */
 .search-item .info.albumartless {
   padding-left: 1em;
 }
-/* line 430, ../../sass/app.scss */
+/* line 471, ../../sass/app.scss */
 .search-item .main {
   padding-top: 0;
   font-size: .8em;
 }
-/* line 435, ../../sass/app.scss */
+/* line 476, ../../sass/app.scss */
 .search-item .second {
   font-size: .7em;
 }
 
-/* line 441, ../../sass/app.scss */
+/* line 482, ../../sass/app.scss */
 .view-search {
   position: relative;
   --search-height: 0px;
@@ -494,27 +539,27 @@ body, html {
   --search-padding: 0;
   padding: .4em;
 }
-/* line 448, ../../sass/app.scss */
+/* line 489, ../../sass/app.scss */
 .view-search.searching {
   --search-height: 40vh;
   --scroll-opacity: 0.1;
   --scroll-blur: 5px;
   --search-padding: var(--search-zone-height) 0.4em 0.4em 0.4em;
 }
-/* line 455, ../../sass/app.scss */
+/* line 496, ../../sass/app.scss */
 .view-search .search-zone .field {
   padding: .2em .5em;
   background-color: rgba(227, 217, 217, 0.5);
   border-radius: .4em;
   -webkit-app-region: no-drag;
 }
-/* line 460, ../../sass/app.scss */
+/* line 501, ../../sass/app.scss */
 .view-search .search-zone .field i {
   color: var(--text-color-2);
   font-size: 1.1em;
   padding: 0 .5em;
 }
-/* line 465, ../../sass/app.scss */
+/* line 506, ../../sass/app.scss */
 .view-search .search-zone .field label {
   font-size: .7em;
   font-family: Roboto;
@@ -522,17 +567,17 @@ body, html {
   right: -1em;
   color: var(--text-color-1);
 }
-/* line 471, ../../sass/app.scss */
+/* line 512, ../../sass/app.scss */
 .view-search .search-zone .field label.activated {
   color: var(--text-color-0);
 }
-/* line 474, ../../sass/app.scss */
+/* line 515, ../../sass/app.scss */
 .view-search .search-zone .field label i {
   position: relative;
   color: inherit;
   left: -.5em;
 }
-/* line 480, ../../sass/app.scss */
+/* line 521, ../../sass/app.scss */
 .view-search .search-zone .field input {
   font-family: Poppins;
   border: 0;
@@ -541,11 +586,11 @@ body, html {
   font-size: .85em;
   color: var(--text-color-0);
 }
-/* line 487, ../../sass/app.scss */
+/* line 528, ../../sass/app.scss */
 .view-search .search-zone .field input::placeholder {
   color: var(--text-color-2);
 }
-/* line 493, ../../sass/app.scss */
+/* line 534, ../../sass/app.scss */
 .view-search .search-view {
   --action-height: 40px;
   height: var(--search-height);
@@ -555,33 +600,33 @@ body, html {
   transition-property: height;
   background-color: var(--exposition-body-background);
 }
-/* line 501, ../../sass/app.scss */
+/* line 542, ../../sass/app.scss */
 .view-search .search-view .search-content {
   height: calc(100% - var(--action-height));
   padding: .4em 5em .4em .5em;
 }
-/* line 504, ../../sass/app.scss */
+/* line 545, ../../sass/app.scss */
 .view-search .search-view .search-content .empty {
   justify-content: center;
   align-items: center;
 }
-/* line 507, ../../sass/app.scss */
+/* line 548, ../../sass/app.scss */
 .view-search .search-view .search-content .empty i {
   font-size: 3em;
   color: var(--text-color-1);
 }
-/* line 512, ../../sass/app.scss */
+/* line 553, ../../sass/app.scss */
 .view-search .search-view .search-content .empty label {
   font-family: Roboto;
   color: var(--text-color-1);
   padding: .5em .4em;
 }
-/* line 519, ../../sass/app.scss */
+/* line 560, ../../sass/app.scss */
 .view-search .search-view .action {
   padding: .4em 0;
   height: var(--action-height);
 }
-/* line 522, ../../sass/app.scss */
+/* line 563, ../../sass/app.scss */
 .view-search .search-view .action button {
   padding: 0 .5em;
   border: 0;
@@ -591,7 +636,7 @@ body, html {
   cursor: pointer;
   color: var(--text-color-0);
 }
-/* line 533, ../../sass/app.scss */
+/* line 574, ../../sass/app.scss */
 .view-search .scroll-view {
   height: calc(100% - var(--search-zone-height) - var(--search-height));
   transition-duration: .2s;
@@ -601,21 +646,21 @@ body, html {
   top: var(--search-zone-height);
   padding: .4em;
 }
-/* line 542, ../../sass/app.scss */
+/* line 583, ../../sass/app.scss */
 .view-search .scroll-view div[role="grid"] {
   overflow-x: hidden !important;
 }
-/* line 545, ../../sass/app.scss */
+/* line 586, ../../sass/app.scss */
 .view-search .scroll-view .group-tag {
   padding: .4em;
   color: var(--text-color-1);
 }
-/* line 548, ../../sass/app.scss */
+/* line 589, ../../sass/app.scss */
 .view-search .scroll-view .group-tag:hover {
   text-decoration: underline;
 }
 
-/* line 556, ../../sass/app.scss */
+/* line 597, ../../sass/app.scss */
 .header-actions {
   position: absolute;
   right: 1em;
@@ -625,7 +670,7 @@ body, html {
   padding: .5em;
   gap: .5em;
 }
-/* line 565, ../../sass/app.scss */
+/* line 606, ../../sass/app.scss */
 .header-actions button {
   --size: 45px;
   width: var(--size);
@@ -640,7 +685,7 @@ body, html {
   border-radius: 50%;
   box-shadow: 0 2px 4px 1px var(--text-color-1);
 }
-/* line 578, ../../sass/app.scss */
+/* line 619, ../../sass/app.scss */
 .header-actions button.min {
   --size: 34px;
   font-size: 1em;
@@ -649,11 +694,11 @@ body, html {
   box-shadow: 0 1px 3px 0 var(--text-color-0-reverse);
 }
 
-/* line 588, ../../sass/app.scss */
+/* line 629, ../../sass/app.scss */
 .exposition {
   padding: 0 .2em;
 }
-/* line 590, ../../sass/app.scss */
+/* line 631, ../../sass/app.scss */
 .exposition .wall {
   height: var(--exposition-height);
   background-color: var(--exposition-default-background);
@@ -663,12 +708,12 @@ body, html {
   background-position: center 40%;
   background-repeat: no-repeat;
 }
-/* line 598, ../../sass/app.scss */
+/* line 639, ../../sass/app.scss */
 .exposition .wall .mask {
   backdrop-filter: blur(1px);
   background-image: linear-gradient(var(--exposition-mask) -30%, transparent 90%);
 }
-/* line 603, ../../sass/app.scss */
+/* line 644, ../../sass/app.scss */
 .exposition .wall .title {
   font-family: Poppins-Bold;
   font-size: 2em;
@@ -677,7 +722,7 @@ body, html {
   color: var(--text-color-0);
   text-shadow: 0 0 20px var(--text-color-0-reverse);
 }
-/* line 613, ../../sass/app.scss */
+/* line 654, ../../sass/app.scss */
 .exposition .body {
   padding: 1em;
   margin: .3em 0;
@@ -688,19 +733,19 @@ body, html {
   position: relative;
 }
 
-/* line 641, ../../sass/app.scss */
+/* line 682, ../../sass/app.scss */
 .albuminfo .wall {
   height: calc(var(--exposition-height) - 60px);
 }
-/* line 648, ../../sass/app.scss */
+/* line 689, ../../sass/app.scss */
 .albuminfo.minimal .wall {
   height: var(--exposition-height);
 }
-/* line 652, ../../sass/app.scss */
+/* line 693, ../../sass/app.scss */
 .albuminfo .music-row-wrapper {
   padding: .2em;
 }
-/* line 654, ../../sass/app.scss */
+/* line 695, ../../sass/app.scss */
 .albuminfo .music-row-wrapper .count {
   color: var(--text-color-1);
   font-family: Roboto;
@@ -709,35 +754,35 @@ body, html {
   font-size: 0.8em;
 }
 
-/* line 664, ../../sass/app.scss */
+/* line 705, ../../sass/app.scss */
 .discography {
   padding: .4em;
 }
-/* line 666, ../../sass/app.scss */
+/* line 707, ../../sass/app.scss */
 .discography .presentation {
   --avatar-size: 120px;
   position: relative;
   height: var(--exposition-height);
   padding: var(--search-zone-height) 0.4em 0.4em 0.4em;
 }
-/* line 672, ../../sass/app.scss */
+/* line 713, ../../sass/app.scss */
 .discography .presentation .avatar {
   width: var(--avatar-size);
   height: var(--avatar-size);
   border-radius: 50%;
   background-color: black;
 }
-/* line 679, ../../sass/app.scss */
+/* line 720, ../../sass/app.scss */
 .discography .presentation .info {
   width: calc(100% - var(--avatar-size));
   padding: .3em .5em .3em 1.8em;
 }
-/* line 682, ../../sass/app.scss */
+/* line 723, ../../sass/app.scss */
 .discography .presentation .info .name {
   padding: .3em 0;
   font-size: 1.5em;
 }
-/* line 688, ../../sass/app.scss */
+/* line 729, ../../sass/app.scss */
 .discography .presentation .info .meta .dot {
   width: 3px;
   height: 3px;
@@ -745,65 +790,65 @@ body, html {
   border-radius: 50%;
   margin: 0 .8em;
 }
-/* line 695, ../../sass/app.scss */
+/* line 736, ../../sass/app.scss */
 .discography .presentation .info .meta label {
   font-size: .8em;
 }
-/* line 702, ../../sass/app.scss */
+/* line 743, ../../sass/app.scss */
 .discography .disco-content {
   height: calc(100% - var(--exposition-height));
   padding: 2em .4em .4em .4em;
 }
-/* line 706, ../../sass/app.scss */
+/* line 747, ../../sass/app.scss */
 .discography .heading {
   font-family: Poppins-Medium;
   padding: .5em 0;
   color: var(--text-color-0);
   font-size: 1em;
 }
-/* line 712, ../../sass/app.scss */
+/* line 753, ../../sass/app.scss */
 .discography .disco {
   padding: .5em .4em;
 }
-/* line 715, ../../sass/app.scss */
+/* line 756, ../../sass/app.scss */
 .discography .selection-music {
   padding: .3em .4em;
 }
-/* line 717, ../../sass/app.scss */
+/* line 758, ../../sass/app.scss */
 .discography .selection-music .search-item {
   margin: 0;
 }
 
-/* line 723, ../../sass/app.scss */
+/* line 764, ../../sass/app.scss */
 .person-item {
   padding: .4em;
   border-radius: .8em;
   cursor: pointer;
   --avatar-size: 90px;
 }
-/* line 728, ../../sass/app.scss */
+/* line 769, ../../sass/app.scss */
 .person-item:hover {
   background-color: var(--item-hover-bg);
 }
-/* line 731, ../../sass/app.scss */
+/* line 772, ../../sass/app.scss */
 .person-item .avatar {
   width: var(--avatar-size);
   height: var(--avatar-size);
   border-radius: 50%;
   background-color: var(--albumart-bg);
 }
-/* line 737, ../../sass/app.scss */
+/* line 778, ../../sass/app.scss */
 .person-item .avatar i {
   color: var(--text-color-1);
   font-size: 3em;
 }
-/* line 742, ../../sass/app.scss */
+/* line 783, ../../sass/app.scss */
 .person-item .data {
   width: calc(100% - var(--avatar-size));
   padding: .3em .4em;
 }
 
-/* line 754, ../../sass/app.scss */
+/* line 795, ../../sass/app.scss */
 .music-item {
   --height: 210px;
   --albumart: 130px;
@@ -815,14 +860,14 @@ body, html {
   border-radius: .5em;
   position: relative;
 }
-/* line 760, ../../sass/app.scss */
+/* line 801, ../../sass/app.scss */
 .music-item.row-display {
   --height: 60px;
   --borderWidth: 4px;
   --albumart: 60px;
   --albumwidth: 60px;
 }
-/* line 765, ../../sass/app.scss */
+/* line 806, ../../sass/app.scss */
 .music-item.row-display.active::after {
   position: absolute;
   left: .24em;
@@ -834,20 +879,20 @@ body, html {
   height: 35%;
   background-color: var(--text-color-0);
 }
-/* line 777, ../../sass/app.scss */
+/* line 818, ../../sass/app.scss */
 .music-item.albumartless {
   --albumwidth: 0px;
 }
-/* line 785, ../../sass/app.scss */
+/* line 826, ../../sass/app.scss */
 .music-item:hover {
   background-color: var(--item-hover-bg);
   cursor: pointer;
 }
-/* line 789, ../../sass/app.scss */
+/* line 830, ../../sass/app.scss */
 .music-item.active {
   background-color: var(--item-active-bg);
 }
-/* line 792, ../../sass/app.scss */
+/* line 833, ../../sass/app.scss */
 .music-item .album-art {
   height: var(--albumart);
   width: var(--albumwidth);
@@ -857,29 +902,29 @@ body, html {
   background-size: cover;
   background-position: center;
 }
-/* line 800, ../../sass/app.scss */
+/* line 841, ../../sass/app.scss */
 .music-item .album-art i {
   color: var(--text-color-1);
   font-size: 3em;
 }
-/* line 805, ../../sass/app.scss */
+/* line 846, ../../sass/app.scss */
 .music-item .info {
   padding: .2em;
 }
-/* line 807, ../../sass/app.scss */
+/* line 848, ../../sass/app.scss */
 .music-item .info .title {
   font-size: .8em;
 }
-/* line 811, ../../sass/app.scss */
+/* line 852, ../../sass/app.scss */
 .music-item .info .artist {
   font-size: .7em;
 }
 
-/* line 818, ../../sass/app.scss */
+/* line 859, ../../sass/app.scss */
 .control-bar {
   padding: .1em .2em .4em .4em;
 }
-/* line 820, ../../sass/app.scss */
+/* line 861, ../../sass/app.scss */
 .control-bar.floating-bar {
   position: absolute;
   left: 10px;
@@ -889,7 +934,7 @@ body, html {
   border-radius: .4em;
   background-color: rgba(250, 250, 250, 0.9);
 }
-/* line 830, ../../sass/app.scss */
+/* line 871, ../../sass/app.scss */
 .control-bar .album-art {
   width: calc(var(--controlbarHeight) - 10px);
   height: calc(var(--controlbarHeight) - 10px);
@@ -901,23 +946,23 @@ body, html {
   font-size: 1.2em;
   color: var(--text-color-1);
 }
-/* line 841, ../../sass/app.scss */
+/* line 882, ../../sass/app.scss */
 .control-bar .music-info {
   padding: 0 .3em;
 }
-/* line 845, ../../sass/app.scss */
+/* line 886, ../../sass/app.scss */
 .control-bar .music-info label.title {
   font-size: .8em;
 }
-/* line 849, ../../sass/app.scss */
+/* line 890, ../../sass/app.scss */
 .control-bar .music-info label.artist {
   font-size: .7em;
 }
-/* line 855, ../../sass/app.scss */
+/* line 896, ../../sass/app.scss */
 .control-bar .controls {
   gap: .5em;
 }
-/* line 857, ../../sass/app.scss */
+/* line 898, ../../sass/app.scss */
 .control-bar .controls button {
   --size: 34px;
   width: var(--size);
@@ -927,22 +972,22 @@ body, html {
   background-color: var(--control-button-bg);
   color: var(--text-color-2);
 }
-/* line 865, ../../sass/app.scss */
+/* line 906, ../../sass/app.scss */
 .control-bar .controls button:hover {
   background-color: var(--control-button-bg-reverse);
 }
-/* line 871, ../../sass/app.scss */
+/* line 912, ../../sass/app.scss */
 .control-bar .time-control .time {
   font-family: Poppins;
   font-size: 80%;
   letter-spacing: .1em;
   color: var(--text-color-0);
 }
-/* line 878, ../../sass/app.scss */
+/* line 919, ../../sass/app.scss */
 .control-bar .queue-control {
   gap: .8em;
 }
-/* line 880, ../../sass/app.scss */
+/* line 921, ../../sass/app.scss */
 .control-bar .queue-control button {
   padding: .5em;
   border-radius: .5em;
@@ -950,16 +995,16 @@ body, html {
   background-color: var(--control-button-bg);
   color: var(--text-color-0);
 }
-/* line 886, ../../sass/app.scss */
+/* line 927, ../../sass/app.scss */
 .control-bar .queue-control button i {
   font-size: 1.1em;
 }
-/* line 890, ../../sass/app.scss */
+/* line 931, ../../sass/app.scss */
 .control-bar .queue-control .volume {
   margin-left: .3em;
 }
 
-/* line 897, ../../sass/app.scss */
+/* line 938, ../../sass/app.scss */
 .line-container .marker {
   --size: 10px;
   width: var(--size);
@@ -969,54 +1014,54 @@ body, html {
   transition-duration: .1s;
   transition-property: left, top;
 }
-/* line 906, ../../sass/app.scss */
+/* line 947, ../../sass/app.scss */
 .line-container .line {
   background-color: var(--line-bg);
   border-radius: .3em;
 }
-/* line 909, ../../sass/app.scss */
+/* line 950, ../../sass/app.scss */
 .line-container .line .indicator {
   background-color: var(--text-color-0);
   border-radius: inherit;
   transition-duration: .1s;
   transition-property: width, height;
 }
-/* line 916, ../../sass/app.scss */
+/* line 957, ../../sass/app.scss */
 .line-container.vertical {
   height: 100%;
   width: 20px;
   position: relative;
 }
-/* line 920, ../../sass/app.scss */
+/* line 961, ../../sass/app.scss */
 .line-container.vertical .line {
   width: 4px;
 }
-/* line 922, ../../sass/app.scss */
+/* line 963, ../../sass/app.scss */
 .line-container.vertical .line .indicator {
   width: inherit;
   position: absolute;
   bottom: 0;
 }
-/* line 928, ../../sass/app.scss */
+/* line 969, ../../sass/app.scss */
 .line-container.vertical .marker {
   left: 50%;
   top: 100%;
   background-color: var(--text-color-0);
 }
-/* line 935, ../../sass/app.scss */
+/* line 976, ../../sass/app.scss */
 .line-container.horizontal {
   height: 20px;
   position: relative;
 }
-/* line 938, ../../sass/app.scss */
+/* line 979, ../../sass/app.scss */
 .line-container.horizontal .line {
   height: 4px;
 }
-/* line 940, ../../sass/app.scss */
+/* line 981, ../../sass/app.scss */
 .line-container.horizontal .line .indicator {
   height: inherit;
 }
-/* line 944, ../../sass/app.scss */
+/* line 985, ../../sass/app.scss */
 .line-container.horizontal .marker {
   left: 0;
   top: 50%;
@@ -1024,52 +1069,134 @@ body, html {
   background-color: var(--text-color-0);
 }
 
-/* line 953, ../../sass/app.scss */
-.popup-mask {
-  background-color: var(--popup-mask);
+/* line 994, ../../sass/app.scss */
+.popup {
   z-index: 99;
 }
-/* line 956, ../../sass/app.scss */
-.popup-mask .popup-box {
+/* line 996, ../../sass/app.scss */
+.popup .popup-mask {
+  background-color: var(--popup-mask);
+}
+/* line 999, ../../sass/app.scss */
+.popup .popup-box {
   padding: .4em;
   background-color: var(--popup-background);
   backdrop-filter: var(--popup-backdrop);
   box-shadow: 0 1px 4px 0 var(--popup-shadow-color);
   border-radius: .4em;
 }
-/* line 962, ../../sass/app.scss */
-.popup-mask .popup-box.centered {
+/* line 1005, ../../sass/app.scss */
+.popup .popup-box.delayed {
+  transform: scale(0, 0);
+  will-change: transform;
+}
+/* line 1009, ../../sass/app.scss */
+.popup .popup-box.scale-x {
+  transform: scale(0, 1);
+}
+/* line 1012, ../../sass/app.scss */
+.popup .popup-box.scale-y {
+  transform: scale(1, 0);
+}
+/* line 1015, ../../sass/app.scss */
+.popup .popup-box.animated {
+  transform: scale(1, 1);
+}
+/* line 1018, ../../sass/app.scss */
+.popup .popup-box.centered {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* line 970, ../../sass/app.scss */
+/* line 1026, ../../sass/app.scss */
+.app-menu-popup {
+  padding: .2em;
+}
+/* line 1028, ../../sass/app.scss */
+.app-menu-popup h1 {
+  font-family: Poppins-Medium;
+  font-weight: normal;
+  font-size: 1em;
+  color: var(--menu-title-color);
+}
+/* line 1034, ../../sass/app.scss */
+.app-menu-popup .items-wrapper {
+  padding: .2em;
+  background-color: var(--menu-item-wrapper-bg);
+}
+/* line 1037, ../../sass/app.scss */
+.app-menu-popup .items-wrapper .menu-item {
+  padding: .3em;
+  border-radius: .3em;
+  font-family: Roboto;
+  color: var(--menu-item-color);
+}
+/* line 1042, ../../sass/app.scss */
+.app-menu-popup .items-wrapper .menu-item label {
+  font-size: .8em;
+  padding: .2em .4em;
+}
+/* line 1046, ../../sass/app.scss */
+.app-menu-popup .items-wrapper .menu-item:hover {
+  background-color: var(--menu-item-hover-bg);
+}
+
+/* line 1053, ../../sass/app.scss */
 .equalizer-box {
   padding: .4em;
 }
-/* line 972, ../../sass/app.scss */
+/* line 1055, ../../sass/app.scss */
 .equalizer-box h1 {
   font-family: Poppins-Bold;
   padding: .4em;
   color: var(--text-color-0);
 }
-/* line 977, ../../sass/app.scss */
+/* line 1060, ../../sass/app.scss */
+.equalizer-box .presets {
+  padding: .5em 2em;
+  gap: .8em;
+}
+/* line 1066, ../../sass/app.scss */
+.equalizer-box .presets select {
+  padding: .5em;
+  border: 0;
+  border-radius: .4em;
+  background-color: var(--line-bg);
+  color: var(--text-color-0);
+}
+/* line 1074, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper {
   height: 30vh;
 }
-/* line 979, ../../sass/app.scss */
+/* line 1076, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper .wrapper {
   margin-bottom: 2em;
+  position: relative;
 }
-/* line 982, ../../sass/app.scss */
+/* line 1080, ../../sass/app.scss */
+.equalizer-box .inputs-wrapper .wrapper::after {
+  position: absolute;
+  content: "";
+  width: 60%;
+  height: 1px;
+  background-color: var(--text-color-1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* line 1090, ../../sass/app.scss */
+.equalizer-box .inputs-wrapper .wrapper .line-container {
+  z-index: 2;
+}
+/* line 1093, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper .wrapper .marker {
   width: 20px;
   height: 25px;
   border-radius: .5em;
   box-shadow: 0 0 2px 0 var(--text-color-0-reverse);
 }
-/* line 987, ../../sass/app.scss */
+/* line 1098, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper .wrapper .marker::after {
   content: "";
   position: absolute;
@@ -1081,31 +1208,31 @@ body, html {
   height: 5px;
   border-radius: .4em;
 }
-/* line 999, ../../sass/app.scss */
+/* line 1110, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper .wrapper .info {
   padding: .5em 0;
 }
-/* line 1002, ../../sass/app.scss */
+/* line 1113, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper .wrapper .info label.primary {
   font-size: .7em;
 }
-/* line 1006, ../../sass/app.scss */
+/* line 1117, ../../sass/app.scss */
 .equalizer-box .inputs-wrapper .wrapper .info label.secondary {
   font-size: .7em;
 }
-/* line 1014, ../../sass/app.scss */
+/* line 1125, ../../sass/app.scss */
 .equalizer-box .volume-zone {
   padding: .5em 4em;
   margin-top: 1em;
 }
-/* line 1017, ../../sass/app.scss */
+/* line 1128, ../../sass/app.scss */
 .equalizer-box .volume-zone label {
   font-family: Lexend;
   color: var(--text-color-0);
   font-size: .9em;
   padding: .4em 0;
 }
-/* line 1023, ../../sass/app.scss */
+/* line 1134, ../../sass/app.scss */
 .equalizer-box .volume-zone .line-container {
   height: 40px;
   background-color: var(--line-bg);
@@ -1113,18 +1240,18 @@ body, html {
   padding: 0 .3em;
   position: relative;
 }
-/* line 1029, ../../sass/app.scss */
+/* line 1140, ../../sass/app.scss */
 .equalizer-box .volume-zone .line-container .line {
   height: 30px;
   background-color: unset;
   overflow: hidden;
   border-radius: 1em;
 }
-/* line 1034, ../../sass/app.scss */
+/* line 1145, ../../sass/app.scss */
 .equalizer-box .volume-zone .line-container .line .indicator {
   height: inherit;
 }
-/* line 1038, ../../sass/app.scss */
+/* line 1149, ../../sass/app.scss */
 .equalizer-box .volume-zone .line-container .marker {
   display: none;
   left: 0;
@@ -1132,11 +1259,11 @@ body, html {
   transform: translateY(-50%);
   background-color: var(--text-color-0);
 }
-/* line 1047, ../../sass/app.scss */
+/* line 1158, ../../sass/app.scss */
 .equalizer-box .actions {
   padding: .3em;
 }
-/* line 1049, ../../sass/app.scss */
+/* line 1160, ../../sass/app.scss */
 .equalizer-box .actions button {
   background-color: unset;
   font-family: Poppins-Medium;
@@ -1146,7 +1273,102 @@ body, html {
   cursor: pointer;
   color: var(--text-color-0);
 }
-/* line 1057, ../../sass/app.scss */
+/* line 1168, ../../sass/app.scss */
 .equalizer-box .actions button:hover {
   background-color: var(--light-button-bg);
+}
+
+/* line 1175, ../../sass/app.scss */
+.player-ui {
+  padding: .4em;
+}
+/* line 1177, ../../sass/app.scss */
+.player-ui .header {
+  height: var(--action-height);
+  z-index: 2;
+  top: 0;
+  left: 0;
+  padding: .5em;
+}
+/* line 1183, ../../sass/app.scss */
+.player-ui .header button {
+  background-color: var(--control-button-bg);
+  border: 0;
+  border-radius: .4em;
+  padding: .3em .4em;
+  font-size: 1.6em;
+  color: var(--text-color-0);
+}
+/* line 1192, ../../sass/app.scss */
+.player-ui .mask {
+  z-index: 1;
+  background-color: var(--section-1-background);
+}
+/* line 1196, ../../sass/app.scss */
+.player-ui .main-info {
+  padding: .5em;
+}
+/* line 1198, ../../sass/app.scss */
+.player-ui .main-info .albumart {
+  --size: 40vmin;
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--albumart-bg);
+  border-radius: 50%;
+}
+/* line 1205, ../../sass/app.scss */
+.player-ui .main-info .albumart i {
+  font-size: 5em;
+  color: var(--text-color-0);
+}
+/* line 1210, ../../sass/app.scss */
+.player-ui .main-info .music-metadata {
+  padding: .5em .3em;
+  color: var(--text-color-0);
+}
+/* line 1213, ../../sass/app.scss */
+.player-ui .main-info .music-metadata label {
+  padding: .3em 0;
+  justify-content: center;
+}
+/* line 1217, ../../sass/app.scss */
+.player-ui .main-info .music-metadata .title {
+  font-size: 1.5em;
+  font-family: Lexend-Medium;
+}
+/* line 1222, ../../sass/app.scss */
+.player-ui .main-info .music-metadata .artist {
+  font-size: 1em;
+}
+/* line 1228, ../../sass/app.scss */
+.player-ui .main-info .progression {
+  padding: .5em;
+  border-radius: 1em;
+  overflow: hidden;
+}
+/* line 1232, ../../sass/app.scss */
+.player-ui .main-info .progression .time {
+  border-radius: .5em;
+  padding: .4em 0;
+  font-family: Poppins;
+  font-size: .8em;
+}
+/* line 1238, ../../sass/app.scss */
+.player-ui .main-info .progression .line-container {
+  width: 100%;
+}
+/* line 1240, ../../sass/app.scss */
+.player-ui .main-info .progression .line-container .line {
+  height: 30px;
+  background-color: var(--section-1-background);
+  overflow: hidden;
+  border-radius: .8em;
+}
+/* line 1245, ../../sass/app.scss */
+.player-ui .main-info .progression .line-container .line .indicator {
+  height: inherit;
+}
+/* line 1249, ../../sass/app.scss */
+.player-ui .main-info .progression .line-container .marker {
+  display: none;
 }

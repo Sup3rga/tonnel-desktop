@@ -5,6 +5,7 @@ import Hammer from "react-hammerjs";
 export default function LineTimer({
     progression = 0,
     horizontal = true,
+    color = null,
     onChange = ()=>{}
 }){
     const ref = useRef();
@@ -19,6 +20,11 @@ export default function LineTimer({
         }
     }
 
+    if(color) {
+        axes.size.backgroundColor = color;
+        axes.marker.backgroundColor = color;
+    }
+
     useEffect(()=>{
         console.log('[Mounted]');
         onChange(progression / 100);
@@ -29,6 +35,7 @@ export default function LineTimer({
             dimension = ref.current[horizontal ? 'offsetWidth' : 'offsetHeight'],
             clientPosition = horizontal ? ev.center.x : ev.center.y;
         let percent = (clientPosition - position) / dimension;
+        console.log('[Event]',ev);
         // console.log({clientPosition,position, dimension, el, tar: ev.target});
         // console.log('Bound', {el,ev: ev.target}, {el : el.getBoundingClientRect(), ev: ev.target.getBoundingClientRect()});
         percent = percent < 0 ? 0 : percent > 1 ? 1 : percent;

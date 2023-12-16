@@ -43,6 +43,11 @@ export function round(number, precision = 1){
     return Math.round(number * Math.pow(10, precision)) / Math.pow(10, precision);
 }
 
+
+export function rand(min, max){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 export function alphaNumber(number){
     if(number < 1000) return number;
     if(number < 1000000) return round(number / 1000, 2) + "K";

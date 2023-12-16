@@ -38,13 +38,13 @@ class Filter{
         percent = 2 * percent - 1;
         this._frequency = this._bound * percent;
         this._gain = 15 * percent;
-        console.log('[frequency]', this._frequency);
+        // console.log('[frequency]', this._frequency);
         this._filter.frequency.value = this._frequency;
         this._filter.gain.value = this._gain;
     }
 
     accept(source){
-        console.log('[Source]',source, this._filter);
+        // console.log('[Source]',source, this._filter);
         source.connect(this._filter);
     }
 
@@ -93,7 +93,7 @@ export default class Equalizer{
             }
             source = filter;
         }
-        console.log('[INputs]', this.input, source);
+        // console.log('[INputs]', this.input, source);
         source.connect(destination ? destination : this._ctx.destination);
     }
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Appbar from "../components/appbar";
 import Icon from "../components/icon";
+import ScrollWrapper from "../components/scrollwrapper";
 
 export default function WithinSearch({
     children, 
@@ -27,9 +28,12 @@ export default function WithinSearch({
                 setSearchContent(Array.isArray(content) && content.length || !content ? placeholder : content);
             }}/>
             <div className={`ui-container ui-size-fluid search-view ui-no-scroll`}>
-                <div className="ui-element ui-size-fluid search-content ui-scroll-y">
+                <ScrollWrapper className="search-content">
                     {searchContent}
-                </div>
+                </ScrollWrapper>
+                {/* <div className="ui-element ui-size-fluid search-content ui-scroll-y">
+                    {searchContent}
+                </div> */}
                 <div className="ui-container ui-size-fluid action ui-horizontal-right">
                     <button onClick={()=> setSearching(false)}>
                         <Icon icon="angle-up"/>

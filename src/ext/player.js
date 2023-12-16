@@ -1,4 +1,5 @@
 import State from "../lib/stater";
+import { rand } from "./bridge";
 import Equalizer from "./equalizer";
 import { Library } from "./library";
 
@@ -29,6 +30,7 @@ export default class Player{
     _queueIndex = 0;
     _events = [];
     _queue = [];
+    _currentData = null;
     _looping = PlayerLoop.ALL;
     _queuing = PlayerQueuing.ALONG;
     _fadeoutTiming = 5000;
@@ -66,20 +68,69 @@ export default class Player{
         return this;
     }
 
+    getLooping(){
+        return this._looping;
+    }
+
     setQueuing(queuing){
         this._queuing = queuing;
+        if(this._queue.length){
+            if(PlayerQueuing.ALONG === queuing){
+                this._queueProvider().then(queue =>{
+                    this._queue = queue;
+                });
+            }
+            else{
+                this._queue = this.applyMixing(this._queue);
+            }
+        }
         return this;
     }
 
+    getQueuing(){
+        return this._queuing;
+    }
+
     async __createQueue(){
-        this._queue = [];
-        this._queueIndex = 0;
-        this._queue.push(this._currentPath);
         const list = await this._queueProvider(),
-              index = list.indexOf(this._currentPath);
-        for(let i = index + 1; i < list.length; i++){
-            this._queue.push(list[i]);
+               index = list.indexOf(this._currentPath);
+        if(this._queuing !== PlayerQueuing.ALONG){
+            this._queue = [];
+            this._queueIndex = 0;
+            this._queue.push(this._currentPath);
+
+            for(let i = index + 1; i < list.length; i++){
+                this._queue.push(list[i]);
+            }
+            this.queue = this.applyMixing(this._queue);
         }
+        else{
+            this._queue = list;
+            this._queueIndex = index;
+        }
+    }
+
+    applyMixing(queue){
+        const len = queue.length;
+        if(!len) return;
+        let result = [];
+        if(this._queuing === PlayerQueuing.MIX || this._queuing === PlayerQueuing.SHUFFLE){
+            const stable = this._queue.slice(0, this._queueIndex < 0 ? 0 : this._queueIndex);
+            let unstable = this._queue.slice(this._queueIndex + 1, len);
+            let index;
+            do{
+                index = rand(0, unstable.length - 1);
+                stable.push(unstable[index]);
+                unstable = unstable.filter((val, _index)=>{
+                    return index !== _index;
+                });
+            }while(unstable.length);
+            result = stable;
+        }
+        else{
+            result = queue;
+        }
+        return result;
     }
 
     setQueueProvider(providerFunc = null){
@@ -127,7 +178,7 @@ export default class Player{
             up : (this._volume - this._audio.volume) / count,
             down: oldAudio ? oldAudio.volume / count : 0
         };
-        console.warn('[Count]', {count,extreme}, amount);
+        // console.warn('[Count]', {count,extreme}, amount);
         // console.log('[Volumes]', this._audio.volume, oldAudio.volume, amount, "[times]", );
         this._activeSource = (this._activeSource + 1 ) % 2;
         if(this._source[this._activeSource]){
@@ -140,7 +191,7 @@ export default class Player{
         this._transitionning = true;
         this._timer[0] = setInterval(()=>{
             if(!extreme){
-                console.warn('[end][0]',0);
+                // console.warn('[end][0]',0);
                 clearInterval(this._timer[0]);
                 if(oldSource >= 0){
                     this._source[oldSource].disconnect();
@@ -164,14 +215,6 @@ export default class Player{
             // });
             extreme--;
         }, count);
-        this._timer[1] = setTimeout(()=>{
-            console.warn('[end][1]',1);
-        //     if(oldSource >= 0){
-        //         this._source[oldSource].disconnect();
-        //     }
-        //     clearInterval(this._timer[1]);
-        //     this._transitionning = false;
-        }, this._fadeoutTiming);
     }
 
     __applyEffect(source){
@@ -186,11 +229,12 @@ export default class Player{
     }
 
     async setPath(path){
-        console.log('[Path]',path);
+        // console.log('[Path]',path);
         const music = Library.getByPath(path);
         this._currentPath = path;
         this._playing = false;
-        State.set("app", {parallax: music.albumart});
+        this._currentData = music;
+        State.set("ui", {parallax: music.albumart});
         this.__dispatch("meta-loaded", music);
         const musicBuffer = await Library.getSong(path);
         // console.log('[buffer]',musicBuffer);
@@ -202,12 +246,14 @@ export default class Player{
             this.__dispatch('progress');
             if(this._audio.currentTime >= this._audio.duration - this._preloadTime / 1000){
                 this.__dispatch("end");
+                console.log('[is THe end]', this._queue);
                 this.next();
             }
         });
     }
 
     async next(){
+        if(!this._queue.length) return;
         if(this._looping !== PlayerLoop.SINGLE){
             if(this._queueIndex < this._queue.length - 1){
                 this._queueIndex++;
@@ -215,11 +261,15 @@ export default class Player{
             else if(this._looping === PlayerLoop.ALL){
                 this._queueIndex = 0;
             }
+            else{
+                return;
+            }
         }
         await this.setPath(this._queue[this._queueIndex]);
     }
 
     async back(){
+        if(!this._queue.length) return;
         if(this._looping !== PlayerLoop.SINGLE){
             if(this._queueIndex > 0){
                 this._queueIndex--;
@@ -227,8 +277,19 @@ export default class Player{
             else if(this._looping === PlayerLoop.ALL){
                 this._queueIndex = this._queue.length - 1;
             }
+            else{
+                return;
+            }
         }
         await this.setPath(this._queue[this._queueIndex]);
+    }
+
+    getPlayInfo(){
+        return {
+            current: this._currentData,
+            index: this._queueIndex,
+            queue: this._queue
+        }
     }
 
     play(){
@@ -249,6 +310,14 @@ export default class Player{
             this.__dispatch('pause');
         }
         return this;
+    }
+
+    isPlaying(){
+        return this._playing;
+    }
+
+    isEmpty(){
+        return this._audio.src && this._audio.src === '';
     }
 
     getCurrentPath(){
