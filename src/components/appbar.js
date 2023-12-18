@@ -28,8 +28,8 @@ export default function Appbar({
     style={},
     onSearching = ()=>{}
 }){
-    const {darkMode} = State.get("app")[0];
-    const {minimal} = State.get("app")[0];
+    const {darkMode} = State.get("ui")[0];
+    const {minimal} = State.get("ui")[0];
     const [keyword, setKeyword] = useState("");
     const [anyBound, setAnyBound] = useState(false);
     // console.log('[Style]',style, darkMode);
@@ -39,7 +39,10 @@ export default function Appbar({
                 <AppbarNavButton backward/>
                 <AppbarNavButton/>
             </div>
-            <button className="ui-container collapsable-btn no-drag-zone" onClick={()=> State.set("ui", {minimal : !minimal})}>
+            <button className="ui-container collapsable-btn no-drag-zone" onClick={()=> {
+                console.log('[clicked] menu button')
+                State.set("ui", {minimal : !minimal})
+            }}>
                 <Icon icon="bars"/>
             </button>
             <label className="ui-container ui-size-2">{title}</label>
