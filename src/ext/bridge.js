@@ -12,6 +12,12 @@ lf.ready();
 export const storage = lf;
 
 
+export const sizes = {
+    minimal : 90,
+    maximal: 200
+};
+
+
 export function toArrayBuffer(buffer){
     const array = new ArrayBuffer(buffer.length);
     const raw = new Uint8Array(array);

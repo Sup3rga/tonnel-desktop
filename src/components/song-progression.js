@@ -19,7 +19,7 @@ export default function SongProgression({
 
     useEffect(()=>{
         defaultPlayer.on("progress", (data)=>{
-            console.log('[Data]',data);
+            // console.log('[Data]',data);
             State.set(name, {
                 elapsed: toTimeString(data.currentTime),
                 duration: data.duration,

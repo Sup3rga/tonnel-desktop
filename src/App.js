@@ -53,7 +53,14 @@ function App() {
            State.set("app", {
                libraryReady: true
            });
-        //    exchange.emit("background-change", "#eee");
+            exchange.emit("hide");
+            exchange.emit("resize", {
+                resizable: true
+            }).then(()=>{
+                State.set("app", {launched: true});
+                setTimeout(()=> exchange.emit("show"), 300);
+            });
+            //    exchange.emit("background-change", "#eee");
         //    exchange.emit("resize", {
         //         width: 800, 
         //         height: 500, 

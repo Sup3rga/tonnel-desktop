@@ -13,8 +13,7 @@ lf.config({
 lf.ready();
 
 
-const musicPath = "/home/superga/Musique";
-
+const musicPath = "/home/superga/Music";
 async function isReady(){
     let data = await lf.getItem("library");
     if(!data) return false;

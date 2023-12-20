@@ -69,7 +69,7 @@ function createWindow () {
        width: width < minimal.width ? minimal.width : !restore ? width : current.width, 
        height: height < minimal.height ? minimal.height : !restore ? height : current.height
     }, false);
-     win.center();
+     setTimeout(()=> win.center(), 200);
      src.reply("resize", true);
   });
   ipcMain.on("hide", ()=>{

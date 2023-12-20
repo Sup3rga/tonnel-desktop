@@ -6,6 +6,7 @@ import EqualizerBox from "./equalizer-box";
 import Menu from "./menu";
 import responsive from "../lib/responsive";
 import SongProgression from "./song-progression";
+import PlayerControls from "./player-controls";
 
 const shuffleList = [
     {
@@ -86,6 +87,7 @@ export default function PlayerBar({
         })
         defaultPlayer.on("meta-loaded", (music)=>{
             console.log('[Music]',music);
+            document.querySelector('title').innerText = music.title;
             State.set("playerbar", {
                 title: music.title,
                 artist: music.artist,
@@ -125,23 +127,7 @@ export default function PlayerBar({
                 </div>
             </div>
             <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-1 ui-unwrap ui-vertical-center controls">
-                <button onClick={()=>{
-                    defaultPlayer.back();
-                }}>
-                    <Icon mode="line" icon="step-backward"/>
-                </button>
-                <button onClick={()=>{
-                    if(state.play)
-                        return defaultPlayer.pause()
-                    defaultPlayer.play();
-                }}>
-                    <Icon icon={`${state.play ? 'pause' : 'play'}`}/>
-                </button>
-                <button onClick={()=>{
-                    defaultPlayer.next();
-                }}>
-                    <Icon mode="line" icon="step-forward"/>
-                </button>
+                <PlayerControls/>
             </div>
             <SongProgression name="song-playbar-progress" className="ui-size-4 ui-md-size-5 ui-lg-size-8"/>
             <div className="ui-container ui-size-2 ui-md-size-2 ui-lg-size-1 ui-vertical-center ui-horizontal-right queue-control ui-unwrap">

@@ -7,12 +7,8 @@ import Router, { Route } from "../components/router";
 import Albums from "./albums";
 import AlbumInfo from "./albuminfo";
 import Artists from "./artists";
+import {sizes} from "../ext/bridge";
 import ArtistInfo from "./artistinfo";
-
-const sizes = {
-    minimal : 90,
-    maximal: 200
-};
 
 export default function UI({active = true}){
 
