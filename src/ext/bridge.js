@@ -60,3 +60,17 @@ export function alphaNumber(number){
     if(number < 1000000000) return round(number / 1000000, 2) + "M";
     return round(number / 1000000000, 2) + "G";
 }
+
+export function extractSyncedLyrics(lyricsData){
+    const result = {
+        timestamps:[],
+        texts: []
+    };
+    console.log('[data]', lyricsData)
+    for(let lyric of lyricsData){
+        result.timestamps.push(lyric.timeStamp);
+        result.texts.push(lyric.text);
+    }
+
+    return result;
+}

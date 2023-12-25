@@ -26,7 +26,7 @@ function App() {
   useEffect(()=>{
       isReady().then((ready)=>{
         if(ready){
-            exchange.emit("hide")
+            exchange.emit("hide");
             State.set("app", {
                 libraryReady: true
             });

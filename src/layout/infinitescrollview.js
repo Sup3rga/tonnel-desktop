@@ -51,7 +51,7 @@ export default function InfiniteScrolView({
     // console.log('[Data]',data);
     const observer = useRef(),
           lastItem = useCallback(node => {
-              console.log('[Node]',node);
+              // console.log('[Node]',node);
               if(observer.current) observer.current.disconnect();
               observer.current = new IntersectionObserver(entries => {
                 if(entries[0].isIntersecting){

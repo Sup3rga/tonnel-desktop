@@ -34,6 +34,8 @@
   --menu-item-color: black;
   --menu-title-color: black;
   --player-ui-line-bg: #{rgba(255,255,255,0.7)};
+  --tab-header-height: 40px;
+  --header-action-height: 20px;
 }
 
 #root{
@@ -1177,9 +1179,10 @@ body, html{
 .player-ui-container{
   @extend %cover-image;
 }
+
 .player-ui{
   padding: .4em;
-  backdrop-filter: blur(80px);
+  backdrop-filter: blur(25px);
   .header{
     height: var(--action-height);
     z-index: 2;
@@ -1202,10 +1205,12 @@ body, html{
   .main-info{
     padding: .5em;
     .albumart{
-      --size: 40vmin;
+      --size: 35vmin;
       width: var(--size);
       height: var(--size);
       @extend %cover-image;
+      transition-duration: .2s;
+      transition-property: width,height,top,left;
       background-color: var(--albumart-bg);
       border-radius: 50%;
       i{
@@ -1216,25 +1221,34 @@ body, html{
     .music-metadata{
       padding: .5em .3em;
       color: var(--text-color-0);
+      transition-duration: .2s;
+      transition-property: width,font-size,height,top,left;
       label{
         padding: .3em 0;
         justify-content: center;
       }
       .title{
-        font-size: 1.5em;
+        font-size: 1.3em;
         @extend %ellipsis;
         font-family: Lexend-Medium;
       }
       .artist{
-        font-size: 1em;
+        font-size: .9em;
         @extend %ellipsis;
         @extend %secondary-info;
+      }
+      .album{
+        font-size: .9em;
+        @extend %ellipsis;
       }
     }
     .progression{
       padding: .5em;
       border-radius: 1em;
       overflow: hidden;
+      transition-duration: .2s;
+      transition-property: width,height,top,left;
+      --line-height: .7vmin;
       .time{
         border-radius: .5em;
         padding: .4em 0;
@@ -1245,7 +1259,7 @@ body, html{
       .line-container{
         width: 100%;
         .line{
-          height: 30px;
+          height: var(--line-height);
           background-color: var(--player-ui-line-bg);
           overflow: hidden;
           border-radius: .8em;
@@ -1254,7 +1268,8 @@ body, html{
           }
         }
         .marker{
-          display: none;
+          --size: 18px;
+          //display: none;
         }
       }
     }
@@ -1262,6 +1277,8 @@ body, html{
       padding: 1em .5em;
       gap: .8em;
       --size: 45px;
+      transition-duration: .2s;
+      transition-property: width,height,top,left;
       button{
         &.play{
           --size: 70px;
@@ -1276,12 +1293,180 @@ body, html{
         border: 0;
       }
     }
+    &.up{
+      .albumart{
+        position: absolute;
+        --size: 43px;
+        top: 10px;
+        left: 60px;
+        i{
+          font-size: 1em;
+        }
+      }
+      .music-metadata{
+        position: absolute;
+        top: 5px;
+        left: 110px;
+        width: 21%;
+        //background-color: red;
+        font-size: .6em;
+        label{
+          justify-content: left;
+        }
+        .album{
+          display: none;
+        }
+      }
+      .progression{
+        position: absolute;
+        flex-wrap: nowrap;
+        top: 10px;
+        overflow: unset;
+        //background-color: green;
+        left: calc(21% + 110px);
+        width: 45%;
+        z-index: 5;
+        --line-height: 4px;
+        .marker{
+          --size: 10px;
+        }
+      }
+      .controls{
+        position: absolute;
+        flex-wrap: nowrap;
+        top: 0px;
+        left: calc(66% + 110px);
+        width: 18%;
+        //background-color: yellow;
+        --size: 25px;
+        button {
+          background-color: unset;
+          color: var(--text-color-0);
+          &.play {
+            --size: 25px;
+            background-color: unset;
+            color: var(--text-color-0);
+            box-shadow: unset;
+          }
+        }
+      }
+    }
   }
   .actions{
-    padding: 1em .4em;
+    padding: .2em .4em;
     height: calc(100% - 60px);
+    user-select: none;
     z-index: 2;
-    border-radius: .5em .5em 0 0;
-    transform: translateY(calc(100% - 40px));
+    border-radius: 2em 2em 0 0;
+    transform: translateY(calc(100% - var(--header-action-height) - var(--tab-header-height) - 4px));
+    transition-duration: .2s;
+    transition-property: transform;
+    backdrop-filter: brightness(5);
+    &.up{
+      transform: translateY(0px);
+    }
+    .header-actions-arrow{
+      height: var(--header-action-height);
+    }
+    .tab-container{
+      height: calc(100% - var(--header-action-height));
+    }
   }
+}
+
+.tab-manager{
+  .tab-head-container{
+    height: var(--tab-header-height);
+    .tab-head{
+      font-family: Lexend;
+      color: var(--text-color-1);
+      cursor: pointer;
+      &.active{
+        color: var(--text-color-0);
+        font-family: Lexend-SemiBold;
+      }
+    }
+  }
+  .tab-body-container{
+    height: calc(100% - var(--tab-header-height));
+  }
+}
+
+.arrow-line{
+  padding: .8em 0;
+  cursor: pointer;
+  .line{
+    width: 50%;
+    height: 5px;
+    background-color: var(--text-color-0);
+    border-radius: .4em;
+    position: relative;
+    transition-duration: .2s;
+    transition-property: transform;
+    &.left{
+      right: -.05em;
+      transform: rotate(-10deg);
+    }
+    &.right{
+      left: -.1em;
+      transform: rotate(10deg);
+    }
+  }
+  &.down{
+    .left{
+      transform: rotate(10deg);
+    }
+    .right{
+      transform: rotate(-10deg);
+    }
+  }
+}
+
+.queue-list{
+  padding: .8em 1em;
+  .music-item{
+    --height: 75px;
+    padding: .8em;
+    .album-art{
+      font-size: .6em;
+      border-radius: 1em;
+    }
+    .info{
+      top: -.4em;
+      padding: 0 .4em;
+      position: relative;
+    }
+  }
+}
+
+.lyrics-container{
+  padding: .4em;
+  height: 100%;
+  transition-duration: .2s;
+  transition-property: scroll;
+  .lyrics-bar{
+    padding: .3em;
+    font-family: Lexend;
+    font-size: 1.2em;
+    color: var(--text-color-1);
+    transition-duration: .2s;
+    transition-property: font-size;
+    &.active{
+      font-family: Lexend-Medium;
+      font-size: 1.8em;
+      color: var(--text-color-0);
+    }
+  }
+  &.unsynchronised{
+    .lyrics-bar{
+      font-family: Roboto;
+      color: var(--text-color-0);
+    }
+  }
+}
+
+.no-lyrics{
+  font-family: Poppins;
+  font-size: 1.3em;
+  color: var(--text-color-1);
 }

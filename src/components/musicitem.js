@@ -30,7 +30,7 @@ const MusicItem = memo(function({
 
     return (
         <>
-            <ResponsiveItem phantom={albumartless} responsiveness={responsiveness} forwardRef={forwardRef} additionnal={additionnal}>
+            <ResponsiveItem phantom={albumartless || !cell} responsiveness={responsiveness} forwardRef={forwardRef} additionnal={additionnal}>
                 <div
                     className={`music-item ui-column ${active ? "active" : ""} ${albumartless ? 'albumartless':''} ${cell ? '' : 'row-display'} ${className}`}
                     onClick={async (e)=>{
@@ -48,7 +48,7 @@ const MusicItem = memo(function({
                                 className={`ui-container ${cell ? 'ui-size-fluid' : ''} album-art ui-all-center`}
                                 style={{
                                     backgroundImage: `url(${albumart})`,
-                                    height: `calc(100% - ${additionnal + 10}px)`
+                                    height: !cell ? '100%' :`calc(100% - ${additionnal + 10}px)`
                                 }}
                             >
                                 {albumart ? null :

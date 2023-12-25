@@ -96,7 +96,7 @@ export default function Sidemenu({
         const imageTheme = new ImageTheme();
         let theme = !copyColor ? null : imageTheme.setImageDataUrl(copyColor).get();
         if(theme){
-            exchange.emit("background-change", `rgb(${theme.join(',')})`);
+            // exchange.emit("background-change", `rgb(${theme.join(',')})`);
             let sum = 0;
             for(let i in theme){
                 sum += theme[i];
@@ -104,7 +104,7 @@ export default function Sidemenu({
             if(sum < 382.5){
                 _state.darkText = false;
             }
-            console.log('[Sum of theme]', sum, copyColor == null, theme);
+            // console.log('[Sum of theme]', sum, copyColor == null, theme);
         }
         // console.log('[MenuRef..]', menuRef, ref);
         const width = _state.width,

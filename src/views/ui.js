@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Sidemenu from "../components/sidemenu";
 import State from "../lib/stater";
 import Explore from "./explore";
@@ -10,6 +10,8 @@ import Artists from "./artists";
 import {sizes} from "../ext/bridge";
 import ArtistInfo from "./artistinfo";
 
+const {bridge : {exchange} } = window;
+
 export default function UI({active = true}){
 
     const [state] = State.init("ui", useState({
@@ -19,8 +21,12 @@ export default function UI({active = true}){
         floatingBar: false
     })).get("ui");
 
+    useEffect(()=>{
+        exchange.emit("background-change", state.darkMode ? '#000' : '#fff');
+    }, [state.darkMode]);
+
     document.querySelector('#root').classList[state.darkMode ? 'add' : 'remove']('dark-mode');
-    console.log('[Active][UI]',active);
+    // console.log('[Active][UI]',active);
     return  (
         <div id="app" style={{opacity : active ? 1 : 0, zIndex : active ? 3 : 1}} className={`ui-container ui-absolute ui-all-close ui-vfluid app-main ${state.darkMode ? 'dark-theme' : ''} ui-no-scroll`}>
           <div className="ui-container ui-vfluid ui-absolute ui-all-close app-background" style={{backgroundImage: `url(${state.parallax})`}}/>

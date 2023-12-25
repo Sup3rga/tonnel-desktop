@@ -132,7 +132,7 @@ export class PaintControl{
         //     throw new Error("[draw] PaintDrawer instance expected !");
         // }
         this._design = paintDrawer;
-        console.log({width: this._canvas.width, height: this._canvas.height});
+        // console.log({width: this._canvas.width, height: this._canvas.height});
         this._context.clearRect(0,0,this._canvas.width, this._canvas.height);
         this._context.beginPath();
         for(let path of paintDrawer._queue){
