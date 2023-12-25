@@ -11,7 +11,6 @@ import ScrollWrapper from "../components/scrollwrapper";
 import ArrowLine from "../components/arrowline";
 import LyricsViewer from "../components/lyricsviewer";
 import Musicitem from "../components/musicitem";
-import MusicItem from "../components/musicitem";
 import InfiniteScrolView from "../layout/infinitescrollview";
 
 const {bridge : {exchange} } = window;
@@ -32,7 +31,7 @@ export default function PlayerUI({active = false, parallax = ""}){
 
     const refresh = ()=>{
         const info = defaultPlayer.getPlayInfo();
-        // console.log('[Info]',info.current);
+        console.log('[Info]',info.current);
         State.set("playerui", {
             current: info.current ? info.current : {},
             queue: Library.getByPaths(info.queue),
@@ -82,7 +81,7 @@ export default function PlayerUI({active = false, parallax = ""}){
     }, []);
 
     return (
-        <div className="ui-container ui-size-fluid ui-absolute ui-all-close player-ui-container" style={{
+        <div className="ui-container ui-vfluid ui-absolute ui-all-close ui-column player-ui-container" style={{
             backgroundImage: `url(${state.current.albumart})`,
             opacity : active ? 1 : 0,
             zIndex : active ? 2 : 1
@@ -95,7 +94,7 @@ export default function PlayerUI({active = false, parallax = ""}){
                         <Icon icon="arrow-left" className="no-drag-zone" onClick={()=> State.set("app", {playerUiActive: false})}/>
                     </button>
                 </div>
-                <div className="ui-container ui-absolute ui-all-close mask">
+                <div className="ui-container ui-column ui-absolute ui-all-close mask">
                     <div className={`ui-container ui-column ui-fluid ui-all-center main-info ${state.pullup ? 'up' : ''}`}>
                         <div className="ui-container albumart ui-all-center" style={{
                             backgroundImage: `url(${state.current.albumart})`
@@ -123,7 +122,7 @@ export default function PlayerUI({active = false, parallax = ""}){
                         </div>
                     </div>
                 </div>
-                <div className={`ui-container ui-absolute ui-bottom-close ui-left-close ui-size-fluid actions ${state.pullup ? 'up' : ''}`} style={{
+                <div className={`ui-container ui-column ui-absolute ui-bottom-close ui-left-close ui-size-fluid actions ${state.pullup ? 'up' : ''}`} style={{
                     backgroundColor: state.theme
                 }}>
                     <div className="ui-container ui-size-fluid header-actions-arrow ui-horizontal-center">

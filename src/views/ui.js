@@ -30,7 +30,7 @@ export default function UI({active = true}){
     return  (
         <div id="app" style={{opacity : active ? 1 : 0, zIndex : active ? 3 : 1}} className={`ui-container ui-absolute ui-all-close ui-vfluid app-main ${state.darkMode ? 'dark-theme' : ''} ui-no-scroll`}>
           <div className="ui-container ui-vfluid ui-absolute ui-all-close app-background" style={{backgroundImage: `url(${state.parallax})`}}/>
-          <div className="ui-container ui-vfluid ui-absolute ui-all-close app-content">
+          <div className="ui-container ui-vfluid ui-column ui-absolute ui-all-close app-content">
             <div className={`ui-container ui-size-fluid app-section-1 ${state.floatingBar ? 'immersive' : ''}`}>
                 <Sidemenu
                     width={state.minimal ? sizes.minimal : sizes.maximal}

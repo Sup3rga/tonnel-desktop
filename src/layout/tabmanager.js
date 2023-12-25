@@ -49,7 +49,7 @@ const TabManager = /*memo(*/({
     const [current, setCurrent] = useState(tabs.length ? tabs[0].props.name : "");
 
     return (
-        <div className={`ui-container ui-size-fluid ui-absolute ui-all-close tab-manager`}>
+        <div className={`ui-container ui-column ui-size-fluid ui-absolute ui-all-close tab-manager`}>
             <div className={`ui-container ui-size-fluid tab-head-container ui-unwrap`}>
                 {tabs.map((head, key)=>(
                     <head.type
