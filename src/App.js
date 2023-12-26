@@ -7,7 +7,7 @@ import SplashScreen from "./views/splashscreen";
 import UI from "./views/ui";
 import PlayerUI from "./views/playerui";
 
-const {bridge : {initialize, isReady, exchange} } = window;
+const {bridge : {initialize, isReady, exchange, activateWatcher} } = window;
 
 function App() {
   const [state] = State.init("app", useState({
@@ -34,6 +34,7 @@ function App() {
             .then(()=> Library.albumlist())
             .then(()=> Library.artistList())
             .then(()=>{
+                activateWatcher();
                 exchange.emit("resize", {
                     resizable: true
                 }).then(()=>{
@@ -53,6 +54,7 @@ function App() {
            State.set("app", {
                libraryReady: true
            });
+            activateWatcher();
             exchange.emit("hide");
             exchange.emit("resize", {
                 resizable: true

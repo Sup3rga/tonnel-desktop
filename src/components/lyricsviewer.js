@@ -2,6 +2,7 @@ import ScrollWrapper from "./scrollwrapper";
 import {useCallback, useEffect, useState} from "react";
 import {extractSyncedLyrics} from "../ext/bridge";
 import {defaultPlayer} from "../ext/player";
+import TabManager, {TabBody} from "../layout/tabmanager";
 
 
 export default function LyricsViewer({
@@ -9,6 +10,7 @@ export default function LyricsViewer({
     synchronised = false
 }){
     const refs = [];
+    const [compactMode, setCompactMode] = useState(false);
     const [references,setReferences] = useState([]);
     const [index, setIndex] = useState(0);
     const ref = (node)=>{
@@ -56,29 +58,53 @@ export default function LyricsViewer({
             </div>
         )
     }
-    // console.log('[Lyrics]',lyrics);
+    console.log('[Lyrics]',lyrics);
     return (
-        <ScrollWrapper
-            className={`lyrics-container ${synchronised ? '' : 'unsynchronised'} no-drag-zone`}
-            centered={true}
-            padding={-50}
-            scroll={synchronised && index >= 0 && references[index] ? references[index].offsetTop : 0}
-        >
-            {(synchronised ? synced.texts : lyrics.text.split("\n")).map((text, key)=>{
-                return (
-                    <div
-                        key={key}
-                        ref={synchronised ? ref : null}
-                        className={`ui-container ${synchronised ? 'ui-horizontal-center' : ''} ${synchronised && key === index ? 'active' : ''} ui-size-fluid lyrics-bar`}
-                        onClick={()=>{
-                            if(!synchronised) return;
-                            defaultPlayer.seek(synced.timestamps[key] / 1000);
-                        }}
-                    >
-                        {text}
-                    </div>
-                )
-            })}
-        </ScrollWrapper>
+        <div className="ui-container ui-absolute ui-column ui-fluid lyrics-container-wrapper">
+            <div className="ui-container ui-column ui-size-fluid lyrics-wrapper ui-relative">
+                <TabManager manual={true}>
+                    <TabBody active={synchronised && !compactMode}>
+                        {
+                            !synchronised ? null :
+                            <div className="ui-container ui-fluid lyrics-container ui-all-center compact-mode">
+                                <div className="ui-container lyrics-bar">
+                                    {index >= 0 && synced.texts[index] ? synced.texts[index] : "..."}
+                                </div>
+                            </div>
+                        }
+                    </TabBody>
+                    <TabBody active={compactMode || !synchronised}>
+                        <ScrollWrapper
+                            className={`lyrics-container ${synchronised ? '' : 'unsynchronised'} no-drag-zone`}
+                            centered={true}
+                            padding={-50}
+                            scroll={synchronised && index >= 0 && references[index] ? references[index].offsetTop : 0}
+                        >
+                            {(synchronised ? synced.texts : lyrics.text.split("\n")).map((text, key)=>{
+                                return (
+                                    <div
+                                        key={key}
+                                        ref={synchronised ? ref : null}
+                                        className={`ui-container ${synchronised ? 'ui-horizontal-center' : ''} ${synchronised && key === index ? 'active' : ''} ui-size-fluid lyrics-bar`}
+                                        onClick={()=>{
+                                            if(!synchronised) return;
+                                            defaultPlayer.seek(synced.timestamps[key] / 1000);
+                                        }}
+                                    >
+                                        {text}
+                                    </div>
+                                )
+                            })}
+                        </ScrollWrapper>
+                    </TabBody>
+                </TabManager>
+            </div>
+            <div className="ui-container ui-size-fluid lyrics-actions ui-horizontal-right">
+                <div className="ui-element ui-size-5 combined-button">
+                    <button className={compactMode ? "active" : ""} onClick={()=> setCompactMode(true)}>Compact Mode</button>
+                    <button className={!compactMode ? "active" : ""} onClick={()=> setCompactMode(false)}>Line Mode</button>
+                </div>
+            </div>
+        </div>
     )
 }

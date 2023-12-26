@@ -1,7 +1,9 @@
 const { contextBridge, ipcRenderer, BrowserWindow, ipcMain } = require('electron');
 const fs = require("fs/promises");
 const id3 = require("node-id3");
-let lf = require('localforage');
+const lf = require('localforage');
+const {watch} = require('chokidar');
+const path = require("path");
 
 lf.config({
     driver      : lf.INDEXEDDB,
@@ -11,6 +13,8 @@ lf.config({
     description : 'for storage of Muse it data'
 });
 lf.ready();
+
+const allowedType = /\.(mp3|ogg|aac|wav)/;
 
 
 const musicPath = "/home/superga/Music";
@@ -66,7 +70,7 @@ async function initialize(iteration = ()=>{}){
                 if(stat.isDirectory()){
                     await run(path+"/"+item);
                 }
-                else if(/\.(mp3|ogg|aac|wav)/.test(item)){
+                else if(allowedType.test(item)){
                     // library.push(e);
                     idtag = id3.read(path + "/" + item,{
                         noRaw: true
@@ -166,7 +170,29 @@ const exchange = {
     }
 }
 
+async function activateWatcher(){
+    console.log('[initialize watcher]');
+    const library = await lf.getItem("library");
+    const eye = watch(musicPath, {
+        persistent: true
+    });
+    eye.on("all", (paths, stats)=>{
+        // console.log({paths, stats});
+        if(allowedType.test(stats)){
+            if(paths == "add" && !(stats in library)){
+                console.log('[Add]', stats)
+            }
+            else if(paths == "change"){
+                console.log('[Change]', stats)
+            }
+            else if(paths == "unlink"){
+                console.log('[Remove]', stats)
+            }
+        }
+    });
+}
+
 contextBridge.exposeInMainWorld('bridge', {
     fetchLibrary, resize, isReady, exchange, initialize,
-    getMusic
+    getMusic, activateWatcher
 })

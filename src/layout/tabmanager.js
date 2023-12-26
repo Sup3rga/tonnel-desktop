@@ -1,4 +1,4 @@
-import {memo, useState} from "react";
+import {useState} from "react";
 
 export function Tab({
     name = "",
@@ -17,6 +17,7 @@ export function Tab({
 export function TabBody({
     name = "",
     style = {},
+    active = false,
     children
 }){
     return (
@@ -26,9 +27,10 @@ export function TabBody({
     )
 }
 
-const TabManager = /*memo(*/({
+const TabManager = ({
     headPosition = "top",
     children = [],
+    manual = false,
     onHeadClick = ()=>{}
 })=>{
     const tabs = [];
@@ -49,12 +51,12 @@ const TabManager = /*memo(*/({
     const [current, setCurrent] = useState(tabs.length ? tabs[0].props.name : "");
 
     return (
-        <div className={`ui-container ui-column ui-size-fluid ui-absolute ui-all-close tab-manager`}>
-            <div className={`ui-container ui-size-fluid tab-head-container ui-unwrap`}>
+        <div className={`ui-container ui-column ui-size-fluid ui-absolute ui-all-close tab-manager ${tabs.length ? '' : 'headless'}`}>
+            <div className={`${tabs.length ? 'ui-container' : 'ui-hide'} ui-size-fluid tab-head-container ui-unwrap`}>
                 {tabs.map((head, key)=>(
                     <head.type
                         {...head.props}
-                        active={current === head.props.name}
+                        active={(manual && head.props.active) || (!manual && current === head.props.name)}
                         onClick={()=>{
                             setCurrent(head.props.name)
                             onHeadClick(head.props.name);
@@ -65,14 +67,13 @@ const TabManager = /*memo(*/({
             <div className={`ui-container ui-size-fluid tab-body-container ui-relative`}>
                 {bodies.map((tabBody,key)=> {
                     const style = 'style' in tabBody.props ? tabBody.props.style : {};
-                    style.zIndex = tabBody.props.name === current ? 2 : 1;
-                    style.opacity = tabBody.props.name === current ? 1 : 0;
+                    style.zIndex = (manual && tabBody.props.active) || (!manual && tabBody.props.name === current) ? 2 : 1;
+                    style.opacity = (manual && tabBody.props.active) || (!manual && tabBody.props.name === current) ? 1 : 0;
                     return <tabBody.type {...tabBody.props} style={style}/>
                 })}
             </div>
         </div>
     )
 }
-//);
 
 export default TabManager
