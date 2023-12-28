@@ -4,20 +4,27 @@ import WithinSearch from "../layout/withinsearch";
 import State from "../lib/stater";
 import { Library } from "../ext/library";
 import ArtistItem from "../components/artistitem";
+import {exchange} from "../ext/bridge";
 
 
 export default function Artists({style}){
     const [state] = State.init("artists", useState({
         list: []
     })).get("artists");
-
-    useEffect(()=>{
+    const refresh = ()=>{
         Library.artistList()
         .then((list)=>{
-            // console.log('[List]',list);
             State.set("artists", {list})
         })
         .catch((err)=>console.log('[ERR]',err))
+    }
+
+    useEffect(()=>{
+        refresh();
+        exchange.on("artists-update", (val)=>{
+            console.log('[Updating artist list]', val);
+            refresh();
+        });
     }, []);
 
     return (

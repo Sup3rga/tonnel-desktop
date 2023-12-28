@@ -38,7 +38,9 @@ const State = {
             ){
                 state = {...this.__workBook[id][0], ...state};
             }
-            this.__workBook[id][1](state);
+            try {
+                this.__workBook[id][1](state);
+            }catch (err){}
             this.broadcast(id, state);
         }
         return this;

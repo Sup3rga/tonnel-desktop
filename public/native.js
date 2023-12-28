@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer, BrowserWindow, ipcMain } = require('electron');
+const { contextBridge, ipcRenderer, ipcMain } = require('electron');
 const fs = require("fs/promises");
 const id3 = require("node-id3");
 const lf = require('localforage');
@@ -25,19 +25,211 @@ async function isReady(){
     return Object.keys(data).length > 0;
 }
 
-async function init(){
-    if(!(await lf.getItem("library"))){
-        await lf.setItem("library", []);
+const useSchedule = (()=>{
+    const works = [];
+    const waitings = [];
+    async function worker(deadline){
+        if(deadline.timeRemaining() > 1 && works.length){
+            const func = works[0];
+            const waiter = waitings.length && waitings[0].func === func ? waitings[0] : null;
+            const result = await func();
+            if(waiter){
+                waiter.callback(result);
+            }
+            works.shift();
+            waitings.shift();
+        }
+        if(works.length){
+            requestIdleCallback(worker);
+        }
     }
-    if(!(await lf.getItem("albums"))){
-        await lf.setItem("albums", []);
-    }
-    if(!(await lf.getItem("artists"))){
-        await lf.setItem("artists", []);
-    }
-}
 
-init();
+    return (func)=>{
+        return new Promise((res)=>{
+            const launchAgain = works.length === 0;
+            works.push(func);
+            // console.log('[Len]', works.length);
+            waitings.push({
+                func,
+                callback: (result)=>{
+                    res(result);
+                }
+            })
+            if(launchAgain){
+                requestIdleCallback(worker);
+            }
+        })
+    }
+})();
+
+
+const useCache = (()=>{
+    let library = {};
+    let albums = {};
+    let artists = {};
+    let timer = null;
+
+    lf.getItem("library").then((val)=>{
+        if(!val) return lf.setItem("library", {});
+        library = val;
+    });
+    lf.getItem("albums").then((val)=>{
+        if(!val) return lf.setItem("albums", {});
+        albums = val;
+    });
+    lf.getItem("artists").then((val)=>{
+        if(!val) return lf.setItem("artists", {});
+        artists = val;
+    });
+
+    async function save(){
+        // console.error("[SAVE]",{library,albums,artists})
+        await lf.setItem("library", library);
+        await lf.setItem("albums", albums);
+        await lf.setItem("artists", artists);
+    }
+
+    async function write(filepath, add = true, autosave = true, lazy = true){
+        // console.log('[Start] file', filepath);
+        const func = async ()=>{
+            let idtag = null;
+            const count = {
+                music : 0, album : 0, artist: 0,
+                albumName: "", artistName: "", musicName: ""
+            };
+            try {
+                idtag = add ? id3.read(filepath, {
+                    noRaw: true
+                }) : library[filepath];
+            }catch (err){
+                console.error("[read error]", err);
+                return count;
+            }
+
+            let filename = filepath.split("/");
+            filename = filename[filename.length - 1];
+
+            if(add) {
+
+                const tags = {
+                    album: idtag.album ? idtag.album : "unknown",
+                    title: idtag.title ? idtag.title : filepath,
+                    artist: idtag.artist ? idtag.artist : "unknown",
+                    gender: idtag.genre,
+                    year: idtag.year,
+                    path: filepath,
+                    filename: filename,
+                    no: idtag.trackNumber,
+                    albumart: !('image' in idtag) || idtag.image.mime == null ? '' : ("data:"+idtag.image.mime+";base64," + getImageDataUrl(idtag.image.imageBuffer))
+                };
+
+                count.musicName = tags.title;
+                count.albumName = tags.album;
+                count.artistName = tags.artist;
+
+                for (let id in idtag) {
+                    if (['album', 'title', 'artist', 'trackNumber', 'image'].indexOf(id) < 0 && idtag[id]) {
+                        tags[id] = idtag[id];
+                    }
+                }
+
+                library[filepath] = tags;
+                count.music++;
+
+                if (!(tags.album in albums)) {
+                    albums[tags.album] = {
+                        albumart: null,
+                        list: []
+                    };
+                    count.album++;
+                }
+                if (!albums[tags.album].albumart && tags.albumart) {
+                    albums[tags.album].albumart = tags.albumart;
+                }
+                albums[tags.album].list.push(filepath);
+
+                if (!(tags.artist in artists)) {
+                    artists[tags.artist] = {
+                        albumart: null,
+                        list: []
+                    };
+                    count.artist++;
+                }
+                if (!artists[tags.artist].albumart && tags.albumart) {
+                    artists[tags.artist].albumart = tags.albumart;
+                }
+                artists[tags.artist].list.push(filepath);
+            }
+            else{
+                const tags = idtag;
+
+                count.musicName = tags ? tags.title : null;
+                count.albumName = tags ? tags.album : null;
+                count.artistName = tags ? tags.artist : null;
+
+                delete library[filepath];
+                if(tags) {
+                    if (tags.album in albums) {
+                        albums[tags.album].list = albums[tags.album].list.filter((val) => {
+                            return val !== filepath;
+                        });
+                        if (!albums[tags.album].list.length) {
+                            delete albums[tags.album];
+                        }
+                    }
+                    if (tags.artist in artists) {
+                        artists[tags.artist].list = artists[tags.artist].list.filter((val) => {
+                            return val !== filepath;
+                        });
+                        if (!artists[tags.artist].list.length) {
+                            delete artists[tags.artist];
+                        }
+                    }
+                }
+            }
+            if(autosave){
+                await save();
+            }
+            return count;
+        };
+        if(!lazy) return await func();
+        return await useSchedule(func);
+    }
+
+
+    return ()=> [
+        write,
+        async ()=>{
+            library = await lf.getItem("library");
+            albums = await lf.getItem("albums");
+            artists = await lf.getItem("artists");
+        },
+        save,
+        (index)=>{
+            switch (index){
+                case "library": return library;
+                case "albums": return albums;
+                case "artists": return artists;
+            }
+        },
+        (path)=>{
+            clearTimeout(timer);
+            write(path, false, false, false);
+            timer = setTimeout(()=>{
+                save().then(()=>{
+                    internal.trigger("library-update", null, ()=>{
+                        internal.trigger("artists-update", null);
+                        internal.trigger("albums-update", null);
+                    });
+                }).catch((err)=>{
+                    console.log('[Commit error]',err);
+                })
+            }, 500);
+        }
+    ]
+})();
+
+const [updateCache, resetCache, saveCache, getCache, massDeletion] = useCache();
 
 function getImageDataUrl(e){
     let array = new Uint8Array(e),
@@ -54,7 +246,7 @@ async function  getMusic(path){
 }
 
 async function initialize(iteration = ()=>{}){
-    const list = {}, albums = {}, artists = {};
+    const list = {};
     let count = {
         music: 0,
         album: 0,
@@ -64,64 +256,18 @@ async function initialize(iteration = ()=>{}){
     const run = async (path)=>{
         try{
             let files = await fs.readdir(path),
-                stat, tags, idtag, filepath;
+                stat;
             for(let item of files){
                 stat = await fs.stat(path+'/'+item);
                 if(stat.isDirectory()){
                     await run(path+"/"+item);
                 }
                 else if(allowedType.test(item)){
-                    // library.push(e);
-                    idtag = id3.read(path + "/" + item,{
-                        noRaw: true
-                    });
-                    filepath = path + "/" + item;
-                    // console.log('[Item]', item);
-                    // iteration(tags);
-                    tags = {
-                        album: idtag.album ? idtag.album : "unknown",
-                        title: idtag.title ? idtag.title : item,
-                        artist: idtag.artist ? idtag.artist : "unknown",
-                        gender: idtag.genre,
-                        year: idtag.year,
-                        path: filepath,
-                        filename: item,
-                        no: idtag.trackNumber,
-                        albumart: !('image' in idtag) || idtag.image.mime == null ? '' : ("data:"+idtag.image.mime+";base64," + getImageDataUrl(idtag.image.imageBuffer))
-                    };
-                    
-                    for(let id in idtag){
-                        if(['album','title', 'artist', 'trackNumber', 'image'].indexOf(id) < 0 && idtag[id]){
-                            tags[id] = idtag[id];
-                        }
-                    }
-
-                    list[filepath] = tags;
-                    count.music++;
-
-                    if(!(tags.album in albums)){
-                        albums[tags.album] = {
-                            albumart: null,
-                            list: []
-                        };
-                        count.album++;
-                    }
-                    if(!albums[tags.album].albumart && tags.albumart){
-                        albums[tags.album].albumart = tags.albumart;
-                    }
-                    albums[tags.album].list.push(filepath);
-
-                    if(!(tags.artist in artists)){
-                        artists[tags.artist] = {
-                            albumart: null,
-                            list: []
-                        };
-                        count.artist++;
-                    }
-                    if(!artists[tags.artist].albumart && tags.albumart){
-                        artists[tags.artist].albumart = tags.albumart;
-                    }
-                    artists[tags.artist].list.push(filepath);
+                    // console.warn('[Item].', path +"/"+item);
+                    const {music, artist, album} = await updateCache(path + "/" + item, true, false);
+                    count.music += music;
+                    count.artist += artist;
+                    count.album += album;
                     iteration(count);
                 }
             }
@@ -130,9 +276,7 @@ async function initialize(iteration = ()=>{}){
         }
     }
     await run(musicPath);
-    await lf.setItem("library", list);
-    await lf.setItem("albums", albums);
-    await lf.setItem("artists", artists);
+    await saveCache();
     
     return list;
 }
@@ -154,6 +298,22 @@ async function fetchLibrary(){
     return list;
 }
 
+const internal = {
+    ev: {},
+    addListener: (ev, callback)=>{
+        if(!(ev in internal.ev)){
+            internal.ev[ev] = [];
+        }
+        internal.ev[ev].push(callback);
+    },
+    trigger: (ev, args, completion = ()=>{})=>{
+        if(!(ev in internal.ev)) return;
+        for(let callback of internal.ev[ev]){
+            callback(args, completion);
+        }
+    }
+}
+
 const exchange = {
     // From render to main.
     emit: async (channel, args) => {
@@ -167,26 +327,32 @@ const exchange = {
     // From main to render.
     on: (channel, listener) => {
         ipcRenderer.on(channel, (event, ...args) => listener(...args));
+        internal.addListener(channel, listener);
     }
 }
 
 async function activateWatcher(){
-    console.log('[initialize watcher]');
-    const library = await lf.getItem("library");
+    const library = getCache("library");
     const eye = watch(musicPath, {
         persistent: true
     });
-    eye.on("all", (paths, stats)=>{
+    eye.on("all", async (paths, stats)=>{
         // console.log({paths, stats});
         if(allowedType.test(stats)){
             if(paths == "add" && !(stats in library)){
-                console.log('[Add]', stats)
+                const {music, artistName, albumName} = await updateCache(stats);
+                if(music) {
+                    internal.trigger("library-update", stats, ()=>{
+                        internal.trigger("artists-update", artistName);
+                        internal.trigger("albums-update", albumName);
+                    });
+                }
             }
             else if(paths == "change"){
                 console.log('[Change]', stats)
             }
-            else if(paths == "unlink"){
-                console.log('[Remove]', stats)
+            else if(paths == "unlink" && stats in library){
+                massDeletion(stats);
             }
         }
     });

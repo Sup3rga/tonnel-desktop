@@ -7,6 +7,7 @@ import ScrollWrapper from "../components/scrollwrapper";
 import { Library } from "../ext/library";
 import InfiniteScrolView from "../layout/infinitescrollview";
 import State from "../lib/stater";
+import {exchange} from "../ext/bridge";
 
 
 export default function ArtistInfo({
@@ -22,13 +23,25 @@ export default function ArtistInfo({
         albums: [],
         suggestions: []
     })).get("artist-info");
+
+    const refresh = (list)=>{
+        const albums = Library.extractArtistAlbums(list);
+        const suggestions = Library.getByPaths(list.slice(0, 5));
+        State.set("artist-info", {suggestions,albums, loaded: true});
+    }
+
     useEffect(()=>{
         Library.albumlist().then(()=>{
-            const albums = Library.extractArtistAlbums(list);
-            const suggestions = Library.getByPaths(list.slice(0, 5));
-            State.set("artist-info", {suggestions,albums, loaded: true});
+            refresh(list);
         }).catch((err)=> console.log('[Err]',err));
+
+        exchange.on("artists-update", (artist)=>{
+            if(name === artist){
+                refresh(Library.getArtist(name));
+            }
+        });
     },[]);
+
     return (
         <div className="ui-container ui-fluid discography" style={style}>
             <Appbar title="" withSearch={false}/>

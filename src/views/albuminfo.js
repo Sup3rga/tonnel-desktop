@@ -5,6 +5,8 @@ import ExposedView from "../layout/exposedview";
 import InfiniteScrolView from "../layout/infinitescrollview";
 import MusicItem from "../components/musicitem";
 import Icon from "../components/icon";
+import {exchange} from "../ext/bridge";
+import Router from "../components/router";
 
 
 export default function AlbumInfo({
@@ -16,18 +18,24 @@ export default function AlbumInfo({
     const [{minimal}] = State.init("albuminfo", useState({
         minimal: State.get("app")[0].minimal
     })).get("albuminfo");
-    const context = [];
-    // console.log('[BeforeList]',list);
-    list = Library.getByPaths(list);
-    for(let song of list){
-        context.push(song.path);
-    }
+    const context = list;
+    const [albumList, setAlbumList] = useState( Library.getByPaths(list));
 
     useEffect(()=>{
         // console.log('[List]',list);
         State.watch("app", ({minimal})=>{
             State.set("albuminfo", {minimal});
-        })
+        });
+        exchange.on("albums-update", (album)=>{
+            console.log('[Album Update]', {album, title});
+            if(title === album){
+                const list = Library.getAlbum(title);
+                if(!list.length){
+                    return Router.back();
+                }
+                setAlbumList(list);
+            }
+        });
     }, []);
     return (
         <ExposedView 
@@ -49,7 +57,7 @@ export default function AlbumInfo({
             <div className="ui-element ui-size-8">
                 <InfiniteScrolView
                     name="album-content"
-                    data={list}
+                    data={albumList}
                     render={(song, key)=>{
                         if(!song) return null;
                         return (

@@ -74,3 +74,5 @@ export function extractSyncedLyrics(lyricsData){
 
     return result;
 }
+
+export const {bridge : {initialize, isReady, exchange, activateWatcher} } = window;

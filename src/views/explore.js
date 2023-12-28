@@ -8,8 +8,7 @@ import { MusicItemList } from "../components/itemlist";
 import Menu from "../components/menu";
 import Icon from "../components/icon";
 import Router from "../components/router";
-
-const {bridge : {fetchLibrary, exchange} } = window;
+import {exchange} from "../ext/bridge";
 
 export default function Explore({
     style = {}
@@ -19,15 +18,21 @@ export default function Explore({
         currentItem: null,
         currentItemData: {}
     })).get("exp");
+
+    const refresh = async ()=>{
+        try {
+            const list = await Library.all();
+            State.set("exp", {list});
+        }catch (err) {
+            console.log('[Err]', err);
+        }
+    }
     
     useEffect(()=>{
-        console.log('[Fetch...]');
-        Library.all().then((list)=>{
-            // console.log('[List]',list);
-            State.set("exp", {list});
-        }).catch((err)=>{
-            console.log('[Err]',err);
-        })
+        refresh();
+        exchange.on("library-update", ()=>{
+            refresh();
+        });
     }, []);
 
     return (

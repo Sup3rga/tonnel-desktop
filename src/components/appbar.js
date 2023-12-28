@@ -2,6 +2,7 @@ import Icon from "./icon";
 import State from "../lib/stater";
 import Router from "./router";
 import { useState } from "react";
+import LibraryChangeNotifier from "./librarychangenotifier";
 
 export function AppbarNavButton({
     backward = false
@@ -74,6 +75,7 @@ export default function Appbar({
                 </div>
             }
             <div className="ui-container ui-size-3 ui-lg-size-4 misc ui-horizontal-right">
+                <LibraryChangeNotifier/>
                 <button className={`ui-container ${darkMode ? 'to-light' : 'to-dark'}`} onClick={()=> State.set("ui", {darkMode : !darkMode})}>
                     <Icon icon={!darkMode ? "moon" : "sun"}/>
                 </button>

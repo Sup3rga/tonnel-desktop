@@ -5,20 +5,26 @@ import AlbumItem from "../components/albumitem";
 import { AlbumItemList } from "../components/itemlist";
 import InfiniteScrolView from "../layout/infinitescrollview";
 import { Library } from "../ext/library";
+import {exchange} from "../ext/bridge";
 
 export default function Albums({style}){
     const [state] = State.init("albums", useState({
         list: []
     })).get("albums");
-    console.log('[Albums] called');
-    useEffect(()=>{
-        console.log('[Mounted] albums list');
+    const refresh = ()=>{
         Library.albumlist()
         .then((list)=>{
-            // console.log('[List]',list);
             State.set("albums", {list})
         })
         .catch((err)=>console.log('[ERR]',err))
+    }
+
+    useEffect(()=>{
+        refresh();
+        exchange.on("albums-update", ()=>{
+            console.log('[Updating albums list]')
+            refresh();
+        });
     }, []);
 
     return (

@@ -2,7 +2,7 @@ import {useEffect, useRef} from "react";
 
 
 export default function ScrollWrapper({
-  className, children, scroll = 0, centered=false, padding=0
+  className, children, scroll = 0, centered=false, padding=0, scrollable=true
 }){
     const ref = useRef();
     useEffect(()=>{
@@ -16,7 +16,7 @@ export default function ScrollWrapper({
     }, [scroll])
     return (
         <div className={["ui-container ui-size-fluid body ui-no-scroll",className].join(" ")}>
-            <div ref={ref} className="ui-element ui-fluid-height ui-size-fluid content ui-scroll-y">
+            <div ref={ref} className={`ui-element ui-fluid-height ui-size-fluid content ${scrollable ? 'ui-scroll-y' : ''}`}>
                 {children}
             </div>
         </div>

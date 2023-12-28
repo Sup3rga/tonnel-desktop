@@ -6,8 +6,7 @@ import { Library } from "./ext/library";
 import SplashScreen from "./views/splashscreen";
 import UI from "./views/ui";
 import PlayerUI from "./views/playerui";
-
-const {bridge : {initialize, isReady, exchange, activateWatcher} } = window;
+import {initialize, isReady, exchange, activateWatcher} from "./ext/bridge";
 
 function App() {
   const [state] = State.init("app", useState({
@@ -25,6 +24,16 @@ function App() {
 
   useEffect(()=>{
       isReady().then((ready)=>{
+          //update of all cache when an update is fired !
+        exchange.on("library-update", async (arg, complete)=>{
+           await Library.all(true);
+           await Library.albumlist(true);
+           await Library.artistList(true);
+           State.broadcast("library-updated", arg);
+           complete();
+        });
+
+        //check for ready before launch
         if(ready){
             exchange.emit("hide");
             State.set("app", {

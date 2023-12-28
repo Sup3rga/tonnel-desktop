@@ -1,86 +1,4 @@
-:root{
-  --primaryTheme: #280901;
-  --sideTheme: #{rgba(225,214,203,0.2)};
-  --controlbarHeight: 50px;
-  --search-zone-height: 40px;
-  --text-color-0: black;
-  --text-color-0-reverse: white;
-  --text-color-1 : #999;
-  --text-color-2 : #777;
-  --text-color-3 : #ccc;
-  --albumart-bg: #eee;
-  --control-button-bg: #{rgba(240,240,240,.3)};
-  --control-button-bg-reverse: #{rgba(240,240,240,.5)};
-  --section-1-background: #{rgba(255,255,255,0.7)};
-  --section-2-background: #{rgba(250,250,250,0.7)};
-  --line-bg: #{rgba(200,200,200,0.6)};
-  --scrollbar-track-bg: #{rgba(250,250,250,0.2)};
-  --item-hover-bg: #{rgba(240,240,240,0.5)};
-  --item-active-bg: #{rgba(240,240,240,0.6)};
-  --exposition-height: 163px;
-  --exposition-default-background: #{rgb(201, 201, 201)};
-  --exposition-body-background: #{rgba(200,200,200,0.3)};
-  --exposition-body-shadow: #{rgba(200,200,200,1)};
-  --exposition-mask : #{rgba(180,180,180,0.9)};
-  --blur : 60px;
-  --popup-background: #{rgba(250,250,250,1)};
-  --popup-mask: #{rgba(200,200,200,0.1)};
-  --popup-backdrop: #{blur(0px)};
-  --popup-shadow-color: #444;
-  --light-button-bg: #{rgba(200,200,200,0.1)};
-  --win-btn-bg: #aaa;
-  --win-btn-color: #bbb;
-  --menu-item-wrapper-bg: #{rgba(200,200,200,0.1)};
-  --menu-item-hover-bg: #{rgba(200,200,200,0.5)};
-  --menu-item-color: black;
-  --menu-title-color: black;
-  --player-ui-line-bg: #{rgba(255,255,255,0.7)};
-  --tab-header-height: 40px;
-  --header-action-height: 30px;
-}
-
-#root{
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  &.dark-mode{
-    --sideTheme: #{rgba(110, 98, 86, 0.2)};
-    --text-color-0 : white;
-    --text-color-0-reverse: black;
-    --text-color-1 : #777;
-    --text-color-2 : #aaa;
-    --text-color-3 : #444;
-    --albumart-bg: #333;
-    --primaryTheme: #{rgb(230, 218, 218)};
-    --section-1-background: #{rgba(0, 0, 0, 0.85)};
-    --section-2-background: #{rgba(46, 45, 45, 0.7)};
-    --control-button-bg: #{rgba(50,50,50,.3)};
-    --control-button-bg-reverse: #{rgba(100,100,100,.5)};
-    --line-bg: #{rgba(20,20,20,0.6)};
-    --scrollbar-track-bg: #{rgba(50,50,50,0.2)};
-    --item-hover-bg: #{rgba(50,50,50,0.5)};
-    --item-active-bg: #{rgba(50,50,50,0.6)};
-    --exposition-default-background: #{rgb(101, 101, 101)};
-    --exposition-body-background: #{rgba(80,80,80,0.1)};
-    --exposition-body-shadow: #{rgba(10,10,10,1)};
-    --exposition-mask : #{rgba(50,50,50,0.9)};
-    --popup-background: #{rgba(50,50,50,1)};
-    --popup-mask: #{rgba(0,0,0,0.2)};
-    --popup-backdrop: #{blur(0px)};
-    --popup-shadow-color: #444;
-    --light-button-bg: #{rgba(20,20,20,0.1)};
-    --win-btn-bg: #{rgb(233, 232, 232)};
-    --win-btn-color: #{rgb(226, 226, 226)};
-    --menu-item-wrapper-bg: #{rgba(20,20,20,0.1)};
-    --menu-item-hover-bg: #{rgba(20,20,20,0.5)};
-    --menu-item-color: white;
-    --menu-title-color: white;
-    --player-ui-line-bg: #{rgba(255,255,255,0.1)};
-  }
-}
+@import "var";
 
 .app-main{
   position: inherit;
@@ -102,42 +20,6 @@
 
 .drag-zone{
   -webkit-app-region: drag;
-}
-
-@function variant($light, $dark){
-  @return var(--dark-theme, $dark) var(--light-theme, $light);
-}
-
-%ellipsis{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-%primary-info{
-  font-family: Lexend-Medium;
-  font-size: .9em;
-  padding: .4em 0;
-  @extend %ellipsis;
-  color: var(--text-color-0);
-}
-%secondary-info{
-  font-family: Roboto;
-  font-size: .7em;
-  @extend %ellipsis;
-  color: var(--text-color-1);
-}
-
-%overable{
-  cursor: pointer;
-  &:hover{
-    background-color: var(--item-hover-bg);
-  }
-}
-
-%cover-image{
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
 }
 
 ::-webkit-scrollbar {
@@ -459,7 +341,24 @@ body, html{
   .misc{
     padding: 0 1em;
     // justify-content: space-evenly;
-    gap: 1em;  
+    gap: 1em;
+    .library-notifier{
+      position: relative;
+      background-color: unset;
+      label{
+        font-family: Lexend-Medium;
+        background-color: var(--text-color-0);
+        color: var(--text-color-0-reverse);
+        position: relative;
+        right: 100%;
+        width: auto;
+        margin-top: 1px;
+        padding: .2em .4em;
+        font-size: .6em;
+        white-space: nowrap;
+        border-radius: 1em;
+      }
+    }
     button{
       -webkit-app-region: no-drag;
       border: 0;
@@ -1495,11 +1394,25 @@ body, html{
     color: var(--text-color-0);
     opacity: 0.3;
     transition-duration: .3s;
-    transition-property: font-size, height, opacity;
+    transition-property: font-size, height, opacity, position, transform;
     &.active{
       font-family: Poppins-Semibold;
       font-size: 1.4em;
       opacity: 1;
+    }
+    &.line-mode{
+      opacity: 0;
+      transition-duration: .1s;
+      transform-origin: 0% 50%;
+      &.active{
+        position: fixed;
+        top: 50%;
+        left: 0%;
+        transform: translate(0, -50%);
+        font-size: 2.7em;
+        font-family: Poppins-Bold;
+        opacity: 1;
+      }
     }
   }
   &.unsynchronised{

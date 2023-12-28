@@ -19,6 +19,9 @@ export const Library = {
         let refs = [];
         let index;
         let sortable;
+        /**
+         * Let's group indexes of song to make easy the sorting.
+         */
         for(let i in data){
             index = primaryIndex ? data[i][primaryIndex] : i;
             if(index){
@@ -45,16 +48,16 @@ export const Library = {
         return list;
     },
 
-    async all(){
-        if(this.__library.length === 0){
+    async all(reset = false){
+        if(this.__library.length === 0 || reset){
             this.__rawLibrary = await storage.getItem("library");
             this.__library = this.__sort(this.__rawLibrary, "title", data => data);
         }
         return this.__library;
     },
 
-    async albumlist(){
-        if(this.__albums.length === 0){
+    async albumlist(reset = false){
+        if(this.__albums.length === 0 || reset){
             this.__rawAlbums = await storage.getItem("albums");
             this.__albums = this.__sort(
                 this.__rawAlbums, 
@@ -107,8 +110,8 @@ export const Library = {
         return null;
     },
 
-    async artistList(){
-        if(this.__artists.length === 0){
+    async artistList(reset = false){
+        if(this.__artists.length === 0 || reset){
             this.__rawArtists = await storage.getItem("artists");
             this.__artists = this.__sort(
                 this.__rawArtists, 

@@ -50,7 +50,7 @@ function createWindow () {
 
   win.loadURL('http://localhost:3000');
   win.setBackgroundColor('#eee');
-  win.setOpacity(0);  
+  win.setOpacity(0);
   ipcMain.on("resize", (src, {
       width = 800, 
       height = 600, 
@@ -88,6 +88,7 @@ function createWindow () {
   ipcMain.on('background-change', (src, background)=>{
     win.setBackgroundColor(background);
   });
+
   ipcMain.on("win-action", (src, action)=>{
       console.log('[acting]', action);
       if(action == 0){
