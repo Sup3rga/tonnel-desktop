@@ -1,6 +1,7 @@
 
-import { storage } from "../ext/bridge";
+import {exchange, storage} from "../ext/bridge";
 import Presets from "./presets";
+import lf from "localforage";
 
 const {getMusic} = window.bridge;
 
@@ -50,7 +51,7 @@ export const Library = {
 
     async all(reset = false){
         if(this.__library.length === 0 || reset){
-            this.__rawLibrary = await storage.getItem("library");
+            this.__rawLibrary = await lf.getItem("library");
             this.__library = this.__sort(this.__rawLibrary, "title", data => data);
         }
         return this.__library;
@@ -58,10 +59,10 @@ export const Library = {
 
     async albumlist(reset = false){
         if(this.__albums.length === 0 || reset){
-            this.__rawAlbums = await storage.getItem("albums");
+            this.__rawAlbums = await lf.getItem("albums");
             this.__albums = this.__sort(
-                this.__rawAlbums, 
-                null, 
+                this.__rawAlbums,
+                null,
                 (data,refs) => ({
                     albumart: data.albumart,
                     title: refs.index,
@@ -71,6 +72,24 @@ export const Library = {
         }
 
         return this.__albums;
+    },
+
+    async artistList(reset = false){
+        if(this.__artists.length === 0 || reset){
+            this.__rawArtists = await lf.getItem("artists");
+            this.__artists = this.__sort(
+                this.__rawArtists,
+                null,
+                (data,refs) => ({
+                    avatar: data.albumart,
+                    name: refs.index,
+                    list: data.list,
+                    albums: null
+                })
+            );
+        }
+
+        return this.__artists;
     },
 
     searchAlbumsByKey(key, anyBound = false){
@@ -108,24 +127,6 @@ export const Library = {
             }
         }
         return null;
-    },
-
-    async artistList(reset = false){
-        if(this.__artists.length === 0 || reset){
-            this.__rawArtists = await storage.getItem("artists");
-            this.__artists = this.__sort(
-                this.__rawArtists, 
-                null, 
-                (data,refs) => ({
-                    avatar: data.albumart,
-                    name: refs.index,
-                    list: data.list,
-                    albums: null
-                })
-            );
-        }
-
-        return this.__artists;
     },
 
     getArtist(name){

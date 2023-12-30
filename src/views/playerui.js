@@ -57,7 +57,7 @@ export default function PlayerUI({active = false, parallax = ""}){
                 height: 600
             },
             maximal: {
-                width: 780,
+                width: 1200,
                 height: 800
             },
             resizable: true

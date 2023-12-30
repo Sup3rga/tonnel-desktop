@@ -30,6 +30,8 @@ function createWindow () {
         maxWidth = dimension.width,
         current = {width: minWidth, height: minHeight},
         maxHeight = dimension.height;
+
+
    // Create the browser window.
   const win = new BrowserWindow({
     width: 300,
@@ -43,14 +45,31 @@ function createWindow () {
         preload: path.join(__dirname, "native.js"),
         nodeIntegration: true
     }
-  })
+  });
+    const winWorker = new BrowserWindow({
+        show: false,
+        parent: win,
+        webPreferences: {
+            preload: path.join(__dirname, "worker.js"),
+            nodeIntegration: true,
+            devTools: true
+        }
+    });
+    winWorker.loadFile('worker.html');
+  win.loadURL('http://localhost:3000');
+
   win.on('ready-to-show', ()=>{
     win.show();
   });
-
-  win.loadURL('http://localhost:3000');
   win.setBackgroundColor('#eee');
   win.setOpacity(0);
+
+  ipcMain.on("worker::render", (src, {source, channel, args})=>{
+      const receiver = source === "render" ? winWorker : win;
+      // console.log('[Bridge]', {from: source, channel, args});
+      receiver.webContents.send(channel, args);
+  })
+
   ipcMain.on("resize", (src, {
       width = 800, 
       height = 600, 
@@ -73,14 +92,14 @@ function createWindow () {
      src.reply("resize", true);
   });
   ipcMain.on("hide", ()=>{
-    win.hide();
+    // win.hide();
   });
   ipcMain.on("save-dimension", ()=>{
     current.width = win.getBounds().width;
     current.height = win.getBounds().height;
   })
   ipcMain.on("show", ()=>{
-    win.show();
+    // win.show();
   });
   ipcMain.on("center", ()=>{
     win.center();
@@ -93,6 +112,7 @@ function createWindow () {
       console.log('[acting]', action);
       if(action == 0){
           win.close();
+          winWorker.close();
       }
       else if(action == 1){
           win.minimize();

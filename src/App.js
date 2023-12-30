@@ -25,13 +25,6 @@ function App() {
   useEffect(()=>{
       isReady().then((ready)=>{
           //update of all cache when an update is fired !
-        exchange.on("library-update", async (arg, complete)=>{
-           await Library.all(true);
-           await Library.albumlist(true);
-           await Library.artistList(true);
-           State.broadcast("library-updated", arg);
-           complete();
-        });
 
         //check for ready before launch
         if(ready){
@@ -80,6 +73,18 @@ function App() {
         });
       })
   }, []);
+
+  useEffect(()=>{
+      if(state.libraryReady){
+          exchange.on("library-update", async (arg, complete)=>{
+              await Library.all(true);
+              await Library.albumlist(true);
+              await Library.artistList(true);
+              State.broadcast("library-updated", arg);
+              complete();
+          });
+      }
+  }, [state.libraryReady]);
 
   if(!state.libraryReady) return <SplashScreen initialize={state.initialize} feed={state.feed}/> 
 

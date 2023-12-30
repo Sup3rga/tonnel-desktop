@@ -1136,6 +1136,7 @@ body, html{
   }
   .main-info{
     padding: .5em;
+    user-select: none;
     .albumart{
       --size: 35vmin;
       width: var(--size);
@@ -1394,7 +1395,7 @@ body, html{
     color: var(--text-color-0);
     opacity: 0.3;
     transition-duration: .3s;
-    transition-property: font-size, height, opacity, position, transform;
+    transition-property: font-size, height, opacity, transform;
     &.active{
       font-family: Poppins-Semibold;
       font-size: 1.4em;
@@ -1402,14 +1403,17 @@ body, html{
     }
     &.line-mode{
       opacity: 0;
-      transition-duration: .1s;
-      transform-origin: 0% 50%;
+      font-size: .8em;
+      transition-duration: .4s;
+      transform-origin: 50% 50%;
+      position: fixed;
+      font-size: 10%;
+      top: 50%;
+      left: 0%;
+
       &.active{
-        position: fixed;
-        top: 50%;
-        left: 0%;
         transform: translate(0, -50%);
-        font-size: 2.7em;
+        font-size: xx-large;
         font-family: Poppins-Bold;
         opacity: 1;
       }

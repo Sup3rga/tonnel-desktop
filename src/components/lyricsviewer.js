@@ -35,8 +35,6 @@ export default function LyricsViewer({
                 break;
             }
         }
-        if(index >= 0)
-        // console.log('[Index]', [refs[index]]);
         setIndex(index);
     }
 
@@ -69,6 +67,12 @@ export default function LyricsViewer({
                     scrollable={!synchronised || (synchronised && compactMode)}
                     scroll={synchronised && index >= 0 && references[index] ? references[index].offsetTop : 0}
                 >
+                    {
+                        synchronised && !compactMode && index < 0 ?
+                            <div className="ui-container ui-size-fluid ui-horizontal-center line-mode active lyrics-bar">
+                                ...
+                            </div> : null
+                    }
                     {(synchronised ? synced.texts : lyrics.text.split("\n")).map((text, key)=>{
                         return (
                             <div

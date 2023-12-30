@@ -6,7 +6,6 @@ import InfiniteScrolView from "../layout/infinitescrollview";
 import MusicItem from "../components/musicitem";
 import Icon from "../components/icon";
 import {exchange} from "../ext/bridge";
-import Router from "../components/router";
 
 
 export default function AlbumInfo({
@@ -27,13 +26,9 @@ export default function AlbumInfo({
             State.set("albuminfo", {minimal});
         });
         exchange.on("albums-update", (album)=>{
-            console.log('[Album Update]', {album, title});
             if(title === album){
-                const list = Library.getAlbum(title);
-                if(!list.length){
-                    return Router.back();
-                }
-                setAlbumList(list);
+                const {list} = Library.getAlbum(title);
+                setAlbumList(Library.getByPaths(list));
             }
         });
     }, []);

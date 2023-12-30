@@ -3,7 +3,13 @@ const fs = require("fs/promises");
 const id3 = require("node-id3");
 const lf = require('localforage');
 const {watch} = require('chokidar');
-const path = require("path");
+const {internal, exchange} = require("./exchange");
+const sqlite = require("sqlite3").verbose();
+const db = new sqlite.Database("./cache.db", (err)=>{
+    console.log('[Err]', err);
+})
+
+console.log('[DB]',db);
 
 lf.config({
     driver      : lf.INDEXEDDB,
@@ -14,8 +20,9 @@ lf.config({
 });
 lf.ready();
 
-const allowedType = /\.(mp3|ogg|aac|wav)/;
+exchange.src = "render";
 
+const allowedType = /\.(mp3|ogg|aac|wav)/;
 
 const musicPath = "/home/superga/Music";
 async function isReady(){
@@ -23,6 +30,10 @@ async function isReady(){
     if(!data) return false;
     data = typeof data === "object" ? data : JSON.parse(data);
     return Object.keys(data).length > 0;
+}
+
+async function getTags(url){
+    return await exchange.bridge("tagreading", url);
 }
 
 const useSchedule = (()=>{
@@ -89,7 +100,16 @@ const useCache = (()=>{
         await lf.setItem("artists", artists);
     }
 
-    async function write(filepath, add = true, autosave = true, lazy = true){
+    /**
+     *
+     * @param filepath
+     * @param add
+     * @param autosave
+     * @param lazy
+     * @param alternative
+     * @returns {Promise<unknown>}
+     */
+    async function write(filepath, add = true, autosave = true, lazy = true, alternative = false){
         // console.log('[Start] file', filepath);
         const func = async ()=>{
             let idtag = null;
@@ -97,14 +117,10 @@ const useCache = (()=>{
                 music : 0, album : 0, artist: 0,
                 albumName: "", artistName: "", musicName: ""
             };
-            try {
-                idtag = add ? id3.read(filepath, {
+
+            idtag = add ? alternative ? await getTags(filepath) : id3.read(filepath, {
                     noRaw: true
                 }) : library[filepath];
-            }catch (err){
-                console.error("[read error]", err);
-                return count;
-            }
 
             let filename = filepath.split("/");
             filename = filename[filename.length - 1];
@@ -113,7 +129,7 @@ const useCache = (()=>{
 
                 const tags = {
                     album: idtag.album ? idtag.album : "unknown",
-                    title: idtag.title ? idtag.title : filepath,
+                    title: idtag.title ? idtag.title : filename,
                     artist: idtag.artist ? idtag.artist : "unknown",
                     gender: idtag.genre,
                     year: idtag.year,
@@ -298,41 +314,9 @@ async function fetchLibrary(){
     return list;
 }
 
-const internal = {
-    ev: {},
-    addListener: (ev, callback)=>{
-        if(!(ev in internal.ev)){
-            internal.ev[ev] = [];
-        }
-        internal.ev[ev].push(callback);
-    },
-    trigger: (ev, args, completion = ()=>{})=>{
-        if(!(ev in internal.ev)) return;
-        for(let callback of internal.ev[ev]){
-            callback(args, completion);
-        }
-    }
-}
-
-const exchange = {
-    // From render to main.
-    emit: async (channel, args) => {
-        return new Promise((res)=>{
-            ipcRenderer.send(channel, args);
-            ipcRenderer.on(channel, (emitter, ...args)=>{
-                res(...args)
-            })
-        })
-    },
-    // From main to render.
-    on: (channel, listener) => {
-        ipcRenderer.on(channel, (event, ...args) => listener(...args));
-        internal.addListener(channel, listener);
-    }
-}
-
 async function activateWatcher(){
     const library = getCache("library");
+
     const eye = watch(musicPath, {
         persistent: true
     });
@@ -340,7 +324,7 @@ async function activateWatcher(){
         // console.log({paths, stats});
         if(allowedType.test(stats)){
             if(paths == "add" && !(stats in library)){
-                const {music, artistName, albumName} = await updateCache(stats);
+                const {music, artistName, albumName} = await updateCache(stats, true, true, true, true);
                 if(music) {
                     internal.trigger("library-update", stats, ()=>{
                         internal.trigger("artists-update", artistName);

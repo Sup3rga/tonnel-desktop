@@ -1365,8 +1365,9 @@ body, html {
 /* line 1137, ../../sass/app.scss */
 .player-ui .main-info {
   padding: .5em;
+  user-select: none;
 }
-/* line 1139, ../../sass/app.scss */
+/* line 1140, ../../sass/app.scss */
 .player-ui .main-info .albumart {
   --size: 35vmin;
   width: var(--size);
@@ -1376,37 +1377,37 @@ body, html {
   background-color: var(--albumart-bg);
   border-radius: 50%;
 }
-/* line 1148, ../../sass/app.scss */
+/* line 1149, ../../sass/app.scss */
 .player-ui .main-info .albumart i {
   font-size: 5em;
   color: var(--text-color-0);
 }
-/* line 1153, ../../sass/app.scss */
+/* line 1154, ../../sass/app.scss */
 .player-ui .main-info .music-metadata {
   padding: .5em .3em;
   color: var(--text-color-0);
   transition-duration: .2s;
   transition-property: width,font-size,height,top,left;
 }
-/* line 1158, ../../sass/app.scss */
+/* line 1159, ../../sass/app.scss */
 .player-ui .main-info .music-metadata label {
   padding: .3em 0;
   justify-content: center;
 }
-/* line 1162, ../../sass/app.scss */
+/* line 1163, ../../sass/app.scss */
 .player-ui .main-info .music-metadata .title {
   font-size: 1.3em;
   font-family: Lexend-Medium;
 }
-/* line 1167, ../../sass/app.scss */
+/* line 1168, ../../sass/app.scss */
 .player-ui .main-info .music-metadata .artist {
   font-size: .9em;
 }
-/* line 1172, ../../sass/app.scss */
+/* line 1173, ../../sass/app.scss */
 .player-ui .main-info .music-metadata .album {
   font-size: .9em;
 }
-/* line 1177, ../../sass/app.scss */
+/* line 1178, ../../sass/app.scss */
 .player-ui .main-info .progression {
   padding: .5em;
   border-radius: 1em;
@@ -1415,7 +1416,7 @@ body, html {
   transition-property: width,height,top,left;
   --line-height: .7vmin;
 }
-/* line 1184, ../../sass/app.scss */
+/* line 1185, ../../sass/app.scss */
 .player-ui .main-info .progression .time {
   border-radius: .5em;
   padding: .4em 0;
@@ -1423,26 +1424,26 @@ body, html {
   color: var(--text-color-0);
   font-size: .8em;
 }
-/* line 1191, ../../sass/app.scss */
+/* line 1192, ../../sass/app.scss */
 .player-ui .main-info .progression .line-container {
   width: 100%;
 }
-/* line 1193, ../../sass/app.scss */
+/* line 1194, ../../sass/app.scss */
 .player-ui .main-info .progression .line-container .line {
   height: var(--line-height);
   background-color: var(--player-ui-line-bg);
   overflow: hidden;
   border-radius: .8em;
 }
-/* line 1198, ../../sass/app.scss */
+/* line 1199, ../../sass/app.scss */
 .player-ui .main-info .progression .line-container .line .indicator {
   height: inherit;
 }
-/* line 1202, ../../sass/app.scss */
+/* line 1203, ../../sass/app.scss */
 .player-ui .main-info .progression .line-container .marker {
   --size: 18px;
 }
-/* line 1208, ../../sass/app.scss */
+/* line 1209, ../../sass/app.scss */
 .player-ui .main-info .controls {
   padding: 1em .5em;
   gap: .8em;
@@ -1450,7 +1451,7 @@ body, html {
   transition-duration: .2s;
   transition-property: width,height,top,left;
 }
-/* line 1214, ../../sass/app.scss */
+/* line 1215, ../../sass/app.scss */
 .player-ui .main-info .controls button {
   width: var(--size);
   height: var(--size);
@@ -1458,25 +1459,25 @@ body, html {
   border-radius: 50%;
   border: 0;
 }
-/* line 1215, ../../sass/app.scss */
+/* line 1216, ../../sass/app.scss */
 .player-ui .main-info .controls button.play {
   --size: 70px;
   background-color: var(--text-color-0);
   color: var(--text-color-0-reverse);
   box-shadow: 0 2px 6px 1px var(--text-color-0);
 }
-/* line 1229, ../../sass/app.scss */
+/* line 1230, ../../sass/app.scss */
 .player-ui .main-info.up .albumart {
   position: absolute;
   --size: 43px;
   top: 10px;
   left: 60px;
 }
-/* line 1234, ../../sass/app.scss */
+/* line 1235, ../../sass/app.scss */
 .player-ui .main-info.up .albumart i {
   font-size: 1em;
 }
-/* line 1238, ../../sass/app.scss */
+/* line 1239, ../../sass/app.scss */
 .player-ui .main-info.up .music-metadata {
   position: absolute;
   top: 5px;
@@ -1484,15 +1485,15 @@ body, html {
   width: 21%;
   font-size: .6em;
 }
-/* line 1245, ../../sass/app.scss */
+/* line 1246, ../../sass/app.scss */
 .player-ui .main-info.up .music-metadata label {
   justify-content: left;
 }
-/* line 1248, ../../sass/app.scss */
+/* line 1249, ../../sass/app.scss */
 .player-ui .main-info.up .music-metadata .album {
   display: none;
 }
-/* line 1252, ../../sass/app.scss */
+/* line 1253, ../../sass/app.scss */
 .player-ui .main-info.up .progression {
   position: absolute;
   flex-wrap: nowrap;
@@ -1503,11 +1504,11 @@ body, html {
   z-index: 5;
   --line-height: 4px;
 }
-/* line 1262, ../../sass/app.scss */
+/* line 1263, ../../sass/app.scss */
 .player-ui .main-info.up .progression .marker {
   --size: 10px;
 }
-/* line 1266, ../../sass/app.scss */
+/* line 1267, ../../sass/app.scss */
 .player-ui .main-info.up .controls {
   position: absolute;
   flex-wrap: nowrap;
@@ -1516,19 +1517,19 @@ body, html {
   width: 18%;
   --size: 25px;
 }
-/* line 1274, ../../sass/app.scss */
+/* line 1275, ../../sass/app.scss */
 .player-ui .main-info.up .controls button {
   background-color: unset;
   color: var(--text-color-0);
 }
-/* line 1277, ../../sass/app.scss */
+/* line 1278, ../../sass/app.scss */
 .player-ui .main-info.up .controls button.play {
   --size: 25px;
   background-color: unset;
   color: var(--text-color-0);
   box-shadow: unset;
 }
-/* line 1287, ../../sass/app.scss */
+/* line 1288, ../../sass/app.scss */
 .player-ui .actions {
   padding: .2em .4em;
   height: calc(100% - 60px);
@@ -1539,49 +1540,49 @@ body, html {
   transition-duration: .2s;
   transition-property: transform;
 }
-/* line 1296, ../../sass/app.scss */
+/* line 1297, ../../sass/app.scss */
 .player-ui .actions.up {
   transform: translateY(0px);
 }
-/* line 1299, ../../sass/app.scss */
+/* line 1300, ../../sass/app.scss */
 .player-ui .actions .header-actions-arrow {
   height: var(--header-action-height);
 }
-/* line 1302, ../../sass/app.scss */
+/* line 1303, ../../sass/app.scss */
 .player-ui .actions .tab-container {
   height: calc(100% - var(--header-action-height));
 }
 
-/* line 1309, ../../sass/app.scss */
+/* line 1310, ../../sass/app.scss */
 .tab-manager .tab-head-container {
   height: var(--tab-header-height);
 }
-/* line 1311, ../../sass/app.scss */
+/* line 1312, ../../sass/app.scss */
 .tab-manager .tab-head-container .tab-head {
   font-family: Lexend;
   color: var(--text-color-1);
   cursor: pointer;
 }
-/* line 1315, ../../sass/app.scss */
+/* line 1316, ../../sass/app.scss */
 .tab-manager .tab-head-container .tab-head.active {
   color: var(--text-color-0);
   font-family: Lexend-SemiBold;
 }
-/* line 1321, ../../sass/app.scss */
+/* line 1322, ../../sass/app.scss */
 .tab-manager .tab-body-container {
   height: calc(100% - var(--tab-header-height));
 }
-/* line 1324, ../../sass/app.scss */
+/* line 1325, ../../sass/app.scss */
 .tab-manager.headless {
   --tab-header-height: 0px;
 }
 
-/* line 1329, ../../sass/app.scss */
+/* line 1330, ../../sass/app.scss */
 .arrow-line {
   padding: .8em 0;
   cursor: pointer;
 }
-/* line 1332, ../../sass/app.scss */
+/* line 1333, ../../sass/app.scss */
 .arrow-line .line {
   width: 50%;
   height: 5px;
@@ -1591,67 +1592,67 @@ body, html {
   transition-duration: .2s;
   transition-property: transform;
 }
-/* line 1340, ../../sass/app.scss */
+/* line 1341, ../../sass/app.scss */
 .arrow-line .line.left {
   right: -.05em;
   transform: rotate(-10deg);
 }
-/* line 1344, ../../sass/app.scss */
+/* line 1345, ../../sass/app.scss */
 .arrow-line .line.right {
   left: -.1em;
   transform: rotate(10deg);
 }
-/* line 1350, ../../sass/app.scss */
+/* line 1351, ../../sass/app.scss */
 .arrow-line.down .left {
   transform: rotate(10deg);
 }
-/* line 1353, ../../sass/app.scss */
+/* line 1354, ../../sass/app.scss */
 .arrow-line.down .right {
   transform: rotate(-10deg);
 }
 
-/* line 1359, ../../sass/app.scss */
+/* line 1360, ../../sass/app.scss */
 .queue-list {
   padding: .8em 1em;
 }
-/* line 1361, ../../sass/app.scss */
+/* line 1362, ../../sass/app.scss */
 .queue-list .music-item {
   --height: 75px;
   padding: .8em;
 }
-/* line 1364, ../../sass/app.scss */
+/* line 1365, ../../sass/app.scss */
 .queue-list .music-item .album-art {
   font-size: .6em;
   border-radius: 1em;
 }
-/* line 1368, ../../sass/app.scss */
+/* line 1369, ../../sass/app.scss */
 .queue-list .music-item .info {
   top: -.4em;
   padding: 0 .4em;
   position: relative;
 }
 
-/* line 1376, ../../sass/app.scss */
+/* line 1377, ../../sass/app.scss */
 .lyrics-container-wrapper {
   --action-height: 40px;
 }
-/* line 1378, ../../sass/app.scss */
+/* line 1379, ../../sass/app.scss */
 .lyrics-container-wrapper .lyrics-wrapper {
   height: calc(100% - var(--action-height));
 }
-/* line 1381, ../../sass/app.scss */
+/* line 1382, ../../sass/app.scss */
 .lyrics-container-wrapper .lyrics-actions {
   height: var(--action-height);
 }
 
-/* line 1385, ../../sass/app.scss */
+/* line 1386, ../../sass/app.scss */
 .lyrics-container {
   padding: .4em;
   height: 100%;
   transition-duration: .2s;
   transition-property: scroll;
 }
-/* line 1390, ../../sass/app.scss */
+/* line 1391, ../../sass/app.scss */
 .lyrics-container .lyrics-bar {
   padding: .3em .5em;
   font-family: Poppins;
@@ -1659,36 +1660,38 @@ body, html {
   color: var(--text-color-0);
   opacity: 0.3;
   transition-duration: .3s;
-  transition-property: font-size, height, opacity, position, transform;
+  transition-property: font-size, height, opacity, transform;
 }
-/* line 1398, ../../sass/app.scss */
+/* line 1399, ../../sass/app.scss */
 .lyrics-container .lyrics-bar.active {
   font-family: Poppins-Semibold;
   font-size: 1.4em;
   opacity: 1;
 }
-/* line 1403, ../../sass/app.scss */
+/* line 1404, ../../sass/app.scss */
 .lyrics-container .lyrics-bar.line-mode {
   opacity: 0;
-  transition-duration: .1s;
-  transform-origin: 0% 50%;
-}
-/* line 1407, ../../sass/app.scss */
-.lyrics-container .lyrics-bar.line-mode.active {
+  font-size: .8em;
+  transition-duration: .4s;
+  transform-origin: 50% 50%;
   position: fixed;
+  font-size: 10%;
   top: 50%;
   left: 0%;
+}
+/* line 1413, ../../sass/app.scss */
+.lyrics-container .lyrics-bar.line-mode.active {
   transform: translate(0, -50%);
-  font-size: 2.7em;
+  font-size: xx-large;
   font-family: Poppins-Bold;
   opacity: 1;
 }
-/* line 1419, ../../sass/app.scss */
+/* line 1422, ../../sass/app.scss */
 .lyrics-container.unsynchronised .lyrics-bar {
   font-family: Roboto;
   opacity: 1;
 }
-/* line 1425, ../../sass/app.scss */
+/* line 1428, ../../sass/app.scss */
 .lyrics-container.compact-mode .lyrics-bar {
   font-family: Poppins-Bold;
   font-size: 2.7em;
@@ -1696,7 +1699,7 @@ body, html {
   opacity: 1;
 }
 
-/* line 1434, ../../sass/app.scss */
+/* line 1437, ../../sass/app.scss */
 .no-lyrics {
   font-family: Poppins;
   font-size: 1.3em;
